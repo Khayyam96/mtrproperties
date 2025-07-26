@@ -1,0 +1,154 @@
+.pagination-wrapper {
+    margin-top: 40px;
+    text-align: center;
+  
+    .ant-pagination {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+    }
+  
+    .pagination-btn {
+      background-color: #7e22ce;
+      color: white;
+      border: none;
+      padding: 6px 18px;
+      border-radius: 8px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+  
+      &:hover {
+        background-color: #6b21a8;
+      }
+  
+      &.prev::before {
+        content: "←";
+      }
+  
+      &.next::after {
+        content: "→";
+      }
+    }
+  
+    .ant-pagination-item {
+      border: none;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      font-weight: 500;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+  
+      a {
+        color: #333;
+      }
+  
+      &:hover {
+        background-color: #e5e5e5;
+      }
+    }
+  
+    .ant-pagination-item-active {
+      border: 1px solid #7e22ce !important;
+      background-color: white !important;
+  
+      a {
+        color: #7e22ce !important;
+        font-weight: 600;
+      }
+    }
+  
+    .ant-pagination-prev,
+    .ant-pagination-next {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  .popular-properties {
+    text-align: center;
+    padding: 40px 20px;
+  
+    .section-title {
+      font-weight: 600;
+      margin-bottom: 30px;
+    }
+  
+    .property-slider {
+      .slick-slide {
+        padding: 0 12px;
+      }
+    }
+  
+    .property-card {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      height: 350px;
+      box-shadow: 0px 10px 30px #3435350F;
+  
+      .image-wrapper {
+        position: relative;
+        width: 100%;
+        height: 100%;
+  
+        .property-image {
+          object-fit: cover;
+        }
+  
+        .overlay {
+          position: absolute;
+          bottom: 0;
+          width: 100%;
+          padding: 16px;
+          background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+          color: #fff;
+          text-align: left;
+  
+          .name {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+          }
+  
+          .info {
+            font-size: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 8px;
+          }
+  
+          .view-more {
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  
+    .carousel-buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+  
+      .ant-btn {
+        width: 44px;
+        height: 44px;
+        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+  

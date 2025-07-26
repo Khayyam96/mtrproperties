@@ -1,0 +1,44 @@
+.search-filter {
+    background: #fff;
+    padding: 24px;
+    border-radius: 10px;
+  
+    .label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #000;
+    }
+  
+    .full-width {
+      width: 100%;
+    }
+  
+    .location-col {
+      display: flex;
+      flex-direction: column;
+  
+      .location-search-wrapper {
+        display: flex;
+        gap: 8px;
+  
+        .location-input {
+          flex: 1;
+        }
+  
+        .find-btn {
+          background-color: #7b2cf9;
+          border: none;
+          padding: 0 20px;
+          height: 40px;
+          font-weight: 500;
+  
+          &:hover {
+            background-color: #5e20c9;
+          }
+        }
+      }
+    }
+  }
+  

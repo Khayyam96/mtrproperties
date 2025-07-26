@@ -1,0 +1,26 @@
+.filter-tabs {
+    margin-bottom: 20px;
+  
+    .ant-tabs-tab {
+      margin: 0 0 0 20px !important;
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 16px;
+      background: #fff;
+      color: #581C87;
+      box-shadow: 0 4px 12px rgba(52, 53, 53, 0.06);
+    }
+    
+    .ant-tabs-tab-active {
+      background: #7E22CE;
+      .ant-tabs-tab-btn{
+        color: #fff !important;
+      }
+    }
+  
+    .ant-tabs-ink-bar {
+      display: none;
+    }
+  }
+  

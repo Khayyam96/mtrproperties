@@ -1,0 +1,145 @@
+.main-header {
+  background: #fff;
+  border-bottom: 1px solid #e5e5e5;
+  position: sticky;
+  top: 0;
+  z-index: 999999;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .logo-img-wrapper {
+    position: relative;
+    width: auto !important;
+    height: 48px;
+  
+    img {
+      object-fit: contain;
+      width: auto !important;
+      height: 100%;
+    }
+  }
+
+  .menu-right{
+    display: flex;
+    align-items: center;
+  }
+  
+}
+
+.mtr {
+  font-weight: 700;
+  font-size: 20px;
+  color: #000;
+}
+
+.properties {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: #7f8b9e;
+}
+
+.main-nav {
+  list-style: none;
+  display: flex;
+  gap: 28px;
+  margin-right: 20px;
+  margin-bottom: 0;
+  padding: 0;
+}
+
+.main-nav li a {
+  color: #343535;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 600;
+}
+
+.main-nav li a:hover {
+  color: #6e1eff;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.contact-btn,
+.contact-btn--mobile {
+  background: #6e1eff;
+  border: none;
+  height: 40px;
+  padding: 0 24px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.contact-btn:hover,
+.contact-btn:focus,
+.contact-btn--mobile:hover,
+.contact-btn--mobile:focus {
+  background: #5a19d1;
+}
+
+.lang-switch {
+  color: #000;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.lang-switch:hover {
+  color: #6e1eff;
+}
+
+.burger {
+  display: none;
+}
+
+@media (max-width: 992px) {
+  .desktop-nav {
+    display: none;
+  }
+
+  .contact-btn {
+    display: none;
+  }
+
+  .burger {
+    display: inline-flex;
+  }
+}
+
+.drawer-content {
+  padding: 24px;
+}
+
+.drawer-content .main-nav {
+  flex-direction: column;
+  gap: 16px;
+}
+
+.drawer-content .main-nav li a {
+  font-size: 16px;
+}
+
+.drawer-content .contact-btn--mobile {
+  margin-top: 24px;
+  width: 100%;
+}
+
+.drawer-content .lang-switch {
+  display: block;
+  margin-top: 16px;
+  font-size: 16px;
+}
