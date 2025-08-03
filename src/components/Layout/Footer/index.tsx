@@ -102,10 +102,10 @@ export const MainFooter = () => {
             <Title level={5}>Company</Title>
             <ul>
               <li>
-                <Link href="/about">About Us</Link>
+                {/* <Link href="/about">About Us</Link> */}
               </li>
               <li>
-                <Link href="/contact">Contact Us</Link>
+                {/* <Link href="/contact">Contact Us</Link> */}
               </li>
               <li>Blogs/News</li>
             </ul>
