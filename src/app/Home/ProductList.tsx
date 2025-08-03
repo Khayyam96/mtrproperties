@@ -1,13 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Row, Col, Button } from "antd";
+import { Row, Col, Button, Tabs, Typography } from "antd";
 import { ProCard } from "@/components/Lib/ProCard";
-import { FilterTabs } from "@/components/Lib/Tabs/FilterTabs";
 import { AppstoreOutlined } from "@ant-design/icons";
 import "./index.scss";
-import { Typography } from "antd";
 import { Container } from "@/components/Lib/ProContainer/Container";
+
 const { Title, Text } = Typography;
 
 const properties = [
@@ -87,11 +86,21 @@ export const ProductSection: React.FC = () => {
     <section className="product__list">
       <Container>
         <div className="header text-center">
-          <Title className="title" level={2}>New Off Plan Projects In Dubai</Title>
+          <Title className="title" level={2}>
+            New Off Plan Projects In Dubai
+          </Title>
           <Text className="text">
             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
           </Text>
         </div>
+
+        <Tabs
+          activeKey={activeKey}
+          onChange={setActiveKey}
+          className="product__tabs"
+          items={tabItems}
+        />
+
         <Row gutter={[24, 32]}>
           {filtered.map((p) => (
             <Col key={p.id} xs={24} sm={12} md={12} lg={8} xl={6}>

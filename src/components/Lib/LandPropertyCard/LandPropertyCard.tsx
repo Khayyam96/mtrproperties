@@ -13,7 +13,7 @@ type Props = {
   location: string;
   utilities: number;
   area: string;
-  badges: string[]; 
+  badges: string[];
 };
 
 export const LandPropertyCard: FC<Props> = ({
@@ -49,10 +49,10 @@ export const LandPropertyCard: FC<Props> = ({
           sizes="(max-width: 600px) 100vw, 400px"
         />
         <button className="carousel-btn prev" onClick={handlePrev}>
-          <img src="/icons/chevron-left.svg" alt="prev" />
+          <Image src="/icons/chevron-left.svg" alt="prev" width={24} height={24} />
         </button>
         <button className="carousel-btn next" onClick={handleNext}>
-          <img src="/icons/chevron-right.svg" alt="next" />
+          <Image src="/icons/chevron-right.svg" alt="next" width={24} height={24} />
         </button>
         <div className="lp-card__badges">
           <Tag color="#8837E0" className="badge">{badges[0]}</Tag>
@@ -65,24 +65,32 @@ export const LandPropertyCard: FC<Props> = ({
           <span className="sqft-tag">AED {priceSqft}/sq ft</span>
         </div>
         <div className="lp-card__loc-row">
-          <img src="/icons/location.svg" alt="" className="icon" />
+          <Image src="/icons/location.svg" alt="Location" className="icon" width={16} height={16} />
           <span className="location">{location}</span>
         </div>
         <div className="lp-card__desc">{title}</div>
         <div className="lp-card__info-row">
           <span>
-            <img src="/icons/flash.svg" alt="" className="icon" />
+            <Image src="/icons/flash.svg" alt="Utilities" className="icon" width={16} height={16} />
             {utilities} Utilities
           </span>
           <span>
-            <img src="/icons/area.svg" alt="" className="icon" />
+            <Image src="/icons/area.svg" alt="Area" className="icon" width={16} height={16} />
             {area} sq ft
           </span>
         </div>
         <div className="lp-card__actions">
           <Button
             className="call-btn"
-            icon={<img src="/icons/call-outline.svg" alt="Call" />}
+            icon={
+              <Image
+                src="/icons/call-outline.svg"
+                alt="Call"
+                width={20}
+                height={20}
+                style={{ display: "inline-block" }}
+              />
+            }
             size="large"
             block
           >
@@ -90,7 +98,15 @@ export const LandPropertyCard: FC<Props> = ({
           </Button>
           <Button
             className="whatsapp-btn"
-            icon={<img src="/icons/whatsapp-outline.svg" alt="Whatsapp" />}
+            icon={
+              <Image
+                src="/icons/whatsapp-outline.svg"
+                alt="Whatsapp"
+                width={20}
+                height={20}
+                style={{ display: "inline-block" }}
+              />
+            }
             size="large"
             block
           >

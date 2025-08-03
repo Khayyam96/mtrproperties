@@ -7,7 +7,6 @@ import CustomPagination from "../../components/Lib/ProPagination/CustomPaginatio
 import { Container } from "../../components/Lib/ProContainer/Container"; 
 import "./index.scss";
 
-const { Title, Text } = Typography;
 
 type Project = {
   id: number;

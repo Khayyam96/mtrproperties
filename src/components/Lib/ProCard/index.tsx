@@ -20,7 +20,7 @@ import "./index.scss";
 
 const { Title } = Typography;
 
-type TProps = {
+export type TProCard = {
   images: string[];
   name: string;
   price: string | number;
@@ -34,7 +34,9 @@ type TProps = {
   onClick?: () => void;
 };
 
-export const ProCard: React.FC<TProps> = ({
+
+
+export const ProCard: React.FC<TProCard> = ({
   images,
   name,
   price,

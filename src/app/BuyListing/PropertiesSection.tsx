@@ -2,11 +2,10 @@
 
 import { useState } from "react";
 import { Row, Col, Pagination } from "antd";
-import { ProCard } from "@/components/Lib/ProCard";
+import { ProCard, TProCard } from "@/components/Lib/ProCard";
 import "./index.scss"
 
-const mockData = Array.from({ length: 36 }).map((_, idx) => ({
-  id: idx + 1,
+const mockData: TProCard[] = Array.from({ length: 36 }).map((_, idx) => ({
   images: [
     "/cardimg.png",
     "/cardimg2.png",
@@ -35,10 +34,9 @@ export const PropertiesSection = () => {
 
   return (
     <div className="properties-section">
-      
       <Row gutter={[24, 24]}>
-        {paginatedData.map((item:any) => (
-          <Col xs={24} sm={12} md={8} key={item.id}>
+        {paginatedData.map((item, idx) => (
+          <Col xs={24} sm={12} md={8} key={idx}>
             <ProCard {...item} />
           </Col>
         ))}

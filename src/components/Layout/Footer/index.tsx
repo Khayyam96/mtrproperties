@@ -8,8 +8,9 @@ import {
   PhoneOutlined,
   MailOutlined,
 } from "@ant-design/icons";
-import "./index.scss";
 import Link from "next/link";
+import Image from "next/image";
+import "./index.scss";
 
 const { Title, Text } = Typography;
 
@@ -19,7 +20,14 @@ export const MainFooter = () => {
       <div className="footer-container">
         <Row gutter={[32, 32]} className="footer-top">
           <Col xs={24} md={6}>
-            <img src="/logo.png" alt="MTR Logo" className="footer-logo" />
+            <Image
+              src="/logo.png"
+              alt="MTR Logo"
+              className="footer-logo"
+              width={160}
+              height={48}
+              priority
+            />
             <div className="footer-address">
               <Title level={5}>Address</Title>
               <Text>Fifty One Tower - 1404 office - Business Bay - Dubai</Text>
@@ -36,7 +44,13 @@ export const MainFooter = () => {
                 <Text>contact@mtr.ae</Text>
               </div>
               <div className="contact-item">
-                <img src="/whatsapp.png" alt="WhatsApp" width={16} />
+                <Image
+                  src="/whatsapp.png"
+                  alt="WhatsApp"
+                  width={16}
+                  height={16}
+                  style={{ display: "inline-block" }}
+                />
                 <Text>+971 56 933 2607</Text>
               </div>
             </div>
@@ -114,3 +128,5 @@ export const MainFooter = () => {
     </div>
   );
 };
+
+export default MainFooter;

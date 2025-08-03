@@ -2,7 +2,6 @@
 
 import { FC } from "react";
 import { Row, Col, Button } from "antd";
-import { Container } from "@/components/Lib/ProContainer/Container";
 import "./index.scss";
 
 type Project = {

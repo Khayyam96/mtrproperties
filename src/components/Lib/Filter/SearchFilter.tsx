@@ -1,6 +1,6 @@
 "use client";
 
-import { Select, Input, Button, Row, Col, Typography } from "antd";
+import { Select, Input, Button, Row, Col } from "antd";
 import { useState } from "react";
 import "./index.scss";
 

@@ -7,16 +7,21 @@ import "react-phone-input-2/lib/style.css";
 import { useState } from "react";
 import { Container } from "../../components/Lib/ProContainer/Container";
 
-
 const { Title } = Typography;
 
-export const OffPlanContact = () => {
-  const [form] = Form.useForm();
-  const [phone, setPhone] = useState("");
+interface ContactFormValues {
+  name: string;
+  email: string;
+}
 
-  const onFinish = (values: any) => {
+export const OffPlanContact = () => {
+  const [form] = Form.useForm<ContactFormValues>();
+  const [phone, setPhone] = useState<string>("");
+
+  const onFinish = (values: ContactFormValues) => {
     const payload = { ...values, phone };
     console.log("Submitted:", payload);
+    // Burada API çağırışı və s. edə bilərsən
   };
 
   return (
@@ -33,12 +38,27 @@ export const OffPlanContact = () => {
 
           <Col xs={24} md={10}>
             <div className="form-wrapper">
-              <Form layout="vertical" form={form} onFinish={onFinish}>
-                <Form.Item label="Name" name="name" rules={[{ required: true }]}>
+              <Form<ContactFormValues>
+                layout="vertical"
+                form={form}
+                onFinish={onFinish}
+              >
+                <Form.Item
+                  label="Name"
+                  name="name"
+                  rules={[{ required: true, message: "Please enter your name" }]}
+                >
                   <Input placeholder="eg: John Doe" />
                 </Form.Item>
 
-                <Form.Item label="Email" name="email" rules={[{ required: true, type: "email" }]}>
+                <Form.Item
+                  label="Email"
+                  name="email"
+                  rules={[
+                    { required: true, message: "Please enter your email" },
+                    { type: "email", message: "Please enter a valid email" },
+                  ]}
+                >
                   <Input placeholder="eg: john@email.com" />
                 </Form.Item>
 
@@ -46,7 +66,7 @@ export const OffPlanContact = () => {
                   <PhoneInput
                     country={"ae"}
                     value={phone}
-                    onChange={(value) => setPhone(value)}
+                    onChange={setPhone}
                     inputStyle={{
                       width: "100%",
                       height: "40px",
@@ -55,7 +75,12 @@ export const OffPlanContact = () => {
                   />
                 </Form.Item>
 
-                <Button type="primary" htmlType="submit" block icon={<ArrowRightOutlined />}>
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                  block
+                  icon={<ArrowRightOutlined />}
+                >
                   Submit
                 </Button>
               </Form>

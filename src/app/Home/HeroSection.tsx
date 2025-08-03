@@ -69,15 +69,15 @@ export const HeroSection: React.FC = () => {
                 placeholder="Choose Area or City"
                 className="w-full"
                 prefix={
-                  <img
+                  <Image
                     src="/location-marker.png"
                     alt="location icon"
-                    style={{ width: 24, height: 24 }}
+                    width={24}
+                    height={24}
                   />
                 }
               />
             </Col>
-
           </Row>
 
           <Row gutter={[16, 16]} className="hero__form">

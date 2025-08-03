@@ -2,6 +2,8 @@
 
 import { Typography } from "antd";
 import Slider from "react-slick";
+import type { Settings } from "react-slick";
+import type SliderType from "react-slick";
 import Image from "next/image";
 import { useRef } from "react";
 import "slick-carousel/slick/slick.css";
@@ -20,9 +22,9 @@ const partners = [
 ];
 
 export const PartnersCarousel = () => {
-  const sliderRef = useRef<any>(null);
+  const sliderRef = useRef<SliderType | null>(null);
 
-  const settings = {
+  const settings: Settings = {
     dots: false,
     infinite: true,
     speed: 500,
@@ -69,3 +71,5 @@ export const PartnersCarousel = () => {
     </div>
   );
 };
+
+export default PartnersCarousel;

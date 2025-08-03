@@ -1,9 +1,25 @@
 "use client"
 
-import type React from "react"
 import { useState, useEffect } from "react"
-import { Card, Select, InputNumber, Slider, Button, Form, Input, Space, Typography, Row, Col, Divider } from "antd"
-import { DownloadOutlined, WhatsAppOutlined, MailOutlined } from "@ant-design/icons"
+import {
+  Card,
+  Select,
+  InputNumber,
+  Slider,
+  Button,
+  Form,
+  Input,
+  Space,
+  Typography,
+  Row,
+  Col,
+  Divider,
+} from "antd"
+import {
+  DownloadOutlined,
+  WhatsAppOutlined,
+  MailOutlined,
+} from "@ant-design/icons"
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts"
 import "./index.scss"
 
@@ -25,6 +41,12 @@ interface ContactForm {
   phone: string
 }
 
+const interestRates = [
+  { label: "3.95%", value: 3.95, period: "3 years Fixed" },
+  { label: "3.99%", value: 3.99, period: "5 years Fixed" },
+  { label: "4.75%", value: 4.75, period: "Variable" },
+]
+
 const MortgageCalculator: React.FC = () => {
   const [mortgageData, setMortgageData] = useState<MortgageData>({
     propertyPrice: 1200000,
@@ -35,7 +57,7 @@ const MortgageCalculator: React.FC = () => {
     residencyStatus: "resident",
   })
 
-  const [contactForm] = Form.useForm()
+  const [contactForm] = Form.useForm<ContactForm>()
   const [calculations, setCalculations] = useState({
     mortgageAmount: 0,
     downPayment: 0,
@@ -45,14 +67,24 @@ const MortgageCalculator: React.FC = () => {
     eligibleSalary: 0,
   })
 
-  const interestRates = [
-    { label: "3.95%", value: 3.95, period: "3 years Fixed" },
-    { label: "3.99%", value: 3.99, period: "5 years Fixed" },
-    { label: "4.75%", value: 4.75, period: "Variable" },
-  ]
+  // typesafe input change
+  const handleInputChange = <K extends keyof MortgageData>(
+    field: K,
+    value: MortgageData[K]
+  ) => {
+    setMortgageData((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const adjustInterestRate = (increment: boolean) => {
+    const newRate = increment
+      ? Math.min(mortgageData.interestRate + 0.25, 15)
+      : Math.max(mortgageData.interestRate - 0.25, 1)
+    handleInputChange("interestRate", newRate)
+  }
 
   const calculateMortgage = () => {
-    const { propertyPrice, interestRate, downPaymentPercentage, loanDuration } = mortgageData
+    const { propertyPrice, interestRate, downPaymentPercentage, loanDuration } =
+      mortgageData
 
     const downPayment = (propertyPrice * downPaymentPercentage) / 100
     const mortgageAmount = propertyPrice - downPayment
@@ -79,29 +111,27 @@ const MortgageCalculator: React.FC = () => {
 
   useEffect(() => {
     calculateMortgage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mortgageData])
-
-  const handleInputChange = (field: keyof MortgageData, value: any) => {
-    setMortgageData((prev) => ({ ...prev, [field]: value }))
-  }
-
-  const adjustInterestRate = (increment: boolean) => {
-    const newRate = increment
-      ? Math.min(mortgageData.interestRate + 0.25, 15)
-      : Math.max(mortgageData.interestRate - 0.25, 1)
-    handleInputChange("interestRate", newRate)
-  }
 
   const pieData = [
     { name: "Mortgage Amount", value: calculations.mortgageAmount, color: "#52c41a" },
     { name: "Interest Amount", value: calculations.interestAmount, color: "#1890ff" },
   ]
 
+  // Currency formatting, can be extended for other currencies
+  const getCurrencySymbol = (currency: string) => {
+    if (currency === "AED") return "AED "
+    if (currency === "USD") return "$"
+    if (currency === "EUR") return "€"
+    return ""
+  }
   const formatCurrency = (amount: number) => {
-    return `৳ ${Math.round(amount).toLocaleString()}`
+    return `${getCurrencySymbol(mortgageData.currency)}${Math.round(amount).toLocaleString()}`
   }
 
   const handleContactSubmit = (values: ContactForm) => {
+    // TODO: API integration here
     console.log("Contact form submitted:", values)
   }
 
@@ -130,7 +160,6 @@ const MortgageCalculator: React.FC = () => {
         </div>
       </div>
 
-
       <Row gutter={[32, 32]} className="main-content">
         <Col xs={24} lg={16}>
           <div className="residency-section">
@@ -156,138 +185,145 @@ const MortgageCalculator: React.FC = () => {
               </Button>
             </div>
           </div>
-            <Row gutter={[32, 32]} className="middle-section">
-              <Col xs={24} md={12}>
-                <div className="chart-section">
-                  <div className="chart-container">
-                    <ResponsiveContainer width="100%" height={250}>
-                      <PieChart>
-                        <Pie
-                          data={pieData}
-                          cx="50%"
-                          cy="50%"
-                          innerRadius={60}
-                          outerRadius={100}
-                          paddingAngle={2}
-                          dataKey="value"
-                        >
-                          {pieData.map((entry, index) => (
-                            <Cell key={`cell-${index}`} fill={entry.color} />
-                          ))}
-                        </Pie>
-                      </PieChart>
-                    </ResponsiveContainer>
-
-                    <div className="chart-labels">
-                      <div className="chart-label down-payment">
-                        <div className="label-box">Down Payment</div>
-                        <div className="label-value">৳ {calculations.downPayment.toLocaleString()}</div>
-                      </div>
-                      <div className="chart-label mortgage-amount">
-                        <div className="label-box">Mortgage Amount</div>
-                        <div className="label-value">৳ {calculations.mortgageAmount.toLocaleString()}</div>
-                      </div>
-                      <div className="chart-label interest-amount">
-                        <div className="label-box">Interest Amount</div>
-                        <div className="label-value">৳ {calculations.interestAmount.toLocaleString()}</div>
+          <Row gutter={[32, 32]} className="middle-section">
+            <Col xs={24} md={12}>
+              <div className="chart-section">
+                <div className="chart-container">
+                  <ResponsiveContainer width="100%" height={250}>
+                    <PieChart>
+                      <Pie
+                        data={pieData}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={60}
+                        outerRadius={100}
+                        paddingAngle={2}
+                        dataKey="value"
+                      >
+                        {pieData.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                    </PieChart>
+                  </ResponsiveContainer>
+                  <div className="chart-labels">
+                    <div className="chart-label down-payment">
+                      <div className="label-box">Down Payment</div>
+                      <div className="label-value">
+                        {formatCurrency(calculations.downPayment)}
                       </div>
                     </div>
-                  </div>
-
-                  <div className="total-repayment">
-                    <div className="total-amount">{formatCurrency(calculations.totalRepayment)}</div>
-                    <div className="total-label">Total Repayment</div>
-                  </div>
-                </div>
-              </Col>
-
-              <Col xs={24} md={12}>
-                <div className="inputs-section">
-                  <Row gutter={[16, 16]} className="input-row">
-                    <Col xs={24} sm={12}>
-                      <div className="input-group">
-                        <Text className="input-label">Property price</Text>
-                        <div className="property-input">
-                          <InputNumber
-                            value={mortgageData.propertyPrice}
-                            onChange={(value) => handleInputChange("propertyPrice", value || 0)}
-                            formatter={(value) => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                            parser={(value) => Number(value!.replace(/\$\s?|(,*)/g, ""))}
-                            controls={false}
-                            className="price-input"
-                          />
-                          <span className="currency-suffix">{mortgageData.currency}</span>
-                        </div>
-                        <Text className="input-description">Price of the property</Text>
+                    <div className="chart-label mortgage-amount">
+                      <div className="label-box">Mortgage Amount</div>
+                      <div className="label-value">
+                        {formatCurrency(calculations.mortgageAmount)}
                       </div>
-                    </Col>
-
-                    <Col xs={24} sm={12}>
-                      <div className="input-group">
-                        <Text className="input-label">Interest rate</Text>
-                        <div className="rate-input-container">
-                          <Button className="rate-btn minus" onClick={() => adjustInterestRate(false)}>
-                            −
-                          </Button>
-                          <div className="rate-display">
-                            <span className="rate-number">{mortgageData.interestRate}</span>
-                            <span className="rate-percent">%</span>
-                          </div>
-                          <Button className="rate-btn plus" onClick={() => adjustInterestRate(true)}>
-                            +
-                          </Button>
-                        </div>
-                        <Text className="input-description">Interest rates will varies according to the banks</Text>
-                      </div>
-                    </Col>
-
-                  </Row>
-
-                  <div className="sliders-container">
-                    <div className="slider-group">
-                      <div className="slider-header">
-                        <Text className="slider-label">Down payment ({mortgageData.downPaymentPercentage}%)</Text>
-                        <Text className="slider-value">
-                          {mortgageData.currency} {calculations.downPayment.toLocaleString()}
-                        </Text>
-                      </div>
-                      <Slider
-                        value={mortgageData.downPaymentPercentage}
-                        onChange={(value) => handleInputChange("downPaymentPercentage", value)}
-                        min={20}
-                        max={50}
-                        step={5}
-                        className="custom-slider"
-                      />
-                      <Text className="slider-description">
-                        A percentage of the home price paid up front and in cash. Usually at least 20%
-                      </Text>
                     </div>
-
-                    <div className="slider-group">
-                      <div className="slider-header">
-                        <Text className="slider-label">Loan duration</Text>
-                        <Text className="slider-value">{mortgageData.loanDuration} Years</Text>
+                    <div className="chart-label interest-amount">
+                      <div className="label-box">Interest Amount</div>
+                      <div className="label-value">
+                        {formatCurrency(calculations.interestAmount)}
                       </div>
-                      <Slider
-                        value={mortgageData.loanDuration}
-                        onChange={(value) => handleInputChange("loanDuration", value)}
-                        min={5}
-                        max={25}
-                        step={1}
-                        className="custom-slider"
-                      />
-                      <Text className="slider-description">
-                        The number of years you wish to take the loan over, maximum 25 years or to a maximum age of 65
-                        for employees, and 70 for self-employed individuals.
-                      </Text>
                     </div>
                   </div>
                 </div>
-              </Col>
-            </Row>
+                <div className="total-repayment">
+                  <div className="total-amount">{formatCurrency(calculations.totalRepayment)}</div>
+                  <div className="total-label">Total Repayment</div>
+                </div>
+              </div>
+            </Col>
+            <Col xs={24} md={12}>
+              <div className="inputs-section">
+                <Row gutter={[16, 16]} className="input-row">
+                  <Col xs={24} sm={12}>
+                    <div className="input-group">
+                      <Text className="input-label">Property price</Text>
+                      <div className="property-input">
+                        <InputNumber
+                          value={mortgageData.propertyPrice}
+                          onChange={(value) => handleInputChange("propertyPrice", value ?? 0)}
+                          formatter={(value) =>
+                            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+                          }
+                          parser={(value) => Number(value!.replace(/\$\s?|(,*)/g, ""))}
+                          controls={false}
+                          className="price-input"
+                        />
+                        <span className="currency-suffix">{mortgageData.currency}</span>
+                      </div>
+                      <Text className="input-description">Price of the property</Text>
+                    </div>
+                  </Col>
+                  <Col xs={24} sm={12}>
+                    <div className="input-group">
+                      <Text className="input-label">Interest rate</Text>
+                      <div className="rate-input-container">
+                        <Button className="rate-btn minus" onClick={() => adjustInterestRate(false)}>
+                          −
+                        </Button>
+                        <div className="rate-display">
+                          <span className="rate-number">{mortgageData.interestRate}</span>
+                          <span className="rate-percent">%</span>
+                        </div>
+                        <Button className="rate-btn plus" onClick={() => adjustInterestRate(true)}>
+                          +
+                        </Button>
+                      </div>
+                      <Text className="input-description">
+                        Interest rates will varies according to the banks
+                      </Text>
+                    </div>
+                  </Col>
+                </Row>
+                <div className="sliders-container">
+                  <div className="slider-group">
+                    <div className="slider-header">
+                      <Text className="slider-label">
+                        Down payment ({mortgageData.downPaymentPercentage}%)
+                      </Text>
+                      <Text className="slider-value">
+                        {mortgageData.currency} {calculations.downPayment.toLocaleString()}
+                      </Text>
+                    </div>
+                    <Slider
+                      value={mortgageData.downPaymentPercentage}
+                      onChange={(value) =>
+                        handleInputChange("downPaymentPercentage", value)
+                      }
+                      min={20}
+                      max={50}
+                      step={5}
+                      className="custom-slider"
+                    />
+                    <Text className="slider-description">
+                      A percentage of the home price paid up front and in cash. Usually at least 20%
+                    </Text>
+                  </div>
+                  <div className="slider-group">
+                    <div className="slider-header">
+                      <Text className="slider-label">Loan duration</Text>
+                      <Text className="slider-value">{mortgageData.loanDuration} Years</Text>
+                    </div>
+                    <Slider
+                      value={mortgageData.loanDuration}
+                      onChange={(value) =>
+                        handleInputChange("loanDuration", value)
+                      }
+                      min={5}
+                      max={25}
+                      step={1}
+                      className="custom-slider"
+                    />
+                    <Text className="slider-description">
+                      The number of years you wish to take the loan over, maximum 25 years or to a maximum age of 65 for employees, and 70 for self-employed individuals.
+                    </Text>
+                  </div>
+                </div>
+              </div>
+            </Col>
+          </Row>
         </Col>
-
         <Col xs={24} lg={8}>
           <div className="interest-rates-section">
             <Text className="section-title">Indicative Interest Rates</Text>
@@ -311,12 +347,10 @@ const MortgageCalculator: React.FC = () => {
               </Text>
               <div className="payment-amount">{formatCurrency(calculations.monthlyPayment)}</div>
             </div>
-
             <Form form={contactForm} onFinish={handleContactSubmit} layout="vertical" className="contact-form">
               <Form.Item name="name" label="Name" rules={[{ required: true, message: "Please enter your name" }]}>
                 <Input placeholder="eg: John Doe" className="form-input" />
               </Form.Item>
-
               <Form.Item
                 name="email"
                 label="Email"
@@ -327,7 +361,6 @@ const MortgageCalculator: React.FC = () => {
               >
                 <Input placeholder="eg: john@email.com" className="form-input" />
               </Form.Item>
-
               <Form.Item
                 name="phone"
                 label="Phone Number"
@@ -345,7 +378,6 @@ const MortgageCalculator: React.FC = () => {
                   className="form-input"
                 />
               </Form.Item>
-
               <Button type="primary" htmlType="submit" block className="consultation-btn">
                 Book a Consultation
               </Button>
@@ -353,7 +385,6 @@ const MortgageCalculator: React.FC = () => {
           </Card>
         </Col>
       </Row>
-
       {/* Summary Section */}
       <Card className="summary-card">
         <Row gutter={[24, 24]} className="summary-row">
@@ -388,14 +419,10 @@ const MortgageCalculator: React.FC = () => {
             </div>
           </Col>
         </Row>
-
         <Text className="disclaimer">
-          * this calculator will be providing you only approximate calculation every rates will be depends on the eibor
-          rates
+          * this calculator will be providing you only approximate calculation every rates will be depends on the eibor rates
         </Text>
-
         <Divider className="action-divider" />
-
         <div className="action-section">
           <Text className="action-title">Download / Share</Text>
           <Space className="action-buttons">

@@ -1,7 +1,7 @@
 "use client";
 
 import { Collapse } from "antd";
-import type { CollapseProps } from "antd";
+
 
 const { Panel } = Collapse;
 

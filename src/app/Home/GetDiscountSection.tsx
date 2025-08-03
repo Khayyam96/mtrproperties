@@ -1,7 +1,6 @@
 "use client";
 
 import { Button, Row, Col, Typography, Space } from "antd";
-import { Container } from "@/components/Lib/ProContainer/Container";
 import { WhatsAppOutlined } from "@ant-design/icons";
 import "./index.scss";
 

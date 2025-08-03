@@ -1,10 +1,10 @@
 "use client";
 
 import { Row, Col, Button } from "antd";
+import Image from "next/image";
 import { LandPropertyCard } from "../../components/Lib/LandPropertyCard/LandPropertyCard";
 
-
-const landList = Array.from({ length: 8 }).map((_, i) => ({
+const landList = Array.from({ length: 8 }).map(() => ({
   images: [
     "/cardimggg.png",
     "/cardimggg.png",
@@ -23,7 +23,7 @@ export const PremiumLandSection = () => (
   <div className="premium-land-section">
     <h2 className="section-title">Premium Land Properties in UAE</h2>
     <p className="section-desc">
-      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s
+      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard dummy text ever since the 1500s.
     </p>
     <div className="land-card-grid">
       <Row gutter={[24, 32]}>
@@ -35,11 +35,22 @@ export const PremiumLandSection = () => (
       </Row>
     </div>
     <div className="land-section-footer">
-      <Button size="large" className="view-more-btn" icon={
-        <img src="/icons/land-list.svg" alt="" />
-      }>
+      <Button
+        size="large"
+        className="view-more-btn"
+        icon={
+          <Image
+            src="/icons/land-list.svg"
+            alt="Land List"
+            width={20}
+            height={20}
+          />
+        }
+      >
         View More Land
       </Button>
     </div>
   </div>
 );
+
+export default PremiumLandSection;
