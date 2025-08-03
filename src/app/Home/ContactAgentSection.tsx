@@ -1,16 +1,22 @@
 "use client";
 
 import { Row, Col, Form, Input, Button, Typography } from "antd";
-import Image from "next/image";
 import React from "react";
 import "./index.scss";
 
 const { Title, Text } = Typography;
 
-const ContactAgentSection: React.FC = () => {
-  const [form] = Form.useForm();
+// Dəyərlərin tipi müəyyən edilir
+type ContactFormValues = {
+  name: string;
+  email: string;
+  phone: string;
+};
 
-  const onFinish = (values: any) => {
+const ContactAgentSection: React.FC = () => {
+  const [form] = Form.useForm<ContactFormValues>();
+
+  const onFinish = (values: ContactFormValues) => {
     console.log("Submitted: ", values);
   };
 
@@ -31,7 +37,7 @@ const ContactAgentSection: React.FC = () => {
         <Col xs={24} md={12} className="contact-agent-section__right">
           <div className="contact-agent-section__form-wrapper">
             <Title level={4}>Get a call back from us</Title>
-            <Form form={form} layout="vertical" onFinish={onFinish}>
+            <Form<ContactFormValues> form={form} layout="vertical" onFinish={onFinish}>
               <Form.Item
                 label="Name"
                 name="name"

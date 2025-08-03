@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { ConfigProvider, Layout } from "antd";
-import { Content, Footer, Header } from "antd/es/layout/layout";
+import { Content, Header } from "antd/es/layout/layout"; // Footer silindi!
 import MainHeader from "@/components/Layout/Header";
 import { MainFooter } from "@/components/Layout/Footer";
 import { Lato } from "next/font/google";
@@ -63,9 +63,7 @@ export default function RootLayout({
               <MainHeader />
             </Header>
             <Content>{children}</Content>
-
             <MainFooter />
-
           </Layout>
         </ConfigProvider>
       </body>

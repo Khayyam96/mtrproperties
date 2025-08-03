@@ -7,7 +7,15 @@ import PopularProperties from "./PopularProperties";
 import PropertiesSection from "./PropertiesSection";
 
 export default function BuyListing() {
-  const handleSearch = (values: any) => {
+  interface SearchFilterValues {
+    location?: string;
+    priceMin?: number;
+    priceMax?: number;
+    bedrooms?: number;
+    [key: string]: unknown;
+  }
+
+  const handleSearch = (values: SearchFilterValues) => {
     console.log("Searching with filters:", values);
   };
 

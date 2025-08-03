@@ -5,7 +5,6 @@ import { useState } from "react";
 import "./index.scss";
 
 const { Option } = Select;
-const { Text } = Typography;
 
 type FilterValues = {
   purpose: string;

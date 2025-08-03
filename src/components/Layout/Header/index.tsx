@@ -3,11 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { CloseOutlined } from "@ant-design/icons";
 import {
   DownOutlined,
   MenuOutlined,
-  PhoneOutlined,
-  MailOutlined,
   WhatsAppOutlined,
 } from "@ant-design/icons";
 import { Button, Dropdown, Drawer, Space } from "antd";
@@ -71,7 +70,7 @@ const navItems = [
     key: "explore",
     label: (
       <Space>
-        Explore More 
+        Explore More
         <Image src="/blackup.png" alt="Areas" width={16} height={16} />
       </Space>
     ),
@@ -207,6 +206,7 @@ export default function MainHeader() {
         onClose={() => setOpen(false)}
         width={260}
         styles={{ body: { padding: 0 } }}
+        closeIcon={<CloseOutlined />}
       >
         <div className="drawer-content">
           {renderNav(navItems)}

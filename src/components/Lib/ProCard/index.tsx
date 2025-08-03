@@ -1,4 +1,3 @@
-// ProCard.tsx
 "use client";
 
 import Image from "next/image";
@@ -13,7 +12,6 @@ import {
   PhoneOutlined,
   WhatsAppOutlined,
 } from "@ant-design/icons";
-import { useRouter } from "next/navigation";
 import Slider from "react-slick";
 import { useRef } from "react";
 import "slick-carousel/slick/slick.css";
@@ -23,7 +21,6 @@ import "./index.scss";
 const { Title } = Typography;
 
 type TProps = {
-  id: number;
   images: string[];
   name: string;
   price: string | number;
@@ -34,12 +31,10 @@ type TProps = {
   location: string;
   isReadyToMove?: boolean;
   isOffPlan?: boolean;
-  slug?: string;
   onClick?: () => void;
 };
 
 export const ProCard: React.FC<TProps> = ({
-  id,
   images,
   name,
   price,
@@ -48,12 +43,10 @@ export const ProCard: React.FC<TProps> = ({
   bathrooms,
   area,
   location,
-  slug,
   onClick,
   isReadyToMove,
   isOffPlan,
 }) => {
-  const router = useRouter();
   const sliderRef = useRef<Slider>(null);
 
   const handleCardClick = () => {
@@ -90,6 +83,8 @@ export const ProCard: React.FC<TProps> = ({
                 alt={`${name}-${idx}`}
                 fill
                 className="pro-card__img--image"
+                sizes="(max-width: 768px) 100vw, 400px"
+                priority={idx === 0}
               />
             </div>
           ))}
@@ -103,7 +98,6 @@ export const ProCard: React.FC<TProps> = ({
         <button className="carousel-btn left" onClick={goPrev}>
           <ArrowLeftOutlined />
         </button>
-
         <button className="carousel-btn right" onClick={goNext}>
           <ArrowRightOutlined />
         </button>
@@ -117,13 +111,21 @@ export const ProCard: React.FC<TProps> = ({
 
         <div className="pro-card__location">
           <EnvironmentOutlined />
-          <span>{name}, {location}</span>
+          <span>
+            {name}, {location}
+          </span>
         </div>
 
         <div className="pro-card__meta">
-          <span><HomeOutlined /> {bedrooms} Bedroom</span>
-          <span><BuildOutlined /> {bathrooms} Bathroom</span>
-          <span><ExpandAltOutlined /> {area} Sq.Ft.</span>
+          <span>
+            <HomeOutlined /> {bedrooms} Bedroom
+          </span>
+          <span>
+            <BuildOutlined /> {bathrooms} Bathroom
+          </span>
+          <span>
+            <ExpandAltOutlined /> {area} Sq.Ft.
+          </span>
         </div>
 
         <div className="pro-card__actions">

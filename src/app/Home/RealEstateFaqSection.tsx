@@ -37,11 +37,11 @@ export const RealEstateFaqSection = () => {
         <Title level={3}>Realestate agency in Dubai</Title>
         <Paragraph>
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-          industry's standard dummy text ever since the 1500s.
+          industry&apos;s standard dummy text ever since the 1500s.
         </Paragraph>
         <Paragraph>
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-          industry's standard dummy text ever since the 1500s.
+          industry&apos;s standard dummy text ever since the 1500s.
         </Paragraph>
         <a className="read-more" href="#">
           Read More <DownOutlined />
