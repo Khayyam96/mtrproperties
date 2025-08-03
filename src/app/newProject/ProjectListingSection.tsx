@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Row, Col, Typography } from "antd";
+import { Row, Col } from "antd";
 import { ProjectCard } from "../../components/Lib/ProjectCard/ProjectCard";
 import CustomPagination from "../../components/Lib/ProPagination/CustomPagination";
 import { Container } from "../../components/Lib/ProContainer/Container"; 

@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { Row, Col, Pagination } from "antd";
 import { ProCard, TProCard } from "@/components/Lib/ProCard";
-import "./index.scss"
+import "./index.scss";
 
-const mockData: TProCard[] = Array.from({ length: 36 }).map((_, idx) => ({
+const mockData: TProCard[] = Array.from({ length: 36 }).map(() => ({
   images: [
     "/cardimg.png",
     "/cardimg2.png",
@@ -36,7 +36,7 @@ export const PropertiesSection = () => {
     <div className="properties-section">
       <Row gutter={[24, 24]}>
         {paginatedData.map((item, idx) => (
-          <Col xs={24} sm={12} md={8} key={idx}>
+          <Col xs={24} sm={12} md={8} key={current + "-" + idx}>
             <ProCard {...item} />
           </Col>
         ))}
@@ -47,7 +47,7 @@ export const PropertiesSection = () => {
           current={current}
           pageSize={pageSize}
           total={mockData.length}
-          onChange={(page) => setCurrent(page)}
+          onChange={setCurrent}
           showSizeChanger={false}
           itemRender={(page, type, originalElement) => {
             if (type === "prev") {
