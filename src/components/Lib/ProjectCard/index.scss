@@ -1,0 +1,112 @@
+.project-card {
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+  gap: 20px;
+
+  .image-wrapper {
+    position: relative;
+
+    .main-img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .badges {
+      position: absolute;
+
+      top: 10px;
+      left: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+
+      .badge {
+        background-color: #FAF5FF;
+        display: inline-block;
+        color: #581C87;
+        padding: 4px 5px;
+        font-size: 12px;
+        border-radius: 4px;
+        font-weight: 800;
+        white-space: nowrap;
+        width: auto;
+      }
+    }
+
+    .countdown {
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: white;
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      line-height: 1.4;
+      text-align: right;
+
+      div {
+        font-weight: 600;
+      }
+    }
+  }
+
+  .info {
+    padding: 16px;
+    position: relative;
+
+    .tag {
+      display: inline-block;
+      background-color: #7E22CE;
+      color: white;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 4px 0;
+      color: #1E1E1E;
+    }
+
+    .location {
+      font-size: 14px;
+      color: #565454;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+
+      .anticon {
+        margin-right: 6px;
+        color: #565454;
+      }
+    }
+
+    .price {
+      font-weight: 700;
+      font-size: 14px;
+      color: #581C87;
+      margin-top: 8px;
+    }
+
+    .mag-logo {
+      position: absolute;
+      right: 16px;
+      bottom: 16px;
+    }
+  }
+
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+}

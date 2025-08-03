@@ -8,6 +8,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import "./index.scss";
+import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
 
 const { Title, Text } = Typography;
 
@@ -93,32 +94,7 @@ export default function ContactPage() {
             </div>
 
             <Container>
-                <div className="subscribe-section">
-                    <Title level={3} className="text-center">Subscribe to our Newsletter</Title>
-                    <Text className="text-center d-block mb-4">
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                    </Text>
-                    <Form layout="vertical">
-                        <Row justify="center" gutter={16}>
-                            <Col xs={24} md={6}>
-                                <Form.Item label="Name" name="name">
-                                    <Input placeholder="eg: John Doe" />
-                                </Form.Item>
-                            </Col>
-                            <Col xs={24} md={6}>
-                                <Form.Item label="Email" name="email">
-                                    <Input placeholder="eg: john@email.com" />
-                                </Form.Item>
-                            </Col>
-
-                            <Col xs={24} md={3}>
-                                <Form.Item label="."  name="email">
-                                    <Button>Subscribe</Button>
-                                </Form.Item>
-                            </Col>
-                        </Row>
-                    </Form>
-                </div>
+                <SubscribeSection />
             </Container>
         </div>
     );

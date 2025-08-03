@@ -2,7 +2,7 @@
 
 import { Col, Row, Typography } from "antd";
 import { Container } from "../../components/Lib/ProContainer/Container";
-import "./index.scss";
+
 
 const { Title, Text } = Typography;
 

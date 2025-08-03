@@ -6,6 +6,9 @@ import { ProCard } from "@/components/Lib/ProCard";
 import { FilterTabs } from "@/components/Lib/Tabs/FilterTabs";
 import { AppstoreOutlined } from "@ant-design/icons";
 import "./index.scss";
+import { Typography } from "antd";
+import { Container } from "@/components/Lib/ProContainer/Container";
+const { Title, Text } = Typography;
 
 const properties = [
   {
@@ -82,26 +85,32 @@ export const ProductSection: React.FC = () => {
 
   return (
     <section className="product__list">
-      <FilterTabs activeKey={activeKey} onChange={setActiveKey} tabs={tabItems} />
+      <Container>
+        <div className="header text-center">
+          <Title className="title" level={2}>New Off Plan Projects In Dubai</Title>
+          <Text className="text">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          </Text>
+        </div>
+        <Row gutter={[24, 32]}>
+          {filtered.map((p) => (
+            <Col key={p.id} xs={24} sm={12} md={12} lg={8} xl={6}>
+              <ProCard {...p} />
+            </Col>
+          ))}
+        </Row>
 
-      <Row gutter={[24, 32]}>
-        {filtered.map((p) => (
-          <Col key={p.id} xs={24} sm={12} md={12} lg={8} xl={6}>
-            <ProCard {...p} />
-          </Col>
-        ))}
-      </Row>
-
-      <div className="view-more-wrapper">
-        <Button
-          type="primary"
-          size="large"
-          icon={<AppstoreOutlined />}
-          onClick={() => alert("Load more…")}
-        >
-          View More
-        </Button>
-      </div>
+        <div className="view-more-wrapper">
+          <Button
+            type="primary"
+            size="large"
+            icon={<AppstoreOutlined />}
+            onClick={() => alert("Load more…")}
+          >
+            View More
+          </Button>
+        </div>
+      </Container>
     </section>
   );
 };

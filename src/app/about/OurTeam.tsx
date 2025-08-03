@@ -4,7 +4,7 @@ import { Col, Row, Typography } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import { Container } from "../../components/Lib/ProContainer/Container";
-import "./index.scss";
+
 
 const { Title, Text } = Typography;
 
@@ -13,6 +13,7 @@ const teamMembers = [
     name: "Person name",
     role: "Designation",
     image: "/t1.png",
+
   },
   {
     name: "Person name",

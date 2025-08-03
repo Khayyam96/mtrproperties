@@ -87,7 +87,9 @@ export const MainFooter = () => {
           <Col xs={12} md={4}>
             <Title level={5}>Company</Title>
             <ul>
-              <li>About Us</li>
+              <li>
+                <Link href="/about">About Us</Link>
+              </li>
               <li>
                 <Link href="/contact">Contact Us</Link>
               </li>

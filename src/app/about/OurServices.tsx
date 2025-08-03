@@ -3,7 +3,7 @@
 import { Col, Row, Typography, Card } from "antd";
 import Image from "next/image";
 import { Container } from "../../components/Lib/ProContainer/Container"; 
-import "./index.scss";
+
 
 const { Title, Text } = Typography;
 

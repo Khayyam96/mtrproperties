@@ -1,55 +1,66 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  MenuOutlined,
   DownOutlined,
+  MenuOutlined,
   PhoneOutlined,
-  CloseOutlined,
+  MailOutlined,
+  WhatsAppOutlined,
 } from "@ant-design/icons";
-import { Button, Drawer, Dropdown, type MenuProps, Space } from "antd";
+import { Button, Dropdown, Drawer, Space } from "antd";
+import type { MenuProps } from "antd";
 import "./index.scss";
 
-
-interface SimpleItem {
-  key: string;
-  label: ReactNode;
-  href: string;
-}
-
-interface NestedItem {
-  key: string;
-  label: ReactNode;
-  children: SimpleItem[];
-}
-
-type NavItem = SimpleItem | NestedItem;
-
-
-const navItems: NavItem[] = [
-  { key: "buy", label: "Buy", href: "/buy" },
-  { key: "rent", label: "Rent", href: "/rent" },
-  { key: "new", label: "New Projects", href: "/projects" },
+const navItems = [
+  {
+    key: "buy",
+    label: (
+      <Space>
+        Buy
+      </Space>
+    ),
+    href: "/buy",
+  },
+  {
+    key: "rent",
+    label: (
+      <Space>
+        Rent
+      </Space>
+    ),
+    href: "/rent",
+  },
+  {
+    key: "projects",
+    label: (
+      <Space>
+        New Projects
+      </Space>
+    ),
+    href: "/projects",
+  },
   {
     key: "areas",
     label: (
       <Space>
-        Areas <DownOutlined />
+        Areas
+        <Image src="/blackup.png" alt="Areas" width={16} height={16} />
       </Space>
     ),
     children: [
       { key: "dubai", label: "Dubai", href: "/areas/dubai" },
-      { key: "abu-dhabi", label: "Abu Dhabi", href: "/areas/abu-dhabi" },
+      { key: "abu", label: "Abu Dhabi", href: "/areas/abu-dhabi" },
     ],
   },
   {
     key: "services",
     label: (
       <Space>
-        Our Services <DownOutlined />
-      </Space>
+        Our Services
+        <Image src="/blackup.png" alt="Areas" width={16} height={16} />      </Space>
     ),
     children: [
       { key: "consulting", label: "Consulting", href: "/services/consulting" },
@@ -60,7 +71,8 @@ const navItems: NavItem[] = [
     key: "explore",
     label: (
       <Space>
-        Explore More <DownOutlined />
+        Explore More 
+        <Image src="/blackup.png" alt="Areas" width={16} height={16} />
       </Space>
     ),
     children: [
@@ -70,17 +82,22 @@ const navItems: NavItem[] = [
   },
 ];
 
+const currencyMenu: MenuProps["items"] = [
+  { key: "aed", label: "AED" },
+  { key: "usd", label: "USD" },
+  { key: "eur", label: "EUR" },
+];
+
 const languageMenu: MenuProps["items"] = [
   { key: "en", label: "EN" },
   { key: "ar", label: "AR" },
   { key: "ru", label: "RU" },
 ];
 
-
-const renderNav = (items: NavItem[]): ReactNode => (
+const renderNav = (items: typeof navItems) => (
   <ul className="main-nav">
     {items.map((item) =>
-      "children" in item ? (
+      item.children ? (
         <li key={item.key}>
           <Dropdown
             menu={{
@@ -97,49 +114,85 @@ const renderNav = (items: NavItem[]): ReactNode => (
         <li key={item.key}>
           <Link href={item.href}>{item.label}</Link>
         </li>
-      ),
+      )
     )}
   </ul>
 );
-
 
 export default function MainHeader() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="main-header">
-      <div className="container">
+    <div className="main-header">
+      <div className="topbar">
+        <div className="left">
+          <span>
+            <Image src="/phoneicon.png" alt="Phone" width={16} height={16} />
+            04 331 7007
+          </span>
+          <span>
+            <Image src="/mailicon.png" alt="Email" width={16} height={16} />
+            contact@mtr.ae
+          </span>
+          <span>
+            <Image src="/whsappicon.png" alt="WhatsApp" width={16} height={16} />
+            +971 56 933 2607
+          </span>
+        </div>
+
+        <div className="right">
+          <Dropdown menu={{ items: currencyMenu }}>
+            <a className="dropdown-link">
+              AED <Image
+                src="/arrowup.png"
+                className="lang-icon"
+                alt="English"
+                width={20}
+                height={14}
+              />
+            </a>
+          </Dropdown>
+
+          <Dropdown menu={{ items: languageMenu }}>
+            <a className="dropdown-link">
+              <Image
+                className="flag-icon"
+                src="/uk.png"
+                alt="English"
+                width={20}
+                height={14}
+              />
+              EN
+              <Image
+                className="lang-icon"
+                src="/arrowup.png"
+                alt="Arrow"
+                width={10}
+                height={10}
+              />
+            </a>
+          </Dropdown>
+
+
+        </div>
+      </div>
+
+      <div className="container nav-container">
         <Link href="/" className="logo">
           <div className="logo-img-wrapper">
-            <Image
-              src="/logo.png"
-              alt="MTR Properties"
-              fill
-              priority
-            />
+            <Image src="/logo.png" alt="MTR Properties" fill priority />
           </div>
         </Link>
 
-        <div className="menu-right">
+        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           <nav className="desktop-nav">{renderNav(navItems)}</nav>
+
           <div className="actions">
-            <Button
-              type="primary"
-              className="contact-btn"
-              icon={<PhoneOutlined />}
-            >
-              Contact Us
+            <Button type="primary" className="whatsapp-btn" icon={<WhatsAppOutlined />}>
+              Whatsapp
             </Button>
-
-            <Dropdown menu={{ items: languageMenu }}>
-              <a className="lang-switch">
-                EN <DownOutlined />
-              </a>
-            </Dropdown>
-
             <Button
               type="text"
-              aria-label="Open menu"
               className="burger"
               icon={<MenuOutlined />}
               onClick={() => setOpen(true)}
@@ -153,23 +206,18 @@ export default function MainHeader() {
         open={open}
         onClose={() => setOpen(false)}
         width={260}
-        styles={{
-          body: {
-            padding: 0,
-          },
-        }}
+        styles={{ body: { padding: 0 } }}
       >
         <div className="drawer-content">
           {renderNav(navItems)}
           <Button
             type="primary"
-            icon={<PhoneOutlined />}
+            icon={<WhatsAppOutlined />}
             block
             className="contact-btn--mobile"
           >
-            Contact Us
+            Whatsapp
           </Button>
-
           <Dropdown menu={{ items: languageMenu }}>
             <a className="lang-switch">
               EN <DownOutlined />
@@ -177,6 +225,6 @@ export default function MainHeader() {
           </Dropdown>
         </div>
       </Drawer>
-    </header>
+    </div>
   );
 }

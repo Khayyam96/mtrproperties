@@ -54,7 +54,7 @@ export default function RootLayout({
               style={{
                 position: "sticky",
                 top: 0,
-                zIndex: 1,
+                zIndex: 999,
                 padding: 0,
                 height: "auto",
                 lineHeight: "normal",

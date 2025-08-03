@@ -6,6 +6,9 @@ import AboutBanner from "./AboutBanner";
 import { OurServices } from "./OurServices";
 import { OurVision } from "./OurVision";
 import { OurTeam } from "./OurTeam";
+import { PartnersCarousel } from "./PartnersCarousel";
+import { TestimonialsCarousel } from "./TestimonialsCarousel";
+import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
 
 
 export default function AboutPage() {
@@ -15,6 +18,9 @@ export default function AboutPage() {
             <OurServices />
             <OurVision />
             <OurTeam/>
+            <PartnersCarousel />
+            <TestimonialsCarousel />
+            <SubscribeSection />
         </div>
     );
 }
