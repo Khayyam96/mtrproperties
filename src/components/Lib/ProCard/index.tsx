@@ -34,8 +34,6 @@ export type TProCard = {
   onClick?: () => void;
 };
 
-
-
 export const ProCard: React.FC<TProCard> = ({
   images,
   name,
@@ -63,6 +61,20 @@ export const ProCard: React.FC<TProCard> = ({
   const goNext = (e: React.MouseEvent) => {
     e.stopPropagation();
     sliderRef.current?.slickNext();
+  };
+
+  const handleCallClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (typeof window !== "undefined") {
+      window.location.href = "tel:+971XXXXXXXXX";
+    }
+  };
+
+  const handleWhatsappClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (typeof window !== "undefined") {
+      window.open("https://wa.me/971XXXXXXXXX", "_blank");
+    }
   };
 
   const settings = {
@@ -131,22 +143,10 @@ export const ProCard: React.FC<TProCard> = ({
         </div>
 
         <div className="pro-card__actions">
-          <button
-            className="call"
-            onClick={(e) => {
-              e.stopPropagation();
-              window.location.href = "tel:+971XXXXXXXXX";
-            }}
-          >
+          <button className="call" onClick={handleCallClick}>
             <PhoneOutlined /> Call Us
           </button>
-          <button
-            className="whatsapp"
-            onClick={(e) => {
-              e.stopPropagation();
-              window.open("https://wa.me/971XXXXXXXXX", "_blank");
-            }}
-          >
+          <button className="whatsapp" onClick={handleWhatsappClick}>
             <WhatsAppOutlined /> Whatsapp
           </button>
         </div>
