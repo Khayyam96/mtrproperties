@@ -2,7 +2,6 @@
 
 import { Collapse } from "antd";
 
-
 const { Panel } = Collapse;
 
 type FaqItem = {
