@@ -8,7 +8,6 @@ import {
   PhoneOutlined,
   MailOutlined,
 } from "@ant-design/icons";
-import Link from "next/link";
 import Image from "next/image";
 import "./index.scss";
 
