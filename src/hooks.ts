@@ -1,41 +1,39 @@
 import { useEffect, useState } from "react";
-import { TScreenSize } from "./models";
 
+export type TScreenSize = "xs" | "sm" | "md" | "lg" | "xl";
 
 interface IScreenState {
-    screen: TScreenSize;
-    size: number;
+  screen: TScreenSize;
+  size: number;
 }
 
 export const useScreenSize = (): IScreenState => {
+  const [state, setState] = useState<IScreenState>({ screen: "xl", size: 1200 });
+
+  useEffect(() => {
     const getSize = (): IScreenState => {
-        const width = window.innerWidth;
-        let screen: TScreenSize;
-
-        if (width < 576) screen = "xs";
-        else if (width < 768) screen = "sm";
-        else if (width < 992) screen = "md";
-        else if (width < 1200) screen = "lg";
-        else screen = "xl";
-
-        return { screen, size: width };
+      const width = window.innerWidth;
+      let screen: TScreenSize;
+      if (width < 576) screen = "xs";
+      else if (width < 768) screen = "sm";
+      else if (width < 992) screen = "md";
+      else if (width < 1200) screen = "lg";
+      else screen = "xl";
+      return { screen, size: width };
     };
 
-    const [state, setState] = useState<IScreenState>(() =>
-        typeof window !== "undefined" ? getSize() : { screen: "xl", size: 1200 }
-    );
+    // İlk renderdə dəyəri təyin et
+    setState(getSize());
 
-    useEffect(() => {
-        const handleResize = () => {
-            setState(getSize());
-        };
+    const handleResize = () => setState(getSize());
 
-        window.addEventListener("resize", handleResize);
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
-    return state;
+  return state;
 };
+
 
 export const useHasMounted = () => {
     const [hasMounted, setHasMounted] = useState(false);
