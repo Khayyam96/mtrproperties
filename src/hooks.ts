@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect, useState } from "react";
 
 export type TScreenSize = "xs" | "sm" | "md" | "lg" | "xl";
@@ -22,7 +24,6 @@ export const useScreenSize = (): IScreenState => {
       return { screen, size: width };
     };
 
-    // İlk renderdə dəyəri təyin et
     setState(getSize());
 
     const handleResize = () => setState(getSize());
