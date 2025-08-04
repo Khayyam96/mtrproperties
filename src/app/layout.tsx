@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import { ConfigProvider, Layout } from "antd";
-import { Content, Header } from "antd/es/layout/layout"; // Footer silindi!
+import { Content, Header } from "antd/es/layout/layout"; 
 import MainHeader from "@/components/Layout/Header";
 import { MainFooter } from "@/components/Layout/Footer";
 import { Lato } from "next/font/google";
@@ -44,8 +44,6 @@ export default function RootLayout({
           theme={{
             token: {
               colorPrimary: "#19273d",
-              // colorBgBase: "#fff",
-              // colorBgContainer: "#fff",
             },
           }}
         >

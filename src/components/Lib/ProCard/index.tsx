@@ -63,12 +63,12 @@ export const ProCard: React.FC<TProCard> = ({
     sliderRef.current?.slickNext();
   };
 
-  const handleCallClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (typeof window !== "undefined") {
-      window.location.href = "tel:+971XXXXXXXXX";
-    }
-  };
+  // const handleCallClick = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   if (typeof window !== "undefined") {
+  //     window.location.href = "tel:+971XXXXXXXXX";
+  //   }
+  // };
 
   const handleWhatsappClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -143,7 +143,10 @@ export const ProCard: React.FC<TProCard> = ({
         </div>
 
         <div className="pro-card__actions">
-          <button className="call" onClick={handleCallClick}>
+          <button className="call" onClick={
+            // handleCallClick
+            () => { alert("Call functionality is not implemented yet."); }
+            }>
             <PhoneOutlined /> Call Us
           </button>
           <button className="whatsapp" onClick={handleWhatsappClick}>
