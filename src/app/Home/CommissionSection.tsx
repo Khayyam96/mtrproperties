@@ -5,7 +5,6 @@ import { Card, Button, Row, Col, Typography, Tag } from "antd";
 import Image from "next/image";
 import { Container } from "@/components/Lib/ProContainer/Container";
 
-
 const { Title, Text } = Typography;
 
 const features = [
@@ -31,7 +30,6 @@ const features = [
     },
 ];
 
-
 export const CommissionSection: FC = () => {
     return (
         <div className="commission-section">
@@ -40,7 +38,7 @@ export const CommissionSection: FC = () => {
                     Maximize Your Commission
                 </Title>
                 <Text className="commission-desc">
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s
                 </Text>
                 <Row gutter={[40, 40]} className="commission-main-row">
                     <Col xs={24} lg={16}>
@@ -69,7 +67,7 @@ export const CommissionSection: FC = () => {
                             ))}
                         </Row>
                         <Text className="program-desc">
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s
                         </Text>
                         <Button type="primary" className="full-program-btn">
                             View Full Program

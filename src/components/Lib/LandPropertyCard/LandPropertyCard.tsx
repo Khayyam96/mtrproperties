@@ -4,9 +4,6 @@ import Image from "next/image";
 import { Typography, Tag } from "antd";
 import {
   EnvironmentOutlined,
-  HomeOutlined,
-  BuildOutlined,
-  ExpandAltOutlined,
   ArrowLeftOutlined,
   ArrowRightOutlined,
   PhoneOutlined,
@@ -25,13 +22,14 @@ export type TProCard = {
   name: string;
   price: string | number;
   type: string;
-  bedrooms: number;
-  bathrooms: number;
-  area: number;
   location: string;
   isReadyToMove?: boolean;
   isOffPlan?: boolean;
   onClick?: () => void;
+  // aşağıdakıları sil, əgər istifadə etməyəcəksənsə
+  // bedrooms?: number;
+  // bathrooms?: number;
+  // area?: number;
 };
 
 export const LandPropertyCard: React.FC<TProCard> = ({
@@ -39,17 +37,15 @@ export const LandPropertyCard: React.FC<TProCard> = ({
   name,
   price,
   type,
-  bedrooms,
-  bathrooms,
-  area,
   location,
   onClick,
   isReadyToMove,
   isOffPlan,
+  // bedrooms,
+  // bathrooms,
+  // area,
 }) => {
   const sliderRef = useRef<Slider>(null);
-
-  console.log("LandPropertyCard rendered with images:", images);
 
   const handleCardClick = () => {
     if (onClick) onClick();
@@ -64,13 +60,6 @@ export const LandPropertyCard: React.FC<TProCard> = ({
     e.stopPropagation();
     sliderRef.current?.slickNext();
   };
-
-  // const handleCallClick = (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   if (typeof window !== "undefined") {
-  //     window.location.href = "tel:+971XXXXXXXXX";
-  //   }
-  // };
 
   const handleWhatsappClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -92,9 +81,7 @@ export const LandPropertyCard: React.FC<TProCard> = ({
     <div className="pro-card" onClick={handleCardClick}>
       <div className="pro-card__img">
         <Slider {...settings} ref={sliderRef}>
-          {images.map((img, idx) => {
-            console.log("Rendering image:", img);
-            return (
+          {images.map((img, idx) => (
             <div key={idx} className="carousel-slide">
               <Image
                 src={img}
@@ -105,8 +92,7 @@ export const LandPropertyCard: React.FC<TProCard> = ({
                 priority={idx === 0}
               />
             </div>
-          )
-          })}
+          ))}
         </Slider>
 
         <div className="pro-card__labels">
@@ -157,10 +143,12 @@ export const LandPropertyCard: React.FC<TProCard> = ({
         </div>
 
         <div className="pro-card__actions">
-          <button className="call" onClick={
-            // handleCallClick
-            () => { alert("Call functionality is not implemented yet."); }
-            }>
+          <button
+            className="call"
+            onClick={() => {
+              alert("Call functionality is not implemented yet.");
+            }}
+          >
             <PhoneOutlined /> Call Us
           </button>
           <button className="whatsapp" onClick={handleWhatsappClick}>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Row, Col, Button, Typography } from "antd";
+import { Row, Col, Button, Typography, Tabs } from "antd";
 import { ProCard } from "@/components/Lib/ProCard";
 import { AppstoreOutlined } from "@ant-design/icons";
 import { Container } from "@/components/Lib/ProContainer/Container";
@@ -93,12 +93,15 @@ export const ProductSection: React.FC = () => {
           </Text>
         </div>
 
-        {/* <Tabs
+        <Tabs
           activeKey={activeKey}
           onChange={setActiveKey}
           className="product__tabs"
-          items={tabItems}
-        /> */}
+          items={tabItems.map((tab) => ({
+            ...tab,
+            children: null, // Tabs AntD 5 üçün lazımdır, amma burada children yoxdu
+          }))}
+        />
 
         <Row gutter={[24, 32]}>
           {filtered.map((p) => (

@@ -4,7 +4,7 @@ import { Typography } from "antd";
 import { FaqAccordion } from "@/components/Lib/ProAccardion/FaqAccordion";
 import { Container } from "@/components/Lib/ProContainer/Container";
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography; // Paragraph çıxarıldı
 
 const faqItems = [
   {

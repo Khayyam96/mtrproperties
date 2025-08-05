@@ -1,10 +1,9 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useRef } from "react";
 import { Typography, Rate, Avatar } from "antd";
 import Slider from "react-slick";
 import Image from "next/image";
-import { useRef } from "react";
 import { Container } from "@/components/Lib/ProContainer/Container";
 
 const { Title, Text } = Typography;
@@ -62,7 +61,7 @@ const reviews = [
 ];
 
 export const GoogleReviewsSection: FC = () => {
-    const sliderRef = useRef<any>(null);
+    const sliderRef = useRef<Slider | null>(null);
 
     const sliderSettings = {
         dots: false,
@@ -70,7 +69,7 @@ export const GoogleReviewsSection: FC = () => {
         speed: 500,
         slidesToShow: 5,
         slidesToScroll: 1,
-        arrows: false, // Arrows manual, biz özümüz button edəcəyik
+        arrows: false,
         responsive: [
             {
                 breakpoint: 1280,
