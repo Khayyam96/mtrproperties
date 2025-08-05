@@ -1,11 +1,10 @@
 "use client";
 
-import { Typography } from "antd";
-import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import Slider from "react-slick";
+import { FC } from "react";
+import { Row, Col, Typography } from "antd";
 import Image from "next/image";
-import { useRef } from "react";
-import "./index.scss";
+import { Container } from "@/components/Lib/ProContainer/Container";
+import { RightOutlined } from "@ant-design/icons";
 
 const { Title, Text } = Typography;
 
@@ -40,47 +39,30 @@ const blogData = [
   },
 ];
 
-export const LatestBlogSection = () => {
-  const sliderRef = useRef<Slider>(null);
-
-  const settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    arrows: false,
-    responsive: [
-      {
-        breakpoint: 992,
-        settings: { slidesToShow: 2 },
-      },
-      {
-        breakpoint: 576,
-        settings: { slidesToShow: 1 },
-      },
-    ],
-  };
-
-  return (
-    <section className="latest-blog-section">
+export const LatestBlogSection: FC = () => (
+  <section className="latest-blog-section">
+    <Container>
       <div className="blog-header">
-        <Title level={3}>Latest Blog</Title>
-        <a className="see-all" href="#">
-          See all <RightOutlined />
-        </a>
+        <div className="left">
+          <Title level={3}>Latest Blog</Title>
+          <a className="see-all" href="#">
+            See all <RightOutlined />
+          </a>
+        </div>
       </div>
 
-      <div className="slider-wrapper">
-        <button className="nav left" onClick={() => sliderRef.current?.slickPrev()}>
-          <LeftOutlined />
-        </button>
-
-        <Slider ref={sliderRef} {...settings} className="blog-slider">
-          {blogData.map((item) => (
-            <div className="blog-card" key={item.id}>
+      <Row gutter={[20, 20]}>
+        {blogData.map((item) => (
+          <Col key={item.id} xs={24} sm={24} md={12} lg={8}>
+            <div className="blog-card">
               <div className="image">
-                <Image src={item.image} alt={item.title} width={400} height={220} />
+                <Image
+                  src={item.image}
+                  alt={item.title}
+                  width={400}
+                  height={220}
+                  style={{ width: "100%", height: "310px"}}
+                />
               </div>
               <div className="content">
                 <Title level={5}>{item.title}</Title>
@@ -94,15 +76,11 @@ export const LatestBlogSection = () => {
                 </a>
               </div>
             </div>
-          ))}
-        </Slider>
-
-        <button className="nav right" onClick={() => sliderRef.current?.slickNext()}>
-          <RightOutlined />
-        </button>
-      </div>
-    </section>
-  );
-};
+          </Col>
+        ))}
+      </Row>
+    </Container>
+  </section>
+);
 
 export default LatestBlogSection;

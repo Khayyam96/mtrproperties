@@ -97,7 +97,7 @@ export const ProCard: React.FC<TProCard> = ({
                 alt={`${name}-${idx}`}
                 fill
                 className="pro-card__img--image"
-                sizes="(max-width: 768px) 100vw, 400px"
+                // sizes="(max-width: 768px) 100vw, 400px"
                 priority={idx === 0}
               />
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Collapse } from "antd";
+import "./index.scss";
 
 const { Panel } = Collapse;
 

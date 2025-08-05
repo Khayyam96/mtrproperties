@@ -2,7 +2,7 @@
 
 import { Row, Col, Form, Input, Button, Typography } from "antd";
 import React from "react";
-import "./index.scss";
+
 
 const { Title, Text } = Typography;
 

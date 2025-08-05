@@ -2,7 +2,7 @@
 
 import { Button, Row, Col, Typography, Space } from "antd";
 import { WhatsAppOutlined } from "@ant-design/icons";
-import "./index.scss";
+
 
 const { Title, Text } = Typography;
 

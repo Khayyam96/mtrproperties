@@ -7,20 +7,23 @@ import {
   LinkedinFilled,
   PhoneOutlined,
   MailOutlined,
+  WhatsAppOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
 import "./index.scss";
+import Link from "next/link";
+import { Container } from "@/components/Lib/ProContainer/Container";
 
 const { Title, Text } = Typography;
 
 export const MainFooter = () => {
   return (
     <div className="main-footer">
-      <div className="footer-container">
+      <Container>
         <Row gutter={[32, 32]} className="footer-top">
-          <Col xs={24} md={6}>
+          <Col xs={24} md={9}>
             <Image
-              src="/logo.png"
+              src="/whitelogo.png"
               alt="MTR Logo"
               className="footer-logo"
               width={160}
@@ -34,7 +37,8 @@ export const MainFooter = () => {
 
             <div className="footer-contact">
               <Title level={5}>Contact Us</Title>
-              <div className="contact-item">
+              <div className="contact-item-all">
+                <div className="contact-item">
                 <PhoneOutlined />
                 <Text>04 331 7007</Text>
               </div>
@@ -43,14 +47,9 @@ export const MainFooter = () => {
                 <Text>contact@mtr.ae</Text>
               </div>
               <div className="contact-item">
-                <Image
-                  src="/whatsapp.png"
-                  alt="WhatsApp"
-                  width={16}
-                  height={16}
-                  style={{ display: "inline-block" }}
-                />
+                <WhatsAppOutlined />
                 <Text>+971 56 933 2607</Text>
+              </div>
               </div>
             </div>
 
@@ -64,7 +63,7 @@ export const MainFooter = () => {
             </div>
           </Col>
 
-          <Col xs={12} md={4}>
+          <Col xs={12} md={3}>
             <Title level={5}>Explore Properties</Title>
             <ul>
               <li>Buy</li>
@@ -76,7 +75,7 @@ export const MainFooter = () => {
             </ul>
           </Col>
 
-          <Col xs={12} md={4}>
+          <Col xs={12} md={3}>
             <Title level={5}>Our Services</Title>
             <ul>
               <li>Sell</li>
@@ -101,10 +100,10 @@ export const MainFooter = () => {
             <Title level={5}>Company</Title>
             <ul>
               <li>
-                {/* <Link href="/about">About Us</Link> */}
+                <Link href="/about">About Us</Link>
               </li>
               <li>
-                {/* <Link href="/contact">Contact Us</Link> */}
+                <Link href="/contact">Contact Us</Link>
               </li>
               <li>Blogs/News</li>
             </ul>
@@ -123,7 +122,7 @@ export const MainFooter = () => {
             <Text className="footer-links">Site Map</Text>
           </Col>
         </Row>
-      </div>
+      </Container>
     </div>
   );
 };

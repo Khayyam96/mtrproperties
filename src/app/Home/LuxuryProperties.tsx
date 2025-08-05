@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Row, Col, Typography, Button, Segmented } from "antd";
 import { AppstoreOutlined } from "@ant-design/icons";
 import Image from "next/image";
-import "./index.scss";
+
 
 const { Title, Text } = Typography;
 
@@ -13,72 +13,48 @@ const properties = [
         id: 1,
         image: "/luxury.png",
         name: "Property Name",
-        bedrooms: 2,
-        bathrooms: 3,
-        area: 2500,
         type: "Penthouse",
     },
     {
         id: 2,
         image: "/luxury.png",
         name: "Property Name",
-        bedrooms: 2,
-        bathrooms: 3,
-        area: 2500,
         type: "Penthouse",
     },
     {
         id: 3,
         image: "/luxury.png",
         name: "Property Name",
-        bedrooms: 2,
-        bathrooms: 3,
-        area: 2500,
         type: "Penthouse",
     },
     {
         id: 4,
         image: "/luxury.png",
         name: "Property Name",
-        bedrooms: 2,
-        bathrooms: 3,
-        area: 2500,
         type: "Penthouse",
     },
     {
         id: 5,
         image: "/luxury.png",
         name: "Property Name",
-        bedrooms: 2,
-        bathrooms: 3,
-        area: 2500,
         type: "Penthouse",
     },
     {
         id: 6,
         image: "/luxury.png",
         name: "Property Name",
-        bedrooms: 2,
-        bathrooms: 3,
-        area: 2500,
         type: "Penthouse",
     },
     {
         id: 7,
         image: "/luxury.png",
         name: "Property Name",
-        bedrooms: 2,
-        bathrooms: 3,
-        area: 2500,
         type: "Penthouse",
     },
     {
         id: 8,
         image: "/luxury.png",
         name: "Property Name",
-        bedrooms: 2,
-        bathrooms: 3,
-        area: 2500,
         type: "Penthouse",
     },
 ];
@@ -124,12 +100,10 @@ export const LuxuryProperties: React.FC = () => {
                                     className="property-card__image"
                                 />
                                 <div className="property-card__overlay">
-                                    <h4>{property.name}</h4>
-                                    <div className="property-card__icons">
-                                        <span>🛏 {property.bedrooms} bedroom</span>
-                                        <span>🛁 {property.bathrooms} bathroom</span>
-                                        <span>📐 {property.area} sq.ft.</span>
+                                    <div className="types">
+                                        <div className="type">{property.type}</div>
                                     </div>
+                                    <h4>{property.name}</h4>
                                 </div>
                             </div>
                         </div>

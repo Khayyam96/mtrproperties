@@ -1,21 +1,22 @@
 "use client";
 
 import { Row, Col, Button } from "antd";
-import Image from "next/image";
 import { LandPropertyCard } from "../../components/Lib/LandPropertyCard/LandPropertyCard";
+import SpeakToExpertSection from "@/components/Lib/SpeakToExpertSection/SpeakToExpertSection";
 
-const landList = Array.from({ length: 8 }).map(() => ({
+const landList = Array.from({ length: 8 }).map((_, i) => ({
   images: [
     "/cardimggg.png",
     "/cardimggg.png",
     "/cardimggg.png"
   ],
   price: "2,850,000",
-  priceSqft: "335",
-  title: "Premium Residential Plot, Dubai Hills, Dubai",
-  location: "Premium Residential Plot, Dubai Hills, Dubai",
-  utilities: 4,
-  area: "8,500",
+  name: `Dubai Hills Plot ${i + 1}`,
+  type: "Residential",
+  bedrooms: 0,
+  bathrooms: 0,
+  area: 8500,
+  location: "Dubai Hills, Dubai",
   badges: ["Residential", "Ready to Build"],
 }));
 
@@ -37,19 +38,16 @@ export const PremiumLandSection = () => (
     <div className="land-section-footer">
       <Button
         size="large"
-        className="view-more-btn"
-        icon={
-          <Image
-            src="/icons/land-list.svg"
-            alt="Land List"
-            width={20}
-            height={20}
-          />
-        }
+        className="view-more-wrapper"
       >
         View More Land
       </Button>
     </div>
+    <Row justify="center" style={{ marginTop: 40 }}>
+      <Col xs={24} md={20} lg={20} style={{ display: "flex", justifyContent: "center" }}>
+        <SpeakToExpertSection />
+      </Col>
+    </Row>
   </div>
 );
 

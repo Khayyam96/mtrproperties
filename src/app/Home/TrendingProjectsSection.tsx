@@ -2,7 +2,6 @@
 
 import { FC } from "react";
 import { Row, Col, Button } from "antd";
-import "./index.scss";
 
 type Project = {
   image: string;

@@ -21,7 +21,7 @@ import {
   MailOutlined,
 } from "@ant-design/icons"
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts"
-import "./index.scss"
+
 
 const { Title, Text } = Typography
 const { Option } = Select

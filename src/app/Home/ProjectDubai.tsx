@@ -6,7 +6,7 @@ import { AppstoreOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons
 import Slider from "react-slick";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import { ProjectCard } from "@/components/Lib/ProjectCard/ProjectCard";
-import "./index.scss";
+
 
 const { Title, Text } = Typography;
 

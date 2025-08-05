@@ -3,8 +3,8 @@
 import { Row, Col, Typography } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import FilterTabs from "../../components/Lib/Tabs/FilterTabs"; 
-import "./index.scss";
+import FilterTabs from "../../components/Lib/Tabs/FilterTabs";
+import { Container } from "@/components/Lib/ProContainer/Container";
 
 const { Title, Text } = Typography;
 
@@ -77,60 +77,62 @@ export const SearchTrendsSection = () => {
 
   return (
     <section className="search-trends-section">
-      <div className="text-center header">
-        <Title level={3}>Propular and Trending Searches in UAE</Title>
-        <FilterTabs
-          activeKey={activeKey}
-          onChange={setActiveKey}
-          tabs={[
-            { key: "sale", label: "Sale" },
-            { key: "rent", label: "Rent" },
-          ]}
-        />
-      </div>
+      <Container>
+        <div className="text-center header">
+          <Title level={3}>Propular and Trending Searches in UAE</Title>
+          <FilterTabs
+            activeKey={activeKey}
+            onChange={setActiveKey}
+            tabs={[
+              { key: "sale", label: "Sale" },
+              { key: "rent", label: "Rent" },
+            ]}
+          />
+        </div>
 
-      <Row gutter={[24, 24]} className="list-columns">
-        <Col xs={24} md={6}>
-          <div className="list-block">
-            <Title level={5}>Popular Searches</Title>
-            {data.PopularSearches.map((item, i) => (
-              <Text key={i} className="list-item">{item}</Text>
-            ))}
-          </div>
-        </Col>
-
-        <Col xs={24} md={6}>
-          <div className="list-block">
-            <Title level={5}>Popular Areas</Title>
-            {data.PopularAreas.map((item, i) => (
-              <Text key={i} className="list-item">{item}</Text>
-            ))}
-          </div>
-        </Col>
-
-        <Col xs={24} md={6}>
-          <div className="list-block">
-            <Title level={5}>Trending Searches</Title>
-            {data.TrendingSearches.map((item, i) => (
-              <Text key={i} className="list-item">{item}</Text>
-            ))}
-          </div>
-        </Col>
-
-        <Col xs={24} md={6}>
-          <div className="list-block trending-right">
-            <Title level={5}>Trending Areas</Title>
-            {data.TrendingAreas.map((item, i) => (
-              <Text key={i} className="list-item">{item}</Text>
-            ))}
-            <div className="view-more">
-              <a href="#">
-                View More <DownOutlined />
-              </a>
+        <Row gutter={[24, 24]} className="list-columns">
+          <Col xs={24} md={6}>
+            <div className="list-block">
+              <Title level={5}>Popular Searches</Title>
+              {data.PopularSearches.map((item, i) => (
+                <Text key={i} className="list-item">{item}</Text>
+              ))}
             </div>
-          </div>
-        </Col>
-      </Row>
+          </Col>
+
+          <Col xs={24} md={6}>
+            <div className="list-block">
+              <Title level={5}>Popular Areas</Title>
+              {data.PopularAreas.map((item, i) => (
+                <Text key={i} className="list-item">{item}</Text>
+              ))}
+            </div>
+          </Col>
+
+          <Col xs={24} md={6}>
+            <div className="list-block">
+              <Title level={5}>Trending Searches</Title>
+              {data.TrendingSearches.map((item, i) => (
+                <Text key={i} className="list-item">{item}</Text>
+              ))}
+            </div>
+          </Col>
+
+          <Col xs={24} md={6}>
+            <div className="list-block trending-right">
+              <Title level={5}>Trending Areas</Title>
+              {data.TrendingAreas.map((item, i) => (
+                <Text key={i} className="list-item">{item}</Text>
+              ))}
+              <div className="view-more">
+                <a href="#">
+                  View More <DownOutlined />
+                </a>
+              </div>
+            </div>
+          </Col>
+        </Row>
+      </Container>
     </section>
   );
 };

@@ -1,3 +1,4 @@
+import "./page.scss";
 import "@/assets/styles/globals.css";
 import "antd/dist/reset.css";
 
@@ -9,6 +10,7 @@ import { Content, Header } from "antd/es/layout/layout";
 import MainHeader from "@/components/Layout/Header";
 import { MainFooter } from "@/components/Layout/Footer";
 import { Lato } from "next/font/google";
+
 
 
 const geistSans = Geist({

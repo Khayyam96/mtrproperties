@@ -16,7 +16,6 @@ type Props = {
 };
 
 export const FilterTabs: React.FC<Props> = ({ activeKey, onChange, tabs }) => {
-  // TabsProps["items"] tipinə uyğun massiv düzəlt
   const items: TabsProps["items"] = tabs.map((tab) => ({
     key: tab.key,
     label: tab.label,

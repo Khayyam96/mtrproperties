@@ -2,7 +2,7 @@
 
 import { Row, Col, Typography, Button } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
-import "./index.scss";
+
 
 const { Title, Paragraph } = Typography;
 

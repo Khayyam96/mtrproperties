@@ -1,117 +1,171 @@
 "use client";
 
-import { FC, useState } from "react";
-import { Button, Tag } from "antd";
 import Image from "next/image";
+import { Typography, Tag } from "antd";
+import {
+  EnvironmentOutlined,
+  HomeOutlined,
+  BuildOutlined,
+  ExpandAltOutlined,
+  ArrowLeftOutlined,
+  ArrowRightOutlined,
+  PhoneOutlined,
+  WhatsAppOutlined,
+} from "@ant-design/icons";
+import Slider from "react-slick";
+import { useRef } from "react";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./index.scss";
 
-type Props = {
+const { Title } = Typography;
+
+export type TProCard = {
   images: string[];
-  price: string;
-  priceSqft: string;
-  title: string;
+  name: string;
+  price: string | number;
+  type: string;
+  bedrooms: number;
+  bathrooms: number;
+  area: number;
   location: string;
-  utilities: number;
-  area: string;
-  badges: string[];
+  isReadyToMove?: boolean;
+  isOffPlan?: boolean;
+  onClick?: () => void;
 };
 
-export const LandPropertyCard: FC<Props> = ({
+export const LandPropertyCard: React.FC<TProCard> = ({
   images,
+  name,
   price,
-  priceSqft,
-  title,
-  location,
-  utilities,
+  type,
+  bedrooms,
+  bathrooms,
   area,
-  badges,
+  location,
+  onClick,
+  isReadyToMove,
+  isOffPlan,
 }) => {
-  const [imgIdx, setImgIdx] = useState(0);
+  const sliderRef = useRef<Slider>(null);
 
-  const handlePrev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setImgIdx((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  console.log("LandPropertyCard rendered with images:", images);
+
+  const handleCardClick = () => {
+    if (onClick) onClick();
   };
-  const handleNext = (e: React.MouseEvent) => {
+
+  const goPrev = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setImgIdx((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+    sliderRef.current?.slickPrev();
+  };
+
+  const goNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    sliderRef.current?.slickNext();
+  };
+
+  // const handleCallClick = (e: React.MouseEvent) => {
+  //   e.stopPropagation();
+  //   if (typeof window !== "undefined") {
+  //     window.location.href = "tel:+971XXXXXXXXX";
+  //   }
+  // };
+
+  const handleWhatsappClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (typeof window !== "undefined") {
+      window.open("https://wa.me/971XXXXXXXXX", "_blank");
+    }
+  };
+
+  const settings = {
+    dots: false,
+    arrows: false,
+    infinite: true,
+    speed: 400,
+    slidesToShow: 1,
+    slidesToScroll: 1,
   };
 
   return (
-    <div className="lp-card">
-      <div className="lp-card__imgbox">
-        <Image
-          src={images[imgIdx]}
-          alt={title}
-          fill
-          className="lp-card__img"
-          priority
-          sizes="(max-width: 600px) 100vw, 400px"
-        />
-        <button className="carousel-btn prev" onClick={handlePrev}>
-          <Image src="/icons/chevron-left.svg" alt="prev" width={24} height={24} />
-        </button>
-        <button className="carousel-btn next" onClick={handleNext}>
-          <Image src="/icons/chevron-right.svg" alt="next" width={24} height={24} />
-        </button>
-        <div className="lp-card__badges">
-          <Tag color="#8837E0" className="badge">{badges[0]}</Tag>
-          <Tag color="#41B883" className="badge">{badges[1]}</Tag>
+    <div className="pro-card" onClick={handleCardClick}>
+      <div className="pro-card__img">
+        <Slider {...settings} ref={sliderRef}>
+          {images.map((img, idx) => {
+            console.log("Rendering image:", img);
+            return (
+            <div key={idx} className="carousel-slide">
+              <Image
+                src={img}
+                alt={`${name}-${idx}`}
+                fill
+                className="pro-card__img--image"
+                sizes="(max-width: 768px) 100vw, 400px"
+                priority={idx === 0}
+              />
+            </div>
+          )
+          })}
+        </Slider>
+
+        <div className="pro-card__labels">
+          {isReadyToMove && <Tag className="ready">Ready to Move</Tag>}
+          {isOffPlan && <Tag className="plan">Off Plan</Tag>}
         </div>
+
+        <button className="carousel-btn left" onClick={goPrev}>
+          <ArrowLeftOutlined />
+        </button>
+        <button className="carousel-btn right" onClick={goNext}>
+          <ArrowRightOutlined />
+        </button>
       </div>
-      <div className="lp-card__body">
-        <div className="lp-card__row">
-          <span className="price">AED {price}</span>
-          <span className="sqft-tag">AED {priceSqft}/sq ft</span>
+
+      <div className="pro-card__body">
+        <div className="pro-card__price">
+          <Title level={3}>AED {price}</Title>
+          <Tag className="type">{type}</Tag>
         </div>
-        <div className="lp-card__loc-row">
-          <Image src="/icons/location.svg" alt="Location" className="icon" width={16} height={16} />
-          <span className="location">{location}</span>
-        </div>
-        <div className="lp-card__desc">{title}</div>
-        <div className="lp-card__info-row">
+
+        <div className="pro-card__location">
+          <EnvironmentOutlined />
           <span>
-            <Image src="/icons/flash.svg" alt="Utilities" className="icon" width={16} height={16} />
-            {utilities} Utilities
-          </span>
-          <span>
-            <Image src="/icons/area.svg" alt="Area" className="icon" width={16} height={16} />
-            {area} sq ft
+            {name}, {location}
           </span>
         </div>
-        <div className="lp-card__actions">
-          <Button
-            className="call-btn"
-            icon={
-              <Image
-                src="/icons/call-outline.svg"
-                alt="Call"
-                width={20}
-                height={20}
-                style={{ display: "inline-block" }}
-              />
-            }
-            size="large"
-            block
-          >
-            Call Us
-          </Button>
-          <Button
-            className="whatsapp-btn"
-            icon={
-              <Image
-                src="/icons/whatsapp-outline.svg"
-                alt="Whatsapp"
-                width={20}
-                height={20}
-                style={{ display: "inline-block" }}
-              />
-            }
-            size="large"
-            block
-          >
-            Whatsapp
-          </Button>
+
+        <div className="pro-card__meta">
+          <span>
+            <Image
+              src="/ic1.png"
+              width={13}
+              height={13}
+              className="asda"
+              alt=""
+            /> 4 Utilities
+          </span>
+          <span>
+            <Image
+              src="/ic2.png"
+              width={13}
+              height={13}
+              className="asda"
+              alt=""
+            /> 8,500 sq ft
+          </span>
+        </div>
+
+        <div className="pro-card__actions">
+          <button className="call" onClick={
+            // handleCallClick
+            () => { alert("Call functionality is not implemented yet."); }
+            }>
+            <PhoneOutlined /> Call Us
+          </button>
+          <button className="whatsapp" onClick={handleWhatsappClick}>
+            <WhatsAppOutlined /> Whatsapp
+          </button>
         </div>
       </div>
     </div>

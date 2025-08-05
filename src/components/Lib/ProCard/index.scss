@@ -19,12 +19,11 @@
 
   &__img {
     position: relative;
-    height: 190px;
 
     .carousel-slide {
       position: relative;
       width: 100%;
-      height: 100%;
+      height: 230px;
 
       .pro-card__img--image {
         object-fit: cover;
@@ -88,7 +87,7 @@
 
   &__body {
     flex: 1;
-    padding: 14px 20px;
+    padding: 10px 15px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -126,7 +125,8 @@
 
   &__meta {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    align-items: center;
     gap: 16px;
     font-size: 13px;
     color: #19273d;
@@ -187,6 +187,8 @@
       }
     }
   }
+
+  
 }
 
 @media (max-width: 575px) {

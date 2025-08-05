@@ -39,6 +39,7 @@ export const HeroSection: React.FC = () => {
 
           <FilterTabs activeKey={activeTab} onChange={setActiveTab} tabs={tabs} />
         </div>
+        
 
         <div className="hero__filter-box">
           <Row gutter={[16, 16]} className="hero__filter-row-1" align="middle">

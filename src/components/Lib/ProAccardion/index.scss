@@ -1,0 +1,58 @@
+.faq-accordion {
+  background: none !important;
+  border: none !important;
+
+  .ant-collapse-item {
+    background: #faf8ff !important;
+    border-radius: 10px !important;
+    margin-bottom: 18px !important;
+    border: none !important;
+    box-shadow: 0 2px 8px #a489d729;
+
+    &.ant-collapse-item-active {
+      background: #623393 !important;
+
+      .ant-collapse-header {
+        color: #fff !important;
+        background: #623393 !important;
+      }
+    }
+  }
+
+  .ant-collapse-header {
+    font-size: 20px !important;
+    line-height: 26px;
+    font-weight: 500 !important;
+    color: #070807 !important;
+    background: #FAFAFA !important;
+    border-radius: 10px !important;
+    padding: 15px !important;
+    min-height: 56px !important;
+    transition: background 0.2s, color 0.2s;
+    align-items: center;
+    display: flex;
+  }
+
+  .ant-collapse-content {
+    background: #faf8ff !important;
+    border-radius: 0 0 10px 10px !important;
+    .ant-collapse-content-box {
+      font-size: 16px !important;
+      color: #1a1a1a !important;
+      padding: 18px 28px 18px 28px !important;
+      background: #faf8ff !important;
+    }
+  }
+
+  .ant-collapse-expand-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px !important;
+    color: #fff !important;
+
+    .ant-collapse-item:not(.ant-collapse-item-active) & {
+      color: #222 !important;
+    }
+  }
+}

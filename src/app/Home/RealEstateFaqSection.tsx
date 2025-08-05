@@ -1,9 +1,8 @@
 "use client";
 
 import { Typography } from "antd";
-import { DownOutlined } from "@ant-design/icons";
 import { FaqAccordion } from "@/components/Lib/ProAccardion/FaqAccordion";
-import "./index.scss";
+import { Container } from "@/components/Lib/ProContainer/Container";
 
 const { Title, Paragraph } = Typography;
 
@@ -33,25 +32,12 @@ const faqItems = [
 export const RealEstateFaqSection = () => {
   return (
     <section className="realestate-faq-section">
-      <div className="realestate-intro">
-        <Title level={3}>Realestate agency in Dubai</Title>
-        <Paragraph>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-          industry&apos;s standard dummy text ever since the 1500s.
-        </Paragraph>
-        <Paragraph>
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-          industry&apos;s standard dummy text ever since the 1500s.
-        </Paragraph>
-        <a className="read-more" href="#">
-          Read More <DownOutlined />
-        </a>
-      </div>
-
-      <div className="faq-wrapper">
-        <Title level={4} className="faq-title">Frequently Asked Questions</Title>
-        <FaqAccordion items={faqItems} defaultActiveKey={["2"]} />
-      </div>
+      <Container>
+        <div className="faq-wrapper">
+          <Title level={4} className="faq-title">Frequently Asked Questions</Title>
+          <FaqAccordion items={faqItems} defaultActiveKey={["2"]} />
+        </div>
+      </Container>
     </section>
   );
 };

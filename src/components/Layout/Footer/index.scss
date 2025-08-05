@@ -3,10 +3,7 @@
   color: white;
   padding: 40px 20px 20px;
 
-  .footer-container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+  
 
   .footer-logo {
     width: 140px;
@@ -27,11 +24,18 @@
   .footer-contact {
     margin: 20px 0;
 
+
+    .contact-item-all{
+      display: flex;
+      
+    }
+
     .contact-item {
       display: flex;
       align-items: center;
       gap: 8px;
       margin-bottom: 6px;
+      margin-right: 10px;
 
       img {
         margin-top: -2px;

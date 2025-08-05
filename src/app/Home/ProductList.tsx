@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Row, Col, Button, Tabs, Typography } from "antd";
+import { Row, Col, Button, Typography } from "antd";
 import { ProCard } from "@/components/Lib/ProCard";
 import { AppstoreOutlined } from "@ant-design/icons";
-import "./index.scss";
 import { Container } from "@/components/Lib/ProContainer/Container";
 
 const { Title, Text } = Typography;
@@ -94,12 +93,12 @@ export const ProductSection: React.FC = () => {
           </Text>
         </div>
 
-        <Tabs
+        {/* <Tabs
           activeKey={activeKey}
           onChange={setActiveKey}
           className="product__tabs"
           items={tabItems}
-        />
+        /> */}
 
         <Row gutter={[24, 32]}>
           {filtered.map((p) => (
