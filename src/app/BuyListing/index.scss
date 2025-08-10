@@ -10,7 +10,7 @@
   
     .pagination-btn {
       background-color: #7e22ce;
-      color: white;
+      color: white !important;
       border: none;
       padding: 6px 18px;
       border-radius: 8px;
@@ -91,7 +91,7 @@
       position: relative;
       border-radius: 12px;
       overflow: hidden;
-      height: 350px;
+      height: 400px;
       box-shadow: 0px 10px 30px #3435350F;
   
       .image-wrapper {

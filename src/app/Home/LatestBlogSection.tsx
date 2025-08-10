@@ -1,10 +1,12 @@
 "use client";
 
-import { FC } from "react";
-import { Row, Col, Typography } from "antd";
+import { FC, useRef } from "react";
+import { Typography } from "antd";
 import Image from "next/image";
+import Slider from "react-slick";
 import { Container } from "@/components/Lib/ProContainer/Container";
-import { RightOutlined } from "@ant-design/icons";
+import { RightOutlined, LeftOutlined } from "@ant-design/icons";
+
 
 const { Title, Text } = Typography;
 
@@ -39,48 +41,89 @@ const blogData = [
   },
 ];
 
-export const LatestBlogSection: FC = () => (
-  <section className="latest-blog-section">
-    <Container>
-      <div className="blog-header">
-        <div className="left">
-          <Title level={3}>Latest Blog</Title>
-          <a className="see-all" href="#">
-            See all <RightOutlined />
-          </a>
-        </div>
-      </div>
+export const LatestBlogSection: FC = () => {
+  const sliderRef = useRef<any>(null);
 
-      <Row gutter={[20, 20]}>
-        {blogData.map((item) => (
-          <Col key={item.id} xs={24} sm={24} md={12} lg={8}>
-            <div className="blog-card">
-              <div className="image">
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  width={400}
-                  height={220}
-                  style={{ width: "100%", height: "310px"}}
-                />
-              </div>
-              <div className="content">
-                <Title level={5}>{item.title}</Title>
-                <div className="meta">
-                  <Text>{item.date}</Text>
-                  <span>•</span>
-                  <Text>{item.author}</Text>
+  const settings = {
+    dots: false,
+    infinite: blogData.length > 3,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    arrows: false,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
+  return (
+    <section className="latest-blog-section">
+      <Container>
+        <div className="blog-header">
+          <div className="left">
+            <Title level={3}>Latest Blog</Title>
+            <a className="see-all" href="#">
+              See all <RightOutlined />
+            </a>
+          </div>
+          <div className="slider-nav">
+            <span
+              className="nav left"
+              onClick={() => sliderRef.current?.slickPrev()}
+            >
+              <LeftOutlined />
+            </span>
+            <span
+              className="nav right"
+              onClick={() => sliderRef.current?.slickNext()}
+            >
+              <RightOutlined />
+            </span>
+          </div>
+        </div>
+
+        <div className="slider-wrapper">
+          <Slider ref={sliderRef} {...settings}>
+            {blogData.map((item) => (
+              <div key={item.id} className="blog-card">
+                <div className="image">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    width={400}
+                    height={220}
+                    style={{ width: "100%", height: "310px" }}
+                  />
                 </div>
-                <a href="#" className="read-more">
-                  Read more <RightOutlined />
-                </a>
+                <div className="content">
+                  <Title level={5}>{item.title}</Title>
+                  <div className="meta">
+                    <Text>{item.date}</Text>
+                    <span style={{ margin: "0 8px" }}> </span>
+                    <Text>{item.author}</Text>
+                  </div>
+                  <a href="#" className="read-more">
+                    Read more <RightOutlined />
+                  </a>
+                </div>
               </div>
-            </div>
-          </Col>
-        ))}
-      </Row>
-    </Container>
-  </section>
-);
+            ))}
+          </Slider>
+        </div>
+      </Container>
+    </section>
+  );
+};
 
 export default LatestBlogSection;

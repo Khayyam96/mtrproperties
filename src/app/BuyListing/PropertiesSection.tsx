@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Row, Col, Pagination } from "antd";
 import { ProCard, TProCard } from "@/components/Lib/ProCard";
 import "./index.scss";
+import { Container } from "@/components/Lib/ProContainer/Container";
 
 const mockData: TProCard[] = Array.from({ length: 36 }).map(() => ({
   images: [
@@ -34,7 +35,8 @@ export const PropertiesSection = () => {
 
   return (
     <div className="properties-section">
-      <Row gutter={[24, 24]}>
+      <Container>
+        <Row gutter={[24, 24]}>
         {paginatedData.map((item, idx) => (
           <Col xs={24} sm={12} md={8} key={current + "-" + idx}>
             <ProCard {...item} />
@@ -60,6 +62,7 @@ export const PropertiesSection = () => {
           }}
         />
       </div>
+      </Container>
     </div>
   );
 };
