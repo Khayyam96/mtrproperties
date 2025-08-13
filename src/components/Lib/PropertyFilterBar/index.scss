@@ -1,0 +1,64 @@
+$primary: #6A469C;
+$shadow: #E5E5E5;
+$text: #171717;
+
+.filter-bar-block{
+    padding-bottom: 40px;
+    position: relative;
+    top:-40px;
+    z-index: 9;
+}
+
+.filter-bar {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 2px 18px $shadow;
+  padding: 16px;
+
+  .field-label {
+    display: block;
+    font-weight: 700;
+    color: $text;
+    margin-bottom: 6px;
+  }
+
+  .control {
+    height: 44px;
+
+    // Ant Design Select height fix
+    :global(.ant-select-selector) {
+      height: 44px !important;
+      border-radius: 8px !important;
+      display: flex;
+      align-items: center;
+    }
+    :global(.ant-select-selection-placeholder),
+    :global(.ant-select-selection-item) {
+      line-height: 44px !important;
+    }
+
+    :global(.ant-input) {
+      height: 44px;
+      border-radius: 8px;
+    }
+  }
+
+  .btn-col {
+    display: flex;
+    align-items: end;
+  }
+
+  .filter-btn {
+    height: 44px;
+    border-radius: 8px;
+    background: $primary;
+    font-weight: 700;
+
+    &:hover,
+    &:focus {
+      background: darken($primary, 6%);
+    }
+  }
+
+  .mb0 { margin-bottom: 0; }
+}

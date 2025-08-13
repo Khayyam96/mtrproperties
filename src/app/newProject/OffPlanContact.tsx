@@ -21,7 +21,6 @@ export const OffPlanContact = () => {
   const onFinish = (values: ContactFormValues) => {
     const payload = { ...values, phone };
     console.log("Submitted:", payload);
-    // Burada API çağırışı və s. edə bilərsən
   };
 
   return (
@@ -30,7 +29,7 @@ export const OffPlanContact = () => {
         <Row justify="center" gutter={[24, 24]}>
           <Col xs={24} md={10} className="left-col">
             <div className="text-content">
-              <Title level={4}>Do you want to know more about</Title>
+              <Title level={4}>Do you want to know more abouasdasdasdt</Title>
               <Title level={2}>OFF PLAN</Title>
               <Title level={2}>PROPERTIES IN DUBAI</Title>
             </div>

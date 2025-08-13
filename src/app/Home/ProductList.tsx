@@ -11,6 +11,7 @@ const { Title, Text } = Typography;
 const properties = [
   {
     id: 1,
+    slug: "santa-fe-residences",
     images: ["/cardimg.png", "/cardimg.png", "/cardimg.png"],
     name: "Santa Fe Residences",
     price: 3_250_000,
@@ -24,6 +25,7 @@ const properties = [
   },
   {
     id: 2,
+    slug: "marina-sky-tower",
     images: ["/cardimg.png", "/cardimg.png", "/cardimg.png"],
     name: "Marina Sky Tower",
     price: 2_800_000,
@@ -37,6 +39,7 @@ const properties = [
   },
   {
     id: 3,
+    slug: "emerald-villa",
     images: ["/cardimg.png", "/cardimg.png", "/cardimg.png"],
     name: "Emerald Villa",
     price: 6_900_000,
@@ -51,6 +54,7 @@ const properties = [
   },
   {
     id: 4,
+    slug: "sunrise-townhouse",
     images: ["/cardimg.png", "/cardimg.png", "/cardimg.png"],
     name: "Sunrise Townhouse",
     price: 1_950_000,
@@ -92,16 +96,6 @@ export const ProductSection: React.FC = () => {
             Lorem Ipsum is simply dummy text of the printing and typesetting industry.
           </Text>
         </div>
-
-        <Tabs
-          activeKey={activeKey}
-          onChange={setActiveKey}
-          className="product__tabs"
-          items={tabItems.map((tab) => ({
-            ...tab,
-            children: null, // Tabs AntD 5 üçün lazımdır, amma burada children yoxdu
-          }))}
-        />
 
         <Row gutter={[24, 32]}>
           {filtered.map((p) => (

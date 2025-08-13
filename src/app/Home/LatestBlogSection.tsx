@@ -3,10 +3,9 @@
 import { FC, useRef } from "react";
 import { Typography } from "antd";
 import Image from "next/image";
-import Slider from "react-slick";
+import Slider, { Settings } from "react-slick";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import { RightOutlined, LeftOutlined } from "@ant-design/icons";
-
 
 const { Title, Text } = Typography;
 
@@ -42,9 +41,9 @@ const blogData = [
 ];
 
 export const LatestBlogSection: FC = () => {
-  const sliderRef = useRef<any>(null);
+  const sliderRef = useRef<Slider | null>(null); // ✅ any əvəzinə Slider tipi
 
-  const settings = {
+  const settings: Settings = {
     dots: false,
     infinite: blogData.length > 3,
     speed: 500,

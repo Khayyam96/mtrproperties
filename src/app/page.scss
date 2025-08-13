@@ -554,8 +554,22 @@
   .header {
     margin-bottom: 40px;
 
-    .ant-typography {
-      margin-bottom: 8px;
+    h2{
+      color:#343535;
+      font-size: 32px;
+      line-height: 40px;
+      font-weight: 800;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    span{
+      display: block;
+      font-size: 16px;
+      line-height: 24px;
+      color:#343535;
+      font-weight: 600;
+      text-align: center;
     }
   }
 

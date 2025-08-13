@@ -14,6 +14,7 @@ import {
 } from "@ant-design/icons";
 import Slider from "react-slick";
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./index.scss";
@@ -21,6 +22,7 @@ import "./index.scss";
 const { Title } = Typography;
 
 export type TProCard = {
+  slug: string;             
   images: string[];
   name: string;
   price: string | number;
@@ -35,6 +37,7 @@ export type TProCard = {
 };
 
 export const ProCard: React.FC<TProCard> = ({
+  slug,
   images,
   name,
   price,
@@ -48,9 +51,11 @@ export const ProCard: React.FC<TProCard> = ({
   isOffPlan,
 }) => {
   const sliderRef = useRef<Slider>(null);
+  const router = useRouter();
 
   const handleCardClick = () => {
-    if (onClick) onClick();
+    if (onClick) return onClick();
+    router.push(`/properties/${slug}`); 
   };
 
   const goPrev = (e: React.MouseEvent) => {
@@ -63,13 +68,6 @@ export const ProCard: React.FC<TProCard> = ({
     sliderRef.current?.slickNext();
   };
 
-  // const handleCallClick = (e: React.MouseEvent) => {
-  //   e.stopPropagation();
-  //   if (typeof window !== "undefined") {
-  //     window.location.href = "tel:+971XXXXXXXXX";
-  //   }
-  // };
-
   const handleWhatsappClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (typeof window !== "undefined") {
@@ -77,14 +75,7 @@ export const ProCard: React.FC<TProCard> = ({
     }
   };
 
-  const settings = {
-    dots: false,
-    arrows: false,
-    infinite: true,
-    speed: 400,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
+  const settings = { dots: false, arrows: false, infinite: true, speed: 400, slidesToShow: 1, slidesToScroll: 1 };
 
   return (
     <div className="pro-card" onClick={handleCardClick}>
@@ -97,7 +88,6 @@ export const ProCard: React.FC<TProCard> = ({
                 alt={`${name}-${idx}`}
                 fill
                 className="pro-card__img--image"
-                // sizes="(max-width: 768px) 100vw, 400px"
                 priority={idx === 0}
               />
             </div>
@@ -131,22 +121,16 @@ export const ProCard: React.FC<TProCard> = ({
         </div>
 
         <div className="pro-card__meta">
-          <span>
-            <HomeOutlined /> {bedrooms} Bedroom
-          </span>
-          <span>
-            <BuildOutlined /> {bathrooms} Bathroom
-          </span>
-          <span>
-            <ExpandAltOutlined /> {area} Sq.Ft.
-          </span>
+          <span><HomeOutlined /> {bedrooms} Bedroom</span>
+          <span><BuildOutlined /> {bathrooms} Bathroom</span>
+          <span><ExpandAltOutlined /> {area} Sq.Ft.</span>
         </div>
 
         <div className="pro-card__actions">
-          <button className="call" onClick={
-            // handleCallClick
-            () => { alert("Call functionality is not implemented yet."); }
-            }>
+          <button
+            className="call"
+            onClick={(e) => { e.stopPropagation(); alert("Call functionality is not implemented yet."); }}
+          >
             <PhoneOutlined /> Call Us
           </button>
           <button className="whatsapp" onClick={handleWhatsappClick}>

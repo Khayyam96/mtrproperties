@@ -1,0 +1,124 @@
+.gallery-section {
+  padding: 40px 0;
+
+  .gallery-nav {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 18px;
+  }
+
+  /* grid içində spacing */
+  .slick-list { margin: 0 -14px; }
+  .slick-slide > div { padding: 0 14px; }
+
+  .g-card {
+    display: block;
+    width: 100%;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    cursor: zoom-in;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+    }
+  }
+}
+
+/* LIGHTBOX styles */
+.lightbox-modal {
+  .ant-modal-content {
+    background: rgba(32, 32, 32, 0.96);
+    padding: 16px;
+  }
+  .ant-modal-close {
+    color: #fff;
+  }
+
+  .lightbox-body {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+  }
+
+  .lb-image-wrap {
+    max-width: 100%;
+    max-height: 65vh;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 12px 36px rgba(0,0,0,.35);
+  }
+
+  .lb-image {
+    display: block;
+    max-width: 100%;
+    max-height: 65vh;
+    object-fit: contain;
+  }
+
+  .lb-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(2px);
+
+    &.prev { left: 12px; }
+    &.next { right: 12px; }
+  }
+
+  .lb-counter {
+    color: #fff;
+    text-align: center;
+    margin: 10px 0 8px;
+    font-weight: 600;
+    opacity: .9;
+  }
+
+  .lb-thumbs {
+    .slick-list { margin: 0 -8px; }
+    .slick-slide > div { padding: 0 8px; }
+  }
+
+  .lb-thumb {
+    border: 0;
+    padding: 0;
+    background: transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: .8;
+    outline: 2px solid transparent;
+    transition: opacity .2s, outline-color .2s;
+
+    &.is-active {
+      opacity: 1;
+      outline-color: #ffffff;
+    }
+
+    img {
+      display: block;
+      width: 100%;
+      height: 86px;
+      object-fit: cover;
+    }
+  }
+}
