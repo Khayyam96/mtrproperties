@@ -1,6 +1,5 @@
-import "./page.scss";
-import "@/assets/styles/globals.css";
-import "antd/dist/reset.css";
+import "../../src/assets/styles/globals.scss"
+
 
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";

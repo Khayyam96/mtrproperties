@@ -3,7 +3,6 @@
 import PropertyFilterBar, { PropertyFilterValues } from "@/components/Lib/PropertyFilterBar";
 import PlanBanner from "./PlanBanner";
 import { Row, Col, Card } from "antd";
-import "./index.scss"
 import ProjectDubai from "../Home/ProjectDubai";
 import ReasonToInvest from "../newProject/ReasonToInvest";
 import OffPlanContact from "../newProject/OffPlanContact";

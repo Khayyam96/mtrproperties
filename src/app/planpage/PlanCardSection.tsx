@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { Row, Col } from "antd";
-import "./index.scss";
 import { ProjectCard } from "@/components/Lib/ProjectCard/ProjectCard";
 import CustomPagination from "@/components/Lib/ProPagination/CustomPagination";
 

@@ -3,10 +3,16 @@
 import { Row, Col } from "antd";
 import Banner from "./Banner";
 import CountdownStrip from "../../../components/Lib/Countdown/CountdownStrip";
-import "./index.scss";
 import PlanBlogInfo from "./PlanBlogInfo";
 import VirtualTours from "./VirtualTours";
 import GallerySection from "../../../components/Lib/GallerySection/index"
+import PaymentPlan from "./PaymentPlan";
+import ContactSection from "./ContactSection";
+import AmenitiesSection from "./AmenitiesSection";
+import FloorPlanSection from "./FloorPlanSection";
+import RealestateInfoCard from "@/app/Home/RealestateInfoCard";
+import RealEstateFaqSection from "@/app/Home/RealEstateFaqSection";
+import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
 
 export default function PlanPageInner() {
     return (
@@ -26,7 +32,18 @@ export default function PlanPageInner() {
             </div>
             <PlanBlogInfo />
             <GallerySection />
+            <PaymentPlan />
+            <ContactSection />
+            <AmenitiesSection />
+            <FloorPlanSection />
             <VirtualTours />
+            <RealestateInfoCard
+                title="Realestate agency in dubai"
+                desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+                moreDesc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
+            />
+            <RealEstateFaqSection />
+            <SubscribeSection />
         </div>
     );
 }

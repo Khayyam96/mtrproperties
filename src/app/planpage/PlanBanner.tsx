@@ -2,6 +2,7 @@
 
 import { Typography } from "antd";
 import Image from "next/image";
+import "./index.scss"
 
 
 const { Title, Paragraph } = Typography;

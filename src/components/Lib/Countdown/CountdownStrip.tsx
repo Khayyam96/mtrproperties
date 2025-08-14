@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Row, Col } from "antd";
 import classNames from "classnames";
-import "./index.scss";
+
 
 type Size = "sm" | "md" | "lg";
 

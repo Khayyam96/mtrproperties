@@ -4,7 +4,6 @@ import { useMemo, useRef, useState } from "react";
 import { Typography, Row, Col } from "antd";
 import { CaretRightFilled, CloseOutlined } from "@ant-design/icons";
 import classNames from "classnames";
-import "./index.scss";
 
 const { Title } = Typography;
 

@@ -4,7 +4,6 @@ import { FC } from "react";
 import { Row, Col, Typography, Button } from "antd";
 import Image from "next/image";
 import classNames from "classnames";
-import "./index.scss";
 import { Container } from "@/components/Lib/ProContainer/Container";
 
 const { Title, Paragraph } = Typography;
