@@ -6,7 +6,6 @@ import React from "react";
 
 const { Title, Text } = Typography;
 
-// Dəyərlərin tipi müəyyən edilir
 type ContactFormValues = {
   name: string;
   email: string;

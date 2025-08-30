@@ -8,38 +8,39 @@ import { Container } from "../../components/Lib/ProContainer/Container";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./index.scss";
+import Link from "next/link";
 
 const { Title, Text } = Typography;
 
 const testimonials = [
-    {
-        name: "Person name",
-        title: "CEO and founder",
-        image: "/Ellipse.png",
-        description:
-            "The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-    },
-    {
-        name: "Person name",
-        title: "CEO and founder",
-        image: "/Ellipse1.png",
-        description:
-            "The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-    },
-    {
-        name: "Person name",
-        title: "CEO and founder",
-        image: "/Ellipse2.png",
-        description:
-            "The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-    },
-    {
-        name: "Person name",
-        title: "CEO and founder",
-        image: "/Ellipse1.png",
-        description:
-            "The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
-    }
+  {
+    name: "Person name",
+    title: "CEO and founder",
+    image: "/Ellipse.png",
+    description:
+      "The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
+  },
+  {
+    name: "Person name",
+    title: "CEO and founder",
+    image: "/Ellipse1.png",
+    description:
+      "The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
+  },
+  {
+    name: "Person name",
+    title: "CEO and founder",
+    image: "/Ellipse2.png",
+    description:
+      "The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
+  },
+  {
+    name: "Person name",
+    title: "CEO and founder",
+    image: "/Ellipse1.png",
+    description:
+      "The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English."
+  }
 ];
 
 export const TestimonialsCarousel = () => {
@@ -64,7 +65,17 @@ export const TestimonialsCarousel = () => {
         <div className="header-row">
           <div className="title-container">
             <Title level={3} className="title">Testimonials</Title>
-            <a href="#" className="see-all">See all</a>
+            {/* <Link href="/testimonials" className="see-all" aria-label="See all testimonials">
+              See all
+              <Image
+                src="/nexticon.png"  
+                alt=""
+                width={16}
+                height={16}
+                className="see-all-icon"
+                draggable={false}
+              />
+            </Link> */}
           </div>
           <div className="actions">
             <div className="arrows">
@@ -87,32 +98,33 @@ export const TestimonialsCarousel = () => {
             </div>
           </div>
         </div>
-      </Container>
 
-      <div className="slider-wrapper">
-        <Slider ref={sliderRef} {...settings}>
-          {testimonials.map((item, index) => (
-            <div key={index} className="testimonial-card">
-              <Image
-                src={item.image}
-                alt={item.name}
-                width={60}
-                height={60}
-                className="avatar"
-              />
-              <div>
-                <Text className="name">{item.name}</Text>
+
+        <div className="slider-wrapper">
+          <Slider ref={sliderRef} {...settings}>
+            {testimonials.map((item, index) => (
+              <div key={index} className="testimonial-card">
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  width={60}
+                  height={60}
+                  className="avatar"
+                />
+                <div>
+                  <Text className="name">{item.name}</Text>
+                </div>
+                <div>
+                  <Text className="title-text">{item.title}</Text>
+                </div>
+                <div>
+                  <Text className="desc">{item.description}</Text>
+                </div>
               </div>
-              <div>
-                <Text className="title-text">{item.title}</Text>
-              </div>
-              <div>
-                <Text className="desc">{item.description}</Text>
-              </div>
-            </div>
-          ))}
-        </Slider>
-      </div>
+            ))}
+          </Slider>
+        </div>
+      </Container>
     </div>
   );
 };

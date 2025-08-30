@@ -3,7 +3,6 @@
 
 .pro-card {
   width: 100%;
-  height: 400px;
   background: #fff;
   border-radius: 12px;
   overflow: hidden;
@@ -13,13 +12,15 @@
   cursor: pointer;
   transition: box-shadow 0.2s;
 
+  .pro-card__body{
+    display: block !important;
+  }
+
   &:hover {
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.12);
   }
 
   &__img {
-    position: relative;
-
     .carousel-slide {
       position: relative;
       width: 100%;
@@ -39,6 +40,7 @@
     left: 12px;
     display: flex;
     gap: 8px;
+    z-index: 9;
 
     .ant-tag {
       padding: 1px 10px;
@@ -97,11 +99,17 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 10px;
 
     h3 {
-      margin: 0;
-      font-size: 20px;
-      font-weight: 700;
+      margin-bottom: 0 !important;
+      color: #000000 !important;
+      font-size: 20px !important;
+      ;
+      line-height: 26px !important;
+      ;
+      font-weight: 800 !important;
+      ;
     }
 
     .type {
@@ -115,12 +123,23 @@
   }
 
   &__location {
-    font-size: 13px;
-    color: #4d4d4d;
     display: flex;
     align-items: center;
     gap: 6px;
-    margin: 6px 0;
+    margin-bottom: 10px !important;
+
+    .anticon-environment {
+      svg {
+        font-size: 18px;
+      }
+    }
+
+    .location_text {
+      font-size: 12px;
+      line-height: 14px;
+      color: #000000;
+      font-weight: 600;
+    }
   }
 
   &__meta {
@@ -131,10 +150,11 @@
     font-size: 13px;
     color: #19273d;
 
-    span {
-      display: flex;
+    .meta-item {
+      display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px; 
+      white-space: nowrap; 
     }
   }
 
@@ -142,7 +162,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    margin-top: 10px;
+    margin-top: 15px;
 
     button {
       height: 38px;
@@ -165,6 +185,7 @@
       color: #581C87;
       cursor: pointer;
       transition: ease-in-out 0.4s;
+
       &:hover {
         background: #662d91;
         color: #fff;
@@ -188,15 +209,6 @@
     }
   }
 
-  
+
 }
 
-@media (max-width: 575px) {
-  .pro-card {
-    height: auto;
-
-    &__img {
-      height: 170px;
-    }
-  }
-}

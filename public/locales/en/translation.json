@@ -1,0 +1,16 @@
+{
+  "nav": {
+    "buy": "Buy",
+    "rent": "Rent",
+    "newProjects": "New Projects",
+    "areas": "Areas",
+    "services": "Our Services",
+    "exploreMore": "Explore More",
+    "blog": "Blog",
+    "faq": "FAQ",
+    "consulting": "Consulting",
+    "mortgage": "Mortgage",
+    "dubai": "Dubai",
+    "abuDhabi": "Abu Dhabi"
+  }
+}

@@ -1,0 +1,53 @@
+.wrap {
+    padding: 25px 0 50px;
+    background-color: #fafafa;
+}
+
+.header {
+    text-align: center;
+    max-width: 880px;
+    margin: 0 auto 28px;
+
+    h2 {
+        font-size: 32px;
+        line-height: 40px;
+        color: #000;
+        margin-bottom: 20px;
+        font-weight: 800;
+    }
+
+    .subtitle {
+        color: #070807;
+        font-size: 20px;
+        line-height: 26px;
+        font-weight: 400;
+    }
+}
+
+
+.card,
+.carinfo {
+    border-radius: 5px;
+    box-shadow: 0 4px 12px #FDFAFF;
+    height: 100%;
+}
+
+
+.carinfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+
+.infoItem {
+    display: flex;
+    margin-bottom: 25px;
+
+    .contact-address {
+        color: red;
+        display: block;
+    }
+}

@@ -131,13 +131,11 @@ const MortgageCalculator: React.FC = () => {
   }
 
   const handleContactSubmit = (values: ContactForm) => {
-    // TODO: API integration here
     console.log("Contact form submitted:", values)
   }
 
   return (
     <div className="mortgage-calculator">
-      {/* Header Section */}
       <div className="mortgage-calculator__header">
         <Title level={2} className="title">
           Mortgage Calculator

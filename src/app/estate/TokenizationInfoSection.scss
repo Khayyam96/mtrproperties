@@ -1,0 +1,147 @@
+.tokenization-info {
+    background: #ffffff;
+    padding: 50px 0;
+
+    .header {
+        text-align: center;
+
+        .title {
+            font-weight: 800;
+            color: #000000;
+            font-size: 32px;
+            line-height: 40px;
+            margin-bottom: 10px;
+        }
+
+        .lead {
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+            color: #000000;
+            margin-bottom: 20px;
+        }
+    }
+
+    .left {
+        .h4 {
+           font-size: 24px;
+           line-height: 30px;
+           color:#000000;
+           margin-bottom: 30px;
+           font-weight: 800;
+        }
+
+        .ctaLink {
+            display: inline-block;
+            margin-top: 20px;
+
+            .cta {
+                height: 40px;
+                padding: 9px 16px;
+                border-radius: 8px;
+                background: #7e22ce;
+                border: 1px solid #6b21bd;
+                box-shadow: 0 10px 24px rgba(126, 34, 206, 0.2);
+
+                .anticon {
+                    margin-left: 8px;
+                }
+
+                &:hover,
+                &:focus {
+                    background: #6b21bd;
+                    border-color: #581c87;
+                }
+            }
+        }
+    }
+
+    .right {
+        .compareCard {
+            border: 1px solid #edf0f3;
+            border-radius: 12px;
+            background: #ffffff;
+            padding: 16px;
+            margin-bottom: 16px;
+
+            .compareHeader {
+                font-weight: 700;
+                font-size: 14px;
+                color: #374151;
+                padding: 8px 12px;
+                border: 1px solid #eef0f3;
+                border-radius: 10px;
+                display: inline-block;
+                margin-bottom: 14px;
+                background: #fafafa;
+            }
+
+            .mini {
+                border: 1px solid #e5e7eb;
+                border-radius: 12px;
+                background: #ffffff;
+
+                .miniHead {
+                    text-align: center;
+                    font-weight: 700;
+                    margin-bottom: 10px;
+                    color: #111827;
+                }
+
+                .list {
+                    margin: 0;
+                    padding-left: 18px;
+                    color: #4b5563;
+                    line-height: 1.7;
+                }
+
+                &.highlight {
+                    border-color: #d8c0f3;
+                    background: #faf5ff;
+                }
+            }
+        }
+
+        .govCard {
+            border: 1px solid #edf0f3;
+            border-radius: 12px;
+            background: #ffffff;
+
+            .govTop {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 6px;
+
+                .shield {
+                    font-size: 18px;
+                    color: #6b21bd;
+                }
+
+                .govTitle {
+                    font-size: 14px;
+                    color: #111827;
+                }
+            }
+
+            .govText {
+                margin: 0;
+                color: #4b5563;
+            }
+        }
+    }
+
+    @media (max-width: 991px) {
+        padding: 36px 16px 48px;
+
+        .header .title {
+            font-size: 24px;
+            line-height: 1.25;
+        }
+
+        .right .compareCard .compareHeader {
+            display: block;
+            text-align: center;
+        }
+    }
+}

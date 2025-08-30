@@ -27,8 +27,9 @@ export const GetDiscountSection = () => {
                 <Button type="default" className="contact-btn">
                   Contact Us
                 </Button>
-                <Button type="primary" className="whatsapp-btn" icon={<WhatsAppOutlined />}>
+                <Button type="primary" className="whatsapp-btn" >
                   Whatsapp
+                  <WhatsAppOutlined />
                 </Button>
               </Space>
             </div>

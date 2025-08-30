@@ -23,15 +23,17 @@ export const RealestateInfoCard = ({
                 <div className="re-title">{title}</div>
                 <div className="re-desc">{desc}</div>
                 {expanded && <div className="re-desc">{moreDesc}</div>}
-                <span
-                    className="read-more-btn"
-                    onClick={() => setExpanded((v) => !v)}
-                    role="button"
-                    tabIndex={0}
-                >
-                    {expanded ? "Read Less" : "Read More"}{" "}
-                    {expanded ? <UpOutlined /> : <DownOutlined />}
-                </span>
+                <div className="read-btns">
+                    <span
+                        className="read-more-btn"
+                        onClick={() => setExpanded((v) => !v)}
+                        role="button"
+                        tabIndex={0}
+                    >
+                        {expanded ? "Read Less" : "Read More"}{" "}
+                        {expanded ? <UpOutlined /> : <DownOutlined />}
+                    </span>
+                </div>
             </Container>
         </div>
     );

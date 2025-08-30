@@ -19,7 +19,7 @@ const base: Omit<TProperty, "id" | "slug"> = {
   amenities: ["Pool", "Gym", "Covered Parking", "24/7 Security"],
 };
 
-export const properties: TProperty[] = Array.from({ length: 36 }).map((_, i) => {
+export const properties: TProperty[] = Array.from({ length: 10 }).map((_, i) => {
   const name = i % 3 === 0 ? "Santa Fe Residences"
             : i % 3 === 1 ? "Marina Heights"
             : "Palm Bay Tower";

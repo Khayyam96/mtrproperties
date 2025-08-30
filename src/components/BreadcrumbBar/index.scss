@@ -1,0 +1,91 @@
+.breadcrumpblock {
+  padding: 20px 0;
+  background-color: #fff;
+}
+
+.breadcrumb-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  color: #111;
+  font-size: 16px;
+  line-height: 22px;
+  flex-wrap: nowrap;
+  min-width: 0; 
+}
+
+.breadcrumb-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+  flex: 0 0 auto; 
+
+  &:hover .arrow { transform: translateX(-2px); }
+}
+
+.breadcrumb-divider {
+  width: 1px;
+  height: 22px;
+  background: #111;
+  opacity: 0.25;
+  flex: 0 0 auto; 
+}
+
+.crumbs {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden; 
+
+  li {
+    display: inline-flex;
+    align-items: center;
+    color: #111;
+    white-space: nowrap;
+    flex: 0 0 auto; 
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      &:hover { text-decoration: underline; }
+    }
+  }
+
+  li:last-child {
+    flex: 1 1 auto;
+    min-width: 0;
+
+    > span,
+    > a {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+  }
+
+  li + li::before {
+    content: "›";
+    display: inline-block;
+    margin: 0 8px;
+    opacity: 0.7;
+    flex: 0 0 auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .breadcrumb-bar { gap: 12px; font-size: 14px; line-height: 20px; }
+  .breadcrumb-divider { height: 20px; opacity: 0.2; }
+  .breadcrumb-back strong { font-weight: 600; font-size: 14px; }
+}

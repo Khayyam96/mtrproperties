@@ -12,19 +12,25 @@
     align-items: center;
 
     .left {
+      display: flex;
+
       span {
-        display: inline-block;
+        display: flex;
         align-items: center;
         margin-right: 30px;
-        font-size: 16px;
-        line-height: 24px;
-        color: #fff;
-        font-weight: 600;
 
-        img {
-          margin-right: 6px;
+        @media (max-width: 767px) { margin-right: 15px; }
+
+        p {
+          font-size: 16px;
+          line-height: 24px;
+          color: #fff;
+          font-weight: 600;
+
+          @media (max-width: 767px) { display: none; }
         }
 
+        img { margin-right: 6px; }
       }
     }
 
@@ -36,15 +42,9 @@
         line-height: 24px;
         color: #fff;
         font-weight: 600;
-        .lang-icon{
-          margin-left: 6px;
-          width: 12px;
-          height: 6px;
-        }
 
-        .flag-icon{
-          margin-right: 5px;
-        }
+        .lang-icon { margin-left: 6px; width: 12px; height: 6px; }
+        .flag-icon { margin-right: 5px; }
       }
     }
   }
@@ -70,10 +70,7 @@
       }
     }
 
-    .desktop-nav {
-      display: flex;
-      align-items: center;
-    }
+    .desktop-nav { display: flex; align-items: center; }
 
     .main-nav {
       list-style: none;
@@ -88,71 +85,109 @@
         line-height: 22px;
         font-weight: 600;
         transition: all 0.3s ease;
-        img{
-          width: 13px;
-          height: 7px;
-        }
 
-        &:hover {
-          color: #6e1eff;
-        }
+        &:hover { color: #6e1eff; }
       }
     }
 
     .actions {
-      display: flex;
-      align-items: center;
-      gap: 16px;
+      display: flex; align-items: center; gap: 16px;
 
       .whatsapp-btn {
-        background: #25D366;
-        border: 1px solid #25D366;
-        height: 40px;
-        padding: 9px 16px;
-        font-weight: 600;
-        font-size: 16px;
-        line-height: 24px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: #fff;
-        box-shadow: none;
+        background: #25d366; border: 1px solid #25d366;
+        height: 40px; padding: 9px 16px; font-weight: 600;
+        font-size: 16px; line-height: 24px; display: flex; gap: 10px;
+        color: #fff; box-shadow: none;
 
-        &:hover {
-          background: #1fa855;
-        }
+        &:hover { background: #1fa855; }
       }
 
-      .burger {
-        display: none;
-        font-size: 20px;
-      }
+      .burger { display: none; font-size: 20px; }
     }
   }
 
+  /* ====== MOBILE DRAWER – screenshot uyğun ====== */
   .drawer-content {
-    padding: 24px;
-    .contact-btn--mobile {
-      margin-top: 24px;
-      width: 100%;
-      background: #25D366;
-      border: none;
-      height: 40px;
-      font-weight: 500;
+    display: flex; flex-direction: column; min-height: 100%;
+    padding: 0;
 
-      &:hover {
-        background: #1fa855;
+    .drawer-head {
+      padding: 20px 24px 8px;
+      .drawer-logo { position: relative; width: 160px; height: 42px; }
+    }
+
+    .mobile-nav {
+      list-style: none;
+      padding: 8px 24px 12px;
+      margin: 0;
+      flex: 1;
+      overflow: auto;
+    }
+
+    .mobile-item {
+      margin: 4px 0;
+
+      .mobile-text,
+      > a {
+        display: block;
+        padding: 12px 0;
+        font-size: 18px;
+        line-height: 26px;
+        font-weight: 600;
+        color: #343535;
+      }
+
+      &.has-children {
+        .mobile-item-head {
+          width: 100%;
+          display: flex; align-items: center; justify-content: space-between;
+          padding: 12px 0;
+          border: 0; background: transparent;
+          font-size: 18px; line-height: 26px; font-weight: 600; color: #343535;
+          cursor: pointer;
+
+          .chevron { font-size: 14px; transition: transform .2s ease; }
+        }
+
+        &.open .chevron { transform: rotate(180deg); }
+
+        /* Explore/Services alt panel – açıq bənövşəyi fon, radiuslu qutu */
+        .mobile-sublist {
+          background: #f7f2ff;
+          border-radius: 12px;
+          padding: 8px;
+          margin: 8px 0 2px;
+        }
+
+        .mobile-subitem {
+          display: block;
+          padding: 12px 12px;
+          border-radius: 10px;
+          font-size: 16px; line-height: 24px; font-weight: 600;
+          color: #343535;
+
+          &:hover { color: #6e1eff; }
+
+          &.is-active {
+            background: #ffffff;
+            border-left: 3px solid #6e1eff;
+            color: #6e1eff;
+          }
+        }
       }
     }
 
-    .lang-switch {
-      display: block;
-      margin-top: 16px;
-      font-size: 16px;
-      color: #343535;
+    .drawer-footer {
+      position: sticky; bottom: 0;
+      background: #fff;
+      padding: 16px 24px 24px;
+      box-shadow: 0 -1px 0 #f0f0f0;
 
-      &:hover {
-        color: #6e1eff;
+      .contact-btn--mobile {
+        width: 100%; height: 44px; border-radius: 8px;
+        background: #25d366; border: none; font-weight: 600; font-size: 16px;
+
+        &:hover { background: #1fa855; }
       }
     }
   }
@@ -161,18 +196,10 @@
 @media (max-width: 992px) {
   .main-header {
     .nav-container {
-      .desktop-nav {
-        display: none;
-      }
-
+      .desktop-nav { display: none; }
       .actions {
-        .whatsapp-btn {
-          display: none;
-        }
-
-        .burger {
-          display: inline-flex;
-        }
+        .whatsapp-btn { display: none; }
+        .burger { display: inline-flex; }
       }
     }
   }

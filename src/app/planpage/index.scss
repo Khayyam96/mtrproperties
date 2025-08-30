@@ -50,11 +50,11 @@
 
 
 .project-dubai-section {
-  padding: 60px 20px;
+  padding: 30px 0px;
   background-color: #fff;
 
   .header {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 
     h2{
       color:#343535;
@@ -80,6 +80,12 @@
 
     .slider-arrow {
       position: absolute;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0% !important;
       top: 40%;
       z-index: 2;
       transform: translateY(-50%);
@@ -87,11 +93,11 @@
       box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
 
       &.left {
-        left: -20px;
+        left: -55px;
       }
 
       &.right {
-        right: -20px;
+        right: -55px;
       }
     }
   }

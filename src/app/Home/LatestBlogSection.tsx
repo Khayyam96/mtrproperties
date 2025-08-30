@@ -41,7 +41,7 @@ const blogData = [
 ];
 
 export const LatestBlogSection: FC = () => {
-  const sliderRef = useRef<Slider | null>(null); // ✅ any əvəzinə Slider tipi
+  const sliderRef = useRef<Slider | null>(null); 
 
   const settings: Settings = {
     dots: false,
@@ -60,7 +60,7 @@ export const LatestBlogSection: FC = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 1.01,
         },
       },
     ],
@@ -79,15 +79,22 @@ export const LatestBlogSection: FC = () => {
           <div className="slider-nav">
             <span
               className="nav left"
+              role="button"
+              tabIndex={0}
               onClick={() => sliderRef.current?.slickPrev()}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && sliderRef.current?.slickPrev()}
             >
-              <LeftOutlined />
+              <Image src="/previcon.png" alt="Previous" width={18} height={18} />
             </span>
+
             <span
               className="nav right"
+              role="button"
+              tabIndex={0}
               onClick={() => sliderRef.current?.slickNext()}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && sliderRef.current?.slickNext()}
             >
-              <RightOutlined />
+              <Image src="/nexticon.png" alt="Next" width={18} height={18} />
             </span>
           </div>
         </div>

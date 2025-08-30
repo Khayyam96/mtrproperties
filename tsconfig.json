@@ -14,13 +14,10 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "plugins": [{ "name": "next" }],
+    "baseUrl": ".",                       // ✅ ƏLAVƏ ET
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["src/*"]                    // istəsən "./src/*" da olar
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

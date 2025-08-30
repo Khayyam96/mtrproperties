@@ -1,0 +1,16 @@
+{
+  "nav": {
+    "buy": "Купить",
+    "rent": "Аренда",
+    "newProjects": "Новые проекты",
+    "areas": "Районы",
+    "services": "Наши услуги",
+    "exploreMore": "Узнать больше",
+    "blog": "Блог",
+    "faq": "FAQ",
+    "consulting": "Консалтинг",
+    "mortgage": "Ипотека",
+    "dubai": "Дубай",
+    "abuDhabi": "Абу-Даби"
+  }
+}

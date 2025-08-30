@@ -14,7 +14,7 @@ export const SubscribeSection = () => {
       </Text>
       <Form layout="vertical">
         <Row justify="center" gutter={16}>
-          <Col xs={24} md={6}>
+          <Col xs={24} md={4}>
             <Form.Item label="Name" name="name">
               <Input placeholder="eg: John Doe" />
             </Form.Item>

@@ -80,14 +80,16 @@ export const SearchTrendsSection = () => {
       <Container>
         <div className="text-center header">
           <Title level={3}>Propular and Trending Searches in UAE</Title>
-          <FilterTabs
-            activeKey={activeKey}
-            onChange={setActiveKey}
-            tabs={[
-              { key: "sale", label: "Sale" },
-              { key: "rent", label: "Rent" },
-            ]}
-          />
+          <div className="filter-tabs">
+            <FilterTabs
+              activeKey={activeKey}
+              onChange={setActiveKey}
+              tabs={[
+                { key: "sale", label: "Sale" },
+                { key: "rent", label: "Rent" },
+              ]}
+            />
+          </div>
         </div>
 
         <Row gutter={[24, 24]} className="list-columns">

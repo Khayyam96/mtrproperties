@@ -2,6 +2,7 @@
 
 import { Row, Col, Typography, Button } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
+import { Container } from "@/components/Lib/ProContainer/Container";
 
 
 const { Title, Paragraph } = Typography;
@@ -30,9 +31,10 @@ const cards = [
 export const AboutSection = () => {
   return (
     <section className="about-section">
-      <div className="about-header">
+      <Container>
+        <div className="about-header">
         <Title level={2}>About MTR Properties</Title>
-        <Paragraph>
+        <Paragraph className="about-text">
           Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
           industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
           scrambled it to make a type specimen book.
@@ -45,14 +47,16 @@ export const AboutSection = () => {
           <Col xs={24} sm={12} md={8} key={index}>
             <div className="about-card">
               <Title level={4}>{card.title}</Title>
-              <Paragraph>{card.content}</Paragraph>
-              <Button type="primary" icon={<ArrowRightOutlined />} className="about-btn">
+              <Paragraph className="card-text">{card.content}</Paragraph>
+              <Button type="primary" className="about-btn">
                 {card.button}
+                <ArrowRightOutlined />
               </Button>
             </div>
           </Col>
         ))}
       </Row>
+      </Container>
     </section>
   );
 };

@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons";
 import Slider from "react-slick";
 import { useRef } from "react";
+import { useRouter } from "next/navigation"; 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./index.scss";
@@ -18,6 +19,7 @@ import "./index.scss";
 const { Title } = Typography;
 
 export type TProCard = {
+  slug: string;            
   images: string[];
   name: string;
   price: string | number;
@@ -26,13 +28,10 @@ export type TProCard = {
   isReadyToMove?: boolean;
   isOffPlan?: boolean;
   onClick?: () => void;
-  // aşağıdakıları sil, əgər istifadə etməyəcəksənsə
-  // bedrooms?: number;
-  // bathrooms?: number;
-  // area?: number;
 };
 
 export const LandPropertyCard: React.FC<TProCard> = ({
+  slug,
   images,
   name,
   price,
@@ -41,14 +40,13 @@ export const LandPropertyCard: React.FC<TProCard> = ({
   onClick,
   isReadyToMove,
   isOffPlan,
-  // bedrooms,
-  // bathrooms,
-  // area,
 }) => {
   const sliderRef = useRef<Slider>(null);
+  const router = useRouter(); 
 
   const handleCardClick = () => {
-    if (onClick) onClick();
+    if (onClick) return onClick();
+    router.push(`/popylarinner/${slug}`); 
   };
 
   const goPrev = (e: React.MouseEvent) => {
@@ -68,17 +66,15 @@ export const LandPropertyCard: React.FC<TProCard> = ({
     }
   };
 
-  const settings = {
-    dots: false,
-    arrows: false,
-    infinite: true,
-    speed: 400,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
+  const settings = { dots: false, arrows: false, infinite: true, speed: 400, slidesToShow: 1, slidesToScroll: 1 };
 
   return (
     <div className="pro-card" onClick={handleCardClick}>
+      <div className="tags">
+        <div className="left-tag">Resident</div>
+        <div className="right-tag">Ready to Build</div>
+      </div>
+
       <div className="pro-card__img">
         <Slider {...settings} ref={sliderRef}>
           {images.map((img, idx) => (
@@ -116,41 +112,25 @@ export const LandPropertyCard: React.FC<TProCard> = ({
 
         <div className="pro-card__location">
           <EnvironmentOutlined />
-          <span>
-            {name}, {location}
-          </span>
+          <span>{name}, {location}</span>
         </div>
 
         <div className="pro-card__meta">
-          <span>
-            <Image
-              src="/ic1.png"
-              width={13}
-              height={13}
-              className="asda"
-              alt=""
-            /> 4 Utilities
-          </span>
-          <span>
-            <Image
-              src="/ic2.png"
-              width={13}
-              height={13}
-              className="asda"
-              alt=""
-            /> 8,500 sq ft
-          </span>
+          <span><Image src="/ic1.png" width={13} height={13} alt="" /> 4 Utilities</span>
+          <span><Image src="/ic2.png" width={13} height={13} alt="" /> 8,500 sq ft</span>
         </div>
 
         <div className="pro-card__actions">
           <button
             className="call"
-            onClick={() => {
+            onClick={(e) => {
+              e.stopPropagation();                
               alert("Call functionality is not implemented yet.");
             }}
           >
             <PhoneOutlined /> Call Us
           </button>
+
           <button className="whatsapp" onClick={handleWhatsappClick}>
             <WhatsAppOutlined /> Whatsapp
           </button>

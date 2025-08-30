@@ -1,16 +1,17 @@
-import "../../src/assets/styles/globals.scss"
-
-
+// app/layout.tsx
 import type { Metadata } from "next";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Geist, Geist_Mono } from "next/font/google";
-
-import { ConfigProvider, Layout } from "antd";
-import { Content, Header } from "antd/es/layout/layout"; 
-import MainHeader from "@/components/Layout/Header";
-import { MainFooter } from "@/components/Layout/Footer";
 import { Lato } from "next/font/google";
 
+import { Layout } from "antd";
+import { Content, Header } from "antd/es/layout/layout";
+import NextTopLoader from "nextjs-toploader";
+import MainHeader from "@/components/Layout/Header";
+import { MainFooter } from "@/components/Layout/Footer";
+import ClientAntdProvider from "@/components/ClientAntdProvider";
 
+import "../../src/assets/styles/globals.scss";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +20,7 @@ const geistSans = Geist({
 
 const lato = Lato({
   subsets: ["latin"],
-  weight: ["300", "400", "700", "900"], 
+  weight: ["300", "400", "700", "900"],
   variable: "--font-lato",
 });
 
@@ -41,13 +42,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={lato.className}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <ConfigProvider
-          theme={{
-            token: {
-              colorPrimary: "#19273d",
-            },
-          }}
-        >
+        {/* Dilə görə RTL/LTR və mövzu idarəsi client tərəfdə */}
+        <ClientAntdProvider>
           <Layout>
             <Header
               style={{
@@ -61,10 +57,17 @@ export default function RootLayout({
             >
               <MainHeader />
             </Header>
-            <Content>{children}</Content>
+
+            <Content>
+              <AntdRegistry>
+                <NextTopLoader showSpinner={false} height={3} />
+                {children}
+              </AntdRegistry>
+            </Content>
+
             <MainFooter />
           </Layout>
-        </ConfigProvider>
+        </ClientAntdProvider>
       </body>
     </html>
   );

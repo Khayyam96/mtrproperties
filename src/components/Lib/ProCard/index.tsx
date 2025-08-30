@@ -22,7 +22,7 @@ import "./index.scss";
 const { Title } = Typography;
 
 export type TProCard = {
-  slug: string;             
+  slug: string;
   images: string[];
   name: string;
   price: string | number;
@@ -115,15 +115,26 @@ export const ProCard: React.FC<TProCard> = ({
 
         <div className="pro-card__location">
           <EnvironmentOutlined />
-          <span>
-            {name}, {location}
+          <span className="location_text">
+            {name}
           </span>
         </div>
 
         <div className="pro-card__meta">
-          <span><HomeOutlined /> {bedrooms} Bedroom</span>
-          <span><BuildOutlined /> {bathrooms} Bathroom</span>
-          <span><ExpandAltOutlined /> {area} Sq.Ft.</span>
+          <span className="meta-item">
+            <Image src="/propertimg1.png" alt="Bedrooms" width={18} height={18} />
+            {bedrooms}
+          </span>
+
+          <span className="meta-item">
+            <Image src="/propertimg2.png" alt="Bathrooms" width={18} height={18} />
+            {bathrooms}
+          </span>
+
+          <span className="meta-item">
+            <Image src="/propertimg2.png" alt="Area" width={18} height={18} />
+            {area} Sq.Ft.
+          </span>
         </div>
 
         <div className="pro-card__actions">
