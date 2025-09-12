@@ -1,9 +1,9 @@
 "use client";
 
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
-import GoogleReviewsSection from "../Home/GoogleReviewsSection";
+// import GoogleReviewsSection from "../Home/GoogleReviewsSection";
 import MortgageCalculator from "../Home/MortgageCalculator";
-import { MostPopularPlacesSection } from "../Home/MostPopularPlacesSection";
+// import { MostPopularPlacesSection } from "../Home/MostPopularPlacesSection";
 import BankOffersCompareSection from "./BankOffersCompareSection";
 import BanksCarouselSection from "./BanksCarouselSection";
 import DocumentsRequiredSection from "./DocumentsRequiredSection";
@@ -11,8 +11,8 @@ import MortgageHero from "./MortgageHero";
 import ResidentsVsNonResidents from "./ResidentsVsNonResidents";
 import SalaryEligibilitySection from "./SalaryEligibilitySection";
 import SpecialOffersSection from "./SpecialOffersSection";
-import LatestBlogSection from "../Home/LatestBlogSection";
-import RealEstateFaqSection from "../Home/RealEstateFaqSection";
+// import LatestBlogSection from "../Home/LatestBlogSection";
+// import RealEstateFaqSection from "../Home/RealEstateFaqSection";
 
 
 export default function BrokersPage() {
@@ -25,16 +25,16 @@ export default function BrokersPage() {
             />
             <MortgageCalculator />
             <SpecialOffersSection />
-            <MostPopularPlacesSection />
+            {/* <MostPopularPlacesSection /> */}
             <DocumentsRequiredSection />
             <ResidentsVsNonResidents />
             <SalaryEligibilitySection />
             <BankOffersCompareSection />
             <BanksCarouselSection />
-            <GoogleReviewsSection />
+            {/* <GoogleReviewsSection /> */}
             <SubscribeSection />
-            <LatestBlogSection />
-            <RealEstateFaqSection />
+            {/* <LatestBlogSection />
+            <RealEstateFaqSection /> */}
         </div>
     );
 }

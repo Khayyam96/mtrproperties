@@ -25,7 +25,7 @@ import LocationNearby from "./LocationNearby";
 import "./index.scss";
 import PopularProperties from "../PopularProperties";
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
-import LatestBlogSection from "@/app/Home/LatestBlogSection";
+// import LatestBlogSection from "@/app/Home/LatestBlogSection";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -293,7 +293,7 @@ const PropertyInner: FC<Props> = ({ property }) => {
 
         <PopularProperties />
         <SubscribeSection />
-        <LatestBlogSection />
+        {/* <LatestBlogSection /> */}
       </Container>
     </div>
   );

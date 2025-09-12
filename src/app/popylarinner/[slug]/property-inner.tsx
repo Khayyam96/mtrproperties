@@ -13,7 +13,7 @@ import "slick-carousel/slick/slick-theme.css";
 import LocationNearby from "./LocationNearby";
 import "./index.scss";
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
-import LatestBlogSection from "@/app/Home/LatestBlogSection";
+// import LatestBlogSection from "@/app/Home/LatestBlogSection";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -313,7 +313,7 @@ const PropertyInner: FC<Props> = ({ property }) => {
         </Row>
 
         <SubscribeSection />
-        <LatestBlogSection />
+        {/* <LatestBlogSection /> */}
       </Container>
     </div>
   );

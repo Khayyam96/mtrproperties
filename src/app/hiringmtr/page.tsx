@@ -1,7 +1,7 @@
 "use client";
 
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
-import LatestBlogSection from "../Home/LatestBlogSection";
+// import LatestBlogSection from "../Home/LatestBlogSection";
 import ApplySection from "./ApplySection";
 import AreaTeamsSection from "./AreaTeamsSection";
 import Banner from "./Banner";
@@ -32,7 +32,7 @@ export default function BrokersPage() {
             />
             <SuccessMetricsSection />
             <StoriesAndTrendSection />
-            <LatestBlogSection />
+            {/* <LatestBlogSection /> */}
             <SubscribeSection />
         </div>
     );

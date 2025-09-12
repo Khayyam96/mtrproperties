@@ -5,12 +5,10 @@ import { findPropertyBySlug, properties } from "@/data/properties";
 export async function generateStaticParams() {
   return properties.map((p) => ({ slug: p.slug }));
 }
+export default async function PropertyPage({params}: {params: Promise<{ slug: string }>}) {
+  const { slug } = await params;
 
-
-type Props = { params: { slug: string } };
-
-export default function PropertyPage({ params }: Props) {
-  const item = findPropertyBySlug(params.slug);
+  const item = findPropertyBySlug(slug);
   if (!item) return notFound();
   return <PropertyInner property={item} />;
 }

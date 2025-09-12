@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Row, Col } from "antd";
-import { ProjectCard } from "../../components/Lib/ProjectCard/ProjectCard";
+// import { ProjectCard } from "../../components/Lib/ProjectCard/ProjectCard";
 import CustomPagination from "../../components/Lib/ProPagination/CustomPagination";
 import { Container } from "../../components/Lib/ProContainer/Container"; 
 import "./index.scss";
@@ -42,12 +42,12 @@ export const ProjectListingSection = () => {
         <Row gutter={[24, 24]}>
           {paginatedProjects.map((project) => (
             <Col key={project.id} xs={24} sm={12} md={8}>
-              <ProjectCard
+              {/* <ProjectCard
                 name={project.name}
                 location={project.location}
                 price={project.price}
                 image={project.image}
-              />
+              /> */}
             </Col>
           ))}
         </Row>

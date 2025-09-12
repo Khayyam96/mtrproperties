@@ -1,8 +1,8 @@
 "use client";
 
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
-import LatestBlogSection from "../Home/LatestBlogSection";
-import RealEstateFaqSection from "../Home/RealEstateFaqSection";
+// import LatestBlogSection from "../Home/LatestBlogSection";
+// import RealEstateFaqSection from "../Home/RealEstateFaqSection";
 import AboutMTRSection from "./AboutMTRSection";
 import BenefitsSection from "./BenefitsSection";
 import CommissionCalculatorSection from "./CommissionCalculator";
@@ -24,8 +24,8 @@ export default function BrokersPage() {
             <TestimonialsCarouselSection />
             <AboutMTRSection />
             <SubscribeSection />
-            <LatestBlogSection />
-            <RealEstateFaqSection />
+            {/* <LatestBlogSection/>
+            <RealEstateFaqSection /> */}
         </div>
     );
 }

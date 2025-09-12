@@ -8,7 +8,7 @@ import ProjectListingSection from "./ProjectListingSection";
 import ReasonToInvest from "./ReasonToInvest";
 import OffPlanContact from "./OffPlanContact";
 import RealestateInfoCard from "../Home/RealestateInfoCard";
-import RealEstateFaqSection from "../Home/RealEstateFaqSection";
+// import RealEstateFaqSection from "../Home/RealEstateFaqSection";
 
 export default function AboutPage() {
   return (
@@ -23,7 +23,7 @@ export default function AboutPage() {
         desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
         moreDesc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
       />
-      <RealEstateFaqSection />
+      {/* <RealEstateFaqSection /> */}
     </div>
   );
 }
