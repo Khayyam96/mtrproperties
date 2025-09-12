@@ -8,7 +8,6 @@ import { Container } from "../../components/Lib/ProContainer/Container";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./index.scss";
-import Link from "next/link";
 
 const { Title, Text } = Typography;
 

@@ -1,8 +1,6 @@
 "use client";
 
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
-import LatestBlogSection from "../Home/LatestBlogSection";
-import RealEstateFaqSection from "../Home/RealEstateFaqSection";
 import AdditionalBenefits from "./AdditionalBenefits";
 import DocumentRequirements from "./DocumentRequirements";
 import GovRegulated from "./GovRegulated";
@@ -35,7 +33,6 @@ export default function BrokersPage() {
             />
             <HowToInvest onCTA={() => console.log("Contact clicked")} />
             <DocumentRequirements />
-            <RealEstateFaqSection />
             <SubscribeSection />
         </div>
     );

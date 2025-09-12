@@ -6,7 +6,7 @@ import { Row, Col, Card, Typography } from "antd";
 import { ExportOutlined } from "@ant-design/icons";
 import styles from "./index.module.scss";
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 type Agency = {
   title: string;

@@ -10,7 +10,7 @@ import { Button, Dropdown, Drawer, Space } from "antd";
 import type { MenuProps } from "antd";
 import "./index.scss";
 
-type NavChild = { key: string; label: string; href: string };
+type NavChild = { key: string; label: React.ReactNode; href: string };
 type NavItem = { key: string; label: React.ReactNode; href?: string; children?: NavChild[] };
 
 const LANGS = [
@@ -20,7 +20,7 @@ const LANGS = [
   { key: "de", label: "DE", flag: "/de.png" },
   { key: "es", label: "ES", flag: "/es.png" },
   { key: "fr", label: "FR", flag: "/fr.png" },
-];
+] as const;
 
 const renderDesktopNav = (items: NavItem[]) => (
   <ul className="main-nav">
@@ -68,31 +68,32 @@ export default function MainHeader() {
     ),
   }));
 
-  const onLanguageClick: MenuProps["onClick"] = ({ key }) => {
-    i18n.changeLanguage(String(key));
+  // ✅ Fix: avoid destructuring so 'key' is strongly typed (no implicit any)
+  const onLanguageClick: MenuProps["onClick"] = (info) => {
+    i18n.changeLanguage(String(info.key));
     setOpen(false);
   };
 
   const navItems = useMemo<NavItem[]>(
     () => [
-      { key: "buy", label: <Space>{t("nav.buy")}</Space>, href: "/buy" },
-      { key: "rent", label: <Space>{t("nav.rent")}</Space>, href: "/rent" },
-      { key: "projects", label: <Space>{t("nav.newProjects")}</Space>, href: "/projects" },
-      { key: "areas", label: <Space>{t("nav.areas")}</Space>, href: "/areas" },
+      { key: "buy", label: <Space>{String(t("nav.buy"))}</Space>, href: "/buy" },
+      { key: "rent", label: <Space>{String(t("nav.rent"))}</Space>, href: "/rent" },
+      { key: "projects", label: <Space>{String(t("nav.newProjects"))}</Space>, href: "/projects" },
+      { key: "areas", label: <Space>{String(t("nav.areas"))}</Space>, href: "/areas" },
       {
         key: "services",
-        label: <Space>{t("nav.services")}</Space>,
+        label: <Space>{String(t("nav.services"))}</Space>,
         children: [
-          { key: "consulting", label: t("nav.consulting"), href: "/services/consulting" },
-          { key: "mortgage", label: t("nav.mortgage"), href: "/services/mortgage" },
+          { key: "consulting", label: String(t("nav.consulting")), href: "/services/consulting" },
+          { key: "mortgage", label: String(t("nav.mortgage")), href: "/services/mortgage" },
         ],
       },
       {
         key: "explore",
-        label: <Space>{t("nav.exploreMore")}</Space>,
+        label: <Space>{String(t("nav.exploreMore"))}</Space>,
         children: [
-          { key: "about", label: t("nav.about"), href: "/about" },
-          { key: "blog", label: t("nav.blog"), href: "/blog" },
+          { key: "about", label: String(t("nav.about")), href: "/about" },
+          { key: "blog", label: String(t("nav.blog")), href: "/blog" },
         ],
       },
     ],
@@ -108,11 +109,11 @@ export default function MainHeader() {
 
   const getItemText = (item: NavItem): string => {
     if (typeof item.label === "string") return item.label;
-    return t(`nav.${item.key}` as any);
+    return String(t(`nav.${item.key}`));
   };
 
   const renderMobileNav = (items: NavItem[]) => {
-    const collapsibleKeys = new Set(["services", "explore"]);
+    const collapsibleKeys = new Set<string>(["services", "explore"]);
     return (
       <ul className="mobile-nav">
         {items.map((item) => {
@@ -130,7 +131,7 @@ export default function MainHeader() {
           return (
             <li key={item.key} className={`mobile-item has-children ${isOpen ? "open" : ""}`}>
               <button className="mobile-item-head" onClick={() => toggleGroup(item.key)}>
-                <span>{t(`nav.${item.key}`)}</span>
+                <span>{String(t(`nav.${item.key}`))}</span>
                 <DownOutlined className="chevron" />
               </button>
 

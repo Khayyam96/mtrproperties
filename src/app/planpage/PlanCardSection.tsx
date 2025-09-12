@@ -1,3 +1,4 @@
+// PlanCardSection.tsx
 "use client";
 
 import { useMemo, useState } from "react";
@@ -7,6 +8,7 @@ import CustomPagination from "@/components/Lib/ProPagination/CustomPagination";
 
 type TItem = {
   id: number;
+  slug: string;        
   name: string;
   location: string;
   price: string;
@@ -15,24 +17,28 @@ type TItem = {
 
 const PAGE_SIZE = 9;
 
-const IMAGES = ["inner2.png", "inner2.png", "inner2.png"];
+const IMAGES = ["/inner2.png", "/inner2.png", "/inner2.png"];
 
-const MOCK_DATA: TItem[] = Array.from({ length: 27 }, (_, i) => ({
-  id: i + 1,
-  name: "Lotus at Creek Beach",
-  location: "Place of this property",
-  price: "Starting at AED 970K*",
-  image: IMAGES[i % IMAGES.length],
-}));
+// sadə slugify helper
+const slugify = (s: string) =>
+  s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)+/g, "");
+
+const MOCK_DATA: TItem[] = Array.from({ length: 27 }, (_, i) => {
+  const name = "Lotus at Creek Beach";
+  return {
+    id: i + 1,
+    slug: `${slugify(name)}-${i + 1}`, // unikal olsun deyə id əlavə etdik
+    name,
+    location: "Place of this property",
+    price: "Starting at AED 970K*",
+    image: IMAGES[i % IMAGES.length],
+  };
+});
 
 export default function PlanCardSection() {
   const [current, setCurrent] = useState<number>(1);
 
-  const totalPages = useMemo(
-    () => Math.ceil(MOCK_DATA.length / PAGE_SIZE),
-    []
-  );
-
+  const totalPages = useMemo(() => Math.ceil(MOCK_DATA.length / PAGE_SIZE), []);
   const paginated = useMemo(() => {
     const start = (current - 1) * PAGE_SIZE;
     return MOCK_DATA.slice(start, start + PAGE_SIZE);
@@ -44,6 +50,7 @@ export default function PlanCardSection() {
         {paginated.map((item) => (
           <Col key={item.id} xs={24} md={12} lg={8}>
             <ProjectCard
+              slug={item.slug}            // ← göndərilir
               name={item.name}
               location={item.location}
               price={item.price}

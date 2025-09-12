@@ -1,42 +1,32 @@
 "use client";
 
 import { Collapse } from "antd";
+import type { CollapseProps } from "antd";
 import "./index.scss";
 
-const { Panel } = Collapse;
-
-type FaqItem = {
-  key: string;
-  label: string;
-  children: React.ReactNode;
-};
-
 type FaqAccordionProps = {
-  items: FaqItem[];
-  defaultActiveKey?: string[];
+  items: CollapseProps["items"];
+  defaultActiveKey?: string | string[];
   accordion?: boolean;
   expandIconPosition?: "start" | "end";
+  className?: string;
 };
 
 export const FaqAccordion = ({
   items,
-  defaultActiveKey = [],
+  defaultActiveKey,
   accordion = true,
   expandIconPosition = "end",
+  className = "faq-accordion",
 }: FaqAccordionProps) => {
   return (
     <Collapse
       accordion={accordion}
+      items={items}                          
       defaultActiveKey={defaultActiveKey}
       expandIconPosition={expandIconPosition}
-      className="faq-accordion"
-    >
-      {items.map((item) => (
-        <Panel header={item.label} key={item.key}>
-          {item.children}
-        </Panel>
-      ))}
-    </Collapse>
+      className={className}
+    />
   );
 };
 

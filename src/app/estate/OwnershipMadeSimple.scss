@@ -1,0 +1,111 @@
+.ownership-simple {
+    background: #fafafa;
+    padding: 30px 0;
+}
+
+.os-box {
+    background: #F4F9FF;
+    border: 1px solid #0B60C9;
+    border-radius: 5px;
+    padding: 20px;
+    text-align: center;
+}
+
+.os-title {
+    font-size: 20px;
+    line-height: 26px;
+    color: #000000;
+    margin-bottom: 20px;
+}
+
+.os-pill {
+    display: inline-block;
+    background: #E2EFFF;
+    color: #0B60C9;
+    border-radius: 5px;
+    font-weight: 600;
+    padding: 10px;
+    font-size: 12px;
+    line-height: 14px;
+    margin-bottom: 20px;
+}
+
+.os-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+
+    .os-mini {
+        width: 230px;
+        border-radius: 5px;
+        padding: 10px;
+
+        .ant-card-body {
+            padding: 0px !important;
+        }
+
+        .os-main-title{
+            font-size: 14px;
+            line-height: 20px;
+            color: #555555;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .os-sub {
+            font-size: 12px;
+            line-height: 14px;
+            color: #000000;
+            font-weight: 500;
+        }
+    }
+}
+
+
+
+
+.os-cta {
+    text-align: center;
+    margin-top: 28px;
+}
+
+.os-cta-text {
+    font-size: 18px;
+    line-height: 26px;
+    color: #161616;
+    margin-bottom: 14px;
+}
+
+.os-cta-btn {
+    height: 44px;
+    padding: 0 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    background: #7e22ce;
+    border: 1px solid #7e22ce;
+    color: #fff;
+
+    &:hover,
+    &:focus {
+        background: #6b21a8;
+        border-color: #6b21a8;
+        color: #fff;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .os-mini {
+        width: 100%;
+    }
+
+    .os-flow {
+        flex-direction: column;
+    }
+
+    .os-arrow {
+        transform: rotate(90deg);
+    }
+}

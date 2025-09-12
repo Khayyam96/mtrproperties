@@ -2,15 +2,13 @@
 
 import PropertyFilterBar, { PropertyFilterValues } from "@/components/Lib/PropertyFilterBar";
 import PlanBanner from "./PlanBanner";
-import { Row, Col, Card } from "antd";
+import { Row, Col } from "antd";
 import ProjectDubai from "../Home/ProjectDubai";
 import ReasonToInvest from "../newProject/ReasonToInvest";
-import OffPlanContact from "../newProject/OffPlanContact";
 import RealestateInfoCard from "../Home/RealestateInfoCard";
-import RealEstateFaqSection from "../Home/RealEstateFaqSection";
-import LatestBlogSection from "../Home/LatestBlogSection";
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
-import PlanCardSection from "./PlanCardSection";
+import "./index.scss"
+
 
 export default function PlanPage() {
 
@@ -36,7 +34,6 @@ export default function PlanPage() {
                 desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
                 moreDesc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
             />
-            <RealEstateFaqSection />
             <SubscribeSection />
         </div>
     );

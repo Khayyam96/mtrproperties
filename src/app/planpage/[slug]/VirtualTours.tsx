@@ -4,13 +4,14 @@ import { useMemo, useRef, useState } from "react";
 import { Typography, Row, Col } from "antd";
 import { CaretRightFilled, CloseOutlined } from "@ant-design/icons";
 import classNames from "classnames";
+import Image from "next/image";
 
 const { Title } = Typography;
 
 export type TVirtualTour = {
   id: string;
   title: string;
-  poster: string;
+  poster: string;    // local file (e.g. /yacht.jpg) or remote (configure next.config.js domains if remote)
   videoPath: string;
 };
 
@@ -20,12 +21,7 @@ type Props = {
 };
 
 const defaultTours: TVirtualTour[] = [
-  {
-    id: "1",
-    title: "Modern Kitchen Tour",
-    poster: "/yacht.jpg",
-    videoPath: "/tour.mp4",
-  },
+  { id: "1", title: "Modern Kitchen Tour", poster: "/yacht.jpg", videoPath: "/tour.mp4" },
 ];
 
 export default function VirtualTours({ tours, className }: Props) {
@@ -68,21 +64,25 @@ export default function VirtualTours({ tours, className }: Props) {
   return (
     <section className={classNames("virtual-tours", className)}>
       <div className="vt-container">
-        <Title level={3} className="section-title">
-          VIRTUAL TOURS
-        </Title>
+        <Title level={3} className="section-title">VIRTUAL TOURS</Title>
 
         <Row justify="center">
           <Col xs={24} md={22} lg={20} xl={16}>
             <div className={classNames("tour-card", { "is-playing": !!active })}>
               {!active && (
                 <>
-                  <img
-                    className="thumb"
-                    src={data[0].poster}
-                    alt={data[0].title}
-                    loading="lazy"
-                  />
+                  {/* Poster image (Next.js optimized) */}
+                  <div className="thumb-wrap">
+                    <Image
+                      className="thumb"
+                      src={data[0].poster}
+                      alt={data[0].title}
+                      fill
+                      sizes="(max-width: 576px) 100vw, (max-width: 992px) 90vw, 66vw"
+                      priority={false}
+                    />
+                  </div>
+
                   <button
                     type="button"
                     className="play-btn"

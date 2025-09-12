@@ -35,13 +35,27 @@ const { Dragger } = Upload;
 type Step = { title: string; desc: string; icon: React.ReactNode };
 type AreaOption = { label: string; value: string };
 
+type ApplicationFormValues = {
+  name: string;
+  email: string;
+  phone: string;
+  experience: string;
+  area: string;
+  company?: string;
+  resume?: UploadFile[];
+};
+
+type SubmitPayload = Omit<ApplicationFormValues, "resume"> & {
+  resume: UploadFile | null;
+};
+
 type Props = {
   heading?: string;
   subheading?: string;
   steps?: Step[];
   areas?: AreaOption[];
   experienceOptions?: string[];
-  onSubmit?: (values: any) => void;
+  onSubmit?: (values: SubmitPayload) => void;
   className?: string;
 };
 
@@ -105,7 +119,6 @@ application process gets you started in just a few minutes.`,
     [experienceOptions]
   );
 
-  // Upload state (single file)
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const beforeUpload: UploadProps["beforeUpload"] = (file) => {
@@ -123,21 +136,26 @@ application process gets you started in just a few minutes.`,
       message.error("File must be smaller than 5MB.");
       return Upload.LIST_IGNORE;
     }
-    return false; // prevent auto upload; keep in list
+    return false;
   };
 
-  // normalize event for Form.Item value
-  const normFile = (e: any) => {
+  const normFile = (
+    e: UploadFile[] | { fileList: UploadFile[] } | undefined
+  ): UploadFile[] | undefined => {
     if (Array.isArray(e)) return e;
     return e?.fileList;
   };
 
-  const handleSubmit = (values: any) => {
-    const payload = {
+  const handleSubmit = (values: ApplicationFormValues) => {
+    const payload: SubmitPayload = {
       ...values,
       resume: fileList?.[0] ?? null,
     };
-    onSubmit ? onSubmit(payload) : console.log("Application:", payload);
+    if (onSubmit) {
+      onSubmit(payload);
+    } else {
+      console.log("Application:", payload);
+    }
     message.success("Application submitted!");
   };
 
@@ -145,7 +163,6 @@ application process gets you started in just a few minutes.`,
     <section className={`${styles.apply} ${className || ""}`}>
       <div className={styles.container}>
         <Row gutter={[32, 32]} align="top">
-          {/* LEFT — Intro + Process */}
           <Col xs={24} lg={12}>
             <Space className={styles.pill} size={8}>
               <UserAddOutlined />
@@ -176,14 +193,13 @@ application process gets you started in just a few minutes.`,
             </Row>
           </Col>
 
-          {/* RIGHT — Application Form */}
           <Col xs={24} lg={12}>
             <Card className={styles.formCard} bordered>
               <Title level={4} className={styles.formHeading}>
                 Application Form
               </Title>
 
-              <Form
+              <Form<ApplicationFormValues>
                 name="application-form"
                 layout="vertical"
                 onFinish={handleSubmit}
@@ -281,7 +297,9 @@ application process gets you started in just a few minutes.`,
                         multiple={false}
                         beforeUpload={beforeUpload}
                         fileList={fileList}
-                        onChange={({ fileList }) => setFileList(fileList.slice(-1))}
+                        onChange={({ fileList }) =>
+                          setFileList(fileList.slice(-1))
+                        }
                         maxCount={1}
                         accept=".pdf,.doc,.docx"
                         customRequest={({ onSuccess }) =>

@@ -6,7 +6,7 @@ import { Row, Col, Card, Typography, Button } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import styles from "./index.module.scss";
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 
 type Item = {
   title: string;

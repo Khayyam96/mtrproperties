@@ -5,8 +5,6 @@ import { Row, Col, Typography, Button, Card, Space } from "antd";
 import {
   ArrowRightOutlined,
   CheckCircleOutlined,
-  ThunderboltFilled,
-  RiseOutlined,
 } from "@ant-design/icons";
 import Image from "next/image";
 import styles from "./index.module.scss";

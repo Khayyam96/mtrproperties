@@ -3,7 +3,6 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Card, Typography } from "antd";
-import { RightOutlined } from "@ant-design/icons";
 import styles from "./index.module.scss";
 
 const { Paragraph, Text } = Typography;

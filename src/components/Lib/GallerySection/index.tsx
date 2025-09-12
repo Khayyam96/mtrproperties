@@ -3,6 +3,7 @@
 import { useState, useMemo, useRef } from "react";
 import { Typography, Modal, Row, Col } from "antd";
 import Slider from "react-slick";
+import Image from "next/image";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -32,15 +33,14 @@ export default function GallerySection() {
 
   const settings = {
     dots: false,
-    arrows: false, // öz düymələrimiz olacaq
+    arrows: false,
     infinite: false,
     speed: 400,
     slidesToShow: 1,
     slidesToScroll: 1,
   };
 
-  // Data-nı hər slayda 4 şəkil olmaqla qrupla
-  const chunkedData = [];
+  const chunkedData: typeof data[] = [];
   for (let i = 0; i < data.length; i += 4) {
     chunkedData.push(data.slice(i, i + 4));
   }
@@ -53,7 +53,9 @@ export default function GallerySection() {
   return (
     <section className="gallery-section">
       <Container>
-        <Title level={2} style={{ textAlign: "center" }}>Gallery</Title>
+        <Title level={2} style={{ textAlign: "center" }}>
+          Gallery
+        </Title>
 
         <Slider ref={sliderRef} {...settings}>
           {chunkedData.map((group, slideIndex) => (
@@ -64,8 +66,17 @@ export default function GallerySection() {
                     <button
                       className="g-card"
                       onClick={() => openLightbox(slideIndex * 4 + idx)}
+                      aria-label={`Open ${it.alt}`}
                     >
-                      <img src={it.src} alt={it.alt} />
+                      <Image
+                        src={it.src}
+                        alt={it.alt}
+                        width={600}
+                        height={400}
+                        sizes="(max-width: 576px) 100vw, (max-width: 992px) 50vw, 25vw"
+                        style={{ width: "100%", height: "auto", objectFit: "cover" }}
+                        priority={slideIndex === 0}
+                      />
                     </button>
                   </Col>
                 ))}
@@ -75,17 +86,15 @@ export default function GallerySection() {
         </Slider>
       </Container>
 
-      {/* Prev / Next düymələri */}
       <div className="gallery-nav">
-        <button onClick={() => sliderRef.current?.slickPrev()}>
+        <button onClick={() => sliderRef.current?.slickPrev()} aria-label="Previous">
           <LeftOutlined />
         </button>
-        <button onClick={() => sliderRef.current?.slickNext()}>
+        <button onClick={() => sliderRef.current?.slickNext()} aria-label="Next">
           <RightOutlined />
         </button>
       </div>
 
-      {/* Lightbox */}
       <Modal
         open={isLightboxOpen}
         onCancel={() => setIsLightboxOpen(false)}
@@ -95,7 +104,16 @@ export default function GallerySection() {
         className="lightbox-modal"
       >
         <div className="lightbox-body">
-          <img src={data[current].src} alt={data[current].alt} className="lb-image" />
+          <div className="lb-image-wrap">
+            <Image
+              src={data[current].src}
+              alt={data[current].alt}
+              fill
+              sizes="100vw"
+              style={{ objectFit: "contain" }}
+              priority
+            />
+          </div>
         </div>
       </Modal>
     </section>

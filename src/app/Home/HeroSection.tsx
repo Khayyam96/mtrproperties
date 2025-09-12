@@ -1,183 +1,237 @@
-"use client";
-
-import Link from "next/link";
-import { Typography, Input, Button, Select, Space, Row, Col } from "antd";
+import React from "react";
 import Image from "next/image";
-import { useState } from "react";
-import FilterTabs from "../../components/Lib/Tabs/FilterTabs";
-import styles from "./index.module.scss";
+import { Button, Select, Input } from "antd";
+import { EnvironmentOutlined } from "@ant-design/icons";
+import type { HeroAPI } from "@/types/herobanner";
+import "./index.scss";
 
-const { Title, Text } = Typography;
 const { Option } = Select;
 
-const tabs = [
-  { key: "buy", label: "Buy" },
-  { key: "rent", label: "Rent" },
-];
+const API_URL = "https://api.dubaiyachts.com/properties/api/v1/hero/web";
+export const dynamic = "force-dynamic";
 
-export const HeroSection: React.FC = () => {
-  const [activeTab, setActiveTab] = useState("buy");
-  const [activeTag, setActiveTag] = useState("all");
-  const [showAdvanced, setShowAdvanced] = useState(false); 
+async function fetchJSONSafe(url: string, init?: RequestInit) {
+  const ac = new AbortController();
+  const timer = setTimeout(() => ac.abort(), 10_000);
+
+  const res = await fetch(url, {
+    cache: "no-store",
+    headers: { Accept: "application/json", ...(init?.headers || {}) },
+    next: { revalidate: 0 },
+    signal: ac.signal,
+    ...init,
+  }).catch((e) => {
+    clearTimeout(timer);
+    throw e;
+  });
+
+  clearTimeout(timer);
+
+  const ok = res.ok;
+  const status = res.status;
+  const raw = await res.text();
+
+  return { ok, status, raw, res };
+}
+
+function isObject(v: unknown): v is Record<string, unknown> {
+  return typeof v === "object" && v !== null;
+}
+
+type WithLegacyHero = HeroAPI &
+  Partial<{
+    videoUrl: string;
+    videoUrlMp4: string;
+    videoMp4: string;
+    videoPosterUrl: string;
+    posterUrl: string;
+    poster: string;
+    image: string;
+  }>;
+
+async function getHero(): Promise<HeroAPI | null> {
+  try {
+    const { ok, status, raw } = await fetchJSONSafe(API_URL);
+
+    if (!ok) {
+      console.error("HERO API not OK:", status, raw?.slice(0, 400));
+      return null;
+    }
+
+    if (!raw || !raw.trim()) {
+      console.error("HERO API returned empty body with status:", status);
+      return null;
+    }
+
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(raw) as unknown;
+    } catch (e) {
+      console.error("HERO API JSON parse error:", e, "Raw (first 400):", raw.slice(0, 400));
+      return null;
+    }
+
+    let rawData: unknown;
+    if (isObject(parsed) && "data" in parsed) {
+      rawData = (parsed as { data: unknown }).data;
+    } else {
+      rawData = parsed;
+    }
+
+    if (Array.isArray(rawData)) {
+      rawData = rawData[0];
+    }
+
+    if (!isObject(rawData)) return null;
+
+    return rawData as HeroAPI;
+  } catch (e) {
+    console.error("HERO API fetch error:", e);
+    return null;
+  }
+}
+
+function guessVideoMime(url: string): string {
+  const u = url?.toLowerCase?.() || "";
+  if (u.endsWith(".webm")) return "video/webm";
+  if (u.endsWith(".ogg") || u.endsWith(".ogv")) return "video/ogg";
+  return "video/mp4";
+}
+
+export default async function HeroSection() {
+  const hero = await getHero();
+
+  if (!hero || hero.isActive === false) return null;
+
+  const TITLE = hero.title ?? "";
+  const SUBTITLE = hero.subtitle ?? "";
+
+  const h = hero as WithLegacyHero;
+
+  const videoSrc =
+    h.videoUrl ??
+    h.videoUrlMp4 ??
+    h.videoMp4 ??
+    null;
+
+  const posterSrc =
+    h.videoPosterUrl ??
+    h.posterUrl ??
+    h.poster ??
+    hero.imageUrl ??
+    undefined;
+
+  const imageSrc = hero.imageUrl ?? h.image ?? null;
+
+  const showVideo = Boolean(videoSrc);
+  const showImage = !showVideo && Boolean(imageSrc);
+
+  if (!showVideo && !showImage) return null;
 
   return (
-    <section className={styles.hero}>
-      <div className={styles.heroBgWrap} aria-hidden>
-        <video
-          className={styles.heroBg}
-          src="/tour.mp4"
-          poster="/hero-poster.jpg"
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="metadata"
-        />
-      </div>
+    <div className="hero-section">
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `console.log("HERO API (browser):", ${JSON.stringify(hero)
+            .replace(/</g, "\\u003c")
+            .replace(/<\/script>/gi, "<\\/script>")});`,
+        }}
+      />
 
-      <div className={styles.heroOverlay}>
-        <div className={styles.heroTop}>
-          <Title level={2} className={styles.heroTitle}>
-            #1 Real Estate Company in UAE
-          </Title>
-          <p className={styles.heroSubtitle}>
-            Our Specialist Agents will help you choose the right property
-          </p>
-
-          <div className={styles.tabsWrap}>
-            <FilterTabs activeKey={activeTab} onChange={setActiveTab} tabs={tabs} />
-          </div>
-        </div>
-
-        <div className={styles.heroFilterBox}>
-          <Row gutter={[16, 14]} className={styles.heroFilterRow1} align="middle">
-            <Col xs={24} md={10} className={styles.tagsCol}>
-              <Space className={styles.heroTags} size="middle">
-                <Button
-                  className={activeTag === "all" ? styles.active : ""}
-                  onClick={() => setActiveTag("all")}
-                >
-                  All
-                </Button>
-                <Button
-                  className={activeTag === "ready" ? styles.active : ""}
-                  onClick={() => setActiveTag("ready")}
-                >
-                  Ready to Move
-                </Button>
-                <Button
-                  className={activeTag === "off" ? styles.active : ""}
-                  onClick={() => setActiveTag("off")}
-                >
-                  Off Plans
-                </Button>
-              </Space>
-            </Col>
-
-            <Col xs={24} md={14} className={styles.searchCol}>
-              <div className={styles.searchLine}>
-                <Input
-                  placeholder="Choose Area or City"
-                  className={styles.wFull}
-                  prefix={
-                    <Image
-                      src="/location-marker.png"
-                      alt="location icon"
-                      width={24}
-                      height={24}
-                    />
-                  }
-                />
-                {/* YALNIZ MOBİL: Advance Search toggle */}
-                <button
-                  type="button"
-                  className={styles.advToggle}
-                  onClick={() => setShowAdvanced((v) => !v)}
-                  aria-expanded={showAdvanced}
-                  aria-controls="advFields"
-                >
-                  Advance Search
-                  <span
-                    className={`${styles.chev} ${showAdvanced ? styles.chevOpen : ""}`}
-                    aria-hidden
-                  />
-                </button>
-              </div>
-            </Col>
-          </Row>
-
-          <div
-            id="advFields"
-            className={`${styles.advWrap} ${showAdvanced ? styles.open : ""}`}
+      <div className="hero-background" data-mode={showVideo ? "video" : "image"}>
+        {showVideo ? (
+          <video
+            className="hero-video"
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+            poster={posterSrc}
           >
-            <Row gutter={[16, 12]} className={styles.heroForm}>
-              <Col xs={12} sm={12} md={5}>
-                <Text className={styles.formLabel}>Property Category</Text>
-                <Select
-                  defaultValue="residential"
-                  className={styles.wFull}
-                  suffixIcon={
-                    <Image src="/blackup.png" alt="dropdown" width={16} height={16} />
-                  }
-                >
-                  <Option value="residential">Residential</Option>
-                  <Option value="commercial">Commercial</Option>
-                </Select>
-              </Col>
+            <source src={videoSrc!} type={guessVideoMime(videoSrc!)} />
+          </video>
+        ) : (
+          <div className="hero-poster-wrapper">
+            <Image
+              className="hero-poster"
+              src={imageSrc!}
+              alt="Hero background"
+              fill
+              priority
+              sizes="100vw"
+            />
+          </div>
+        )}
 
-              <Col xs={12} sm={12} md={5}>
-                <Text className={styles.formLabel}>Property type</Text>
-                <Select
-                  defaultValue="any"
-                  className={styles.wFull}
-                  suffixIcon={
-                    <Image src="/blackup.png" alt="dropdown" width={16} height={16} />
-                  }
-                >
-                  <Option value="any">Any</Option>
-                  <Option value="villa">Villa</Option>
-                </Select>
-              </Col>
+        <div className="hero-gradient" />
+        <div className="hero-overlay" />
 
-              <Col xs={12} sm={12} md={5}>
-                <Text className={styles.formLabel}>Property Details</Text>
-                <Select
-                  defaultValue="bedbath"
-                  className={styles.wFull}
-                  suffixIcon={
-                    <Image src="/blackup.png" alt="dropdown" width={16} height={16} />
-                  }
-                >
-                  <Option value="bedbath">Bed &amp; Bath</Option>
-                </Select>
-              </Col>
+        <div className="hero-content">
+          <div className="hero-text">
+            {TITLE && <h1 className="hero-title">{TITLE}</h1>}
+            {SUBTITLE && <p className="hero-subtitle">{SUBTITLE}</p>}
+            <div className="hero-buttons">
+              <Button type="primary" className="buy-btn">Buy</Button>
+              <Button className="rent-btn">Rent</Button>
+            </div>
+          </div>
 
-              <Col xs={12} sm={12} md={5}>
-                <Text className={styles.formLabel}>Price</Text>
-                <Select
-                  defaultValue="low"
-                  className={styles.wFull}
-                  suffixIcon={
-                    <Image src="/blackup.png" alt="dropdown" width={16} height={16} />
-                  }
-                >
-                  <Option value="low">0 - 500k</Option>
-                  <Option value="mid">500k - 1M</Option>
-                  <Option value="high">1M+</Option>
+          <div className="search-section">
+            <div className="search-tabs">
+              <div className="btn-groups">
+                <Button type="primary" className="tab-active">All</Button>
+                <Button className="tab-inactive">Ready to Move</Button>
+                <Button className="tab-inactive">Off Plans</Button>
+              </div>
+
+              <div className="location-input">
+                <EnvironmentOutlined className="location-icon" />
+                <Input placeholder="Choose Area or City" className="location-field" />
+              </div>
+            </div>
+
+            <div className="search-form">
+              <div className="form-row">
+                <Select defaultValue="Residential" className="form-select property-category" suffixIcon={<span>▼</span>}>
+                  <Option value="Residential">Residential</Option>
+                  <Option value="Commercial">Commercial</Option>
                 </Select>
-              </Col>
-              <Col xs={12} sm={12} md={4}>
-                <Button type="primary" className={styles.searchBtn} block>
-                  Search Now
-                  <Image src="/buttonicon.png" alt="go" width={16} height={16} />
+
+                <Select defaultValue="Any" className="form-select property-type" suffixIcon={<span>▼</span>}>
+                  <Option value="Any">Any</Option>
+                  <Option value="Villa">Villa</Option>
+                  <Option value="Apartment">Apartment</Option>
+                </Select>
+
+                <Select defaultValue="Bed & Bath" className="form-select property-details" suffixIcon={<span>▼</span>}>
+                  <Option value="Bed & Bath">Bed & Bath</Option>
+                  <Option value="1 Bed">1 Bed</Option>
+                  <Option value="2 Bed">2 Bed</Option>
+                </Select>
+
+                <Select defaultValue="Price (AED)" className="form-select price-range" suffixIcon={<span>▼</span>}>
+                  <Option value="Price (AED)">Price (AED)</Option>
+                  <Option value="100k-500k">100k-500k</Option>
+                  <Option value="500k-1M">500k-1M</Option>
+                </Select>
+
+                <Button type="primary" className="search-btn">
+                  Search Now <span className="search-arrow">→</span>
                 </Button>
-              </Col>
-            </Row>
+              </div>
+
+              <div className="form-labels">
+                <span>Property Category</span>
+                <span>Property type</span>
+                <span>Property Details</span>
+                <span>Price</span>
+                <span></span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
-};
-
-export default HeroSection;
+}

@@ -4,15 +4,12 @@ import Image from "next/image";
 import { Typography, Tag } from "antd";
 import {
   EnvironmentOutlined,
-  HomeOutlined,
-  BuildOutlined,
-  ExpandAltOutlined,
   ArrowLeftOutlined,
   ArrowRightOutlined,
   PhoneOutlined,
   WhatsAppOutlined,
 } from "@ant-design/icons";
-import Slider from "react-slick";
+import Slider, { Settings } from "react-slick";
 import { useRef } from "react";
 import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
@@ -55,41 +52,54 @@ export const ProCard: React.FC<TProCard> = ({
 
   const handleCardClick = () => {
     if (onClick) return onClick();
-    router.push(`/properties/${slug}`); 
+    router.push(`/properties/${slug}`);
   };
 
-  const goPrev = (e: React.MouseEvent) => {
+  const goPrev: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     sliderRef.current?.slickPrev();
   };
 
-  const goNext = (e: React.MouseEvent) => {
+  const goNext: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     sliderRef.current?.slickNext();
   };
 
-  const handleWhatsappClick = (e: React.MouseEvent) => {
+  const handleWhatsappClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
     if (typeof window !== "undefined") {
       window.open("https://wa.me/971XXXXXXXXX", "_blank");
     }
   };
 
-  const settings = { dots: false, arrows: false, infinite: true, speed: 400, slidesToShow: 1, slidesToScroll: 1 };
+  const settings: Settings = {
+    dots: false,
+    arrows: false,
+    infinite: true,
+    speed: 400,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
+
+  const displayPrice = typeof price === "number" ? price.toLocaleString() : price;
+  const imgs = Array.isArray(images) && images.length ? images : ["/placeholder.jpg"];
 
   return (
     <div className="pro-card" onClick={handleCardClick}>
       <div className="pro-card__img">
         <Slider {...settings} ref={sliderRef}>
-          {images.map((img, idx) => (
+          {imgs.map((img, idx) => (
             <div key={idx} className="carousel-slide">
-              <Image
-                src={img}
-                alt={`${name}-${idx}`}
-                fill
-                className="pro-card__img--image"
-                priority={idx === 0}
-              />
+              <div style={{ position: "relative", width: "100%", paddingTop: "66.6667%" }}>
+                <Image
+                  src={img}
+                  alt={`${name}-${idx}`}
+                  fill
+                  className="pro-card__img--image"
+                  priority={idx === 0}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                />
+              </div>
             </div>
           ))}
         </Slider>
@@ -109,15 +119,13 @@ export const ProCard: React.FC<TProCard> = ({
 
       <div className="pro-card__body">
         <div className="pro-card__price">
-          <Title level={3}>AED {price}</Title>
+          <Title level={3}>AED {displayPrice}</Title>
           <Tag className="type">{type}</Tag>
         </div>
 
         <div className="pro-card__location">
           <EnvironmentOutlined />
-          <span className="location_text">
-            {name}
-          </span>
+          <span className="location_text">{location}</span>
         </div>
 
         <div className="pro-card__meta">
@@ -140,7 +148,10 @@ export const ProCard: React.FC<TProCard> = ({
         <div className="pro-card__actions">
           <button
             className="call"
-            onClick={(e) => { e.stopPropagation(); alert("Call functionality is not implemented yet."); }}
+            onClick={(e) => {
+              e.stopPropagation();
+              alert("Call functionality is not implemented yet.");
+            }}
           >
             <PhoneOutlined /> Call Us
           </button>
@@ -152,3 +163,5 @@ export const ProCard: React.FC<TProCard> = ({
     </div>
   );
 };
+
+export default ProCard;

@@ -1,117 +1,87 @@
 "use client";
 
-import { FC, useMemo } from "react";
-import Image from "next/image";
+import React from "react";
 import { Row, Col, Card, Typography } from "antd";
-import styles from "./index.module.scss";
+import Image from "next/image";
+import { Container as ProContainer } from "../../components/Lib/ProContainer/Container";
+import "./TechnicalIntegration.scss";
 
 const { Title, Paragraph } = Typography;
 
-type TechItem = {
+type FeatureCard = {
+  key: string;
+  image: string;
+  imageAlt: string;
   title: string;
-  image: string;     // public/ içindən yol (Next/Image)
-  alt?: string;
-  points: string[];
+  subtitle: string;
+  bullets: string[];
 };
 
-type Props = {
-  className?: string;
-  heading?: string;
-  subtext?: string;
-  items?: TechItem[];
-};
-
-const defaultItems: TechItem[] = [
+const CARDS: FeatureCard[] = [
   {
+    key: "xrp",
+    image: "/image4.png",
+    imageAlt: "XRP Ledger",
     title: "XRP Ledger Integration",
-    image: "/tech/xrp.jpg",
-    alt: "XRP Ledger",
-    points: [
-      "Built on enterprise-grade blockchain technology",
-      "Fast transactions",
-      "Low fees",
-      "Environmental efficiency",
-      "Enterprise security",
-    ],
+    subtitle: "Built on enterprise-grade blockchain technology",
+    bullets: ["Fast transactions", "Low fees", "Environmental efficiency", "Enterprise security"],
   },
   {
+    key: "prypco",
+    image: "/image4.png",
+    imageAlt: "Prypco Platform",
     title: "Prypco Platform",
-    image: "/tech/platform.jpg",
-    alt: "Prypco Platform",
-    points: [
-      "User-friendly interface for seamless investing",
-      "AED payments only",
-      "Instant transactions",
-      "Mobile app",
-      "24/7 support",
-    ],
+    subtitle: "User-friendly interface for seamless investing",
+    bullets: ["AED payments only", "Instant transactions", "Mobile app", "24/7 support"],
   },
   {
+    key: "smart",
+    image: "/image1.png",
+    imageAlt: "Smart Contracts",
     title: "Smart Contracts",
-    image: "/tech/smart.jpg",
-    alt: "Smart Contracts",
-    points: [
-      "Automated and transparent property management",
-      "Rental distribution",
-      "Voting rights",
-      "Exit mechanisms",
-      "Compliance automation",
-    ],
+    subtitle: "Automated and transparent property management",
+    bullets: ["Rental distribution", "Voting rights", "Exit mechanisms", "Compliance automation"],
   },
 ];
 
-const TechnicalIntegration: FC<Props> = ({
-  className,
-  heading = "Technical Integration",
-  subtext = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's",
-  items,
-}) => {
-  const data = useMemo(() => items ?? defaultItems, [items]);
-
+export default function TechnicalIntegration() {
   return (
-    <section className={`${styles.wraptechnical} ${className || ""}`}>
-      <div className={styles.container}>
-        <Paragraph className={styles.topText}>
-          {subtext} {subtext}
-        </Paragraph>
+    <section className="technical-integration">
+      <ProContainer>
+        <div className="ti-header">
+          <Paragraph className="ti-lead">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard.
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s standard.
+          </Paragraph>
+          <Title level={2} className="ti-title">Technical Integration</Title>
+        </div>
 
-        <Title level={2} className={styles.heading}>
-          {heading}
-        </Title>
-
-        <Row gutter={[24, 24]} justify="center">
-          {data.map((it) => (
-            <Col key={it.title} xs={24} md={12} lg={8}>
-              <Card className={styles.card} bodyStyle={{ padding: 0 }}>
-                <div className={styles.media}>
+        <Row gutter={[24, 24]}>
+          {CARDS.map((card) => (
+            <Col key={card.key} xs={24} md={12} lg={8}>
+              <Card bordered={false} className="ti-card" hoverable>
+                <div className="ti-cover">
                   <Image
-                    src={it.image}
-                    alt={it.alt || it.title}
+                    src={card.image}
+                    alt={card.imageAlt}
                     fill
-                    sizes="(max-width: 991px) 100vw, 33vw"
-                    className={styles.img}
-                    priority={false}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 400px"
+                    className="ti-cover-img"
                   />
                 </div>
 
-                <div className={styles.content}>
-                  <Title level={4} className={styles.cardTitle}>
-                    {it.title}
-                  </Title>
-
-                  <ul className={styles.list}>
-                    {it.points.map((p, idx) => (
-                      <li key={idx}>{p}</li>
-                    ))}
+                <div className="ti-body">
+                  <Title level={4} className="ti-card-title">{card.title}</Title>
+                  <Paragraph className="ti-subtitle">{card.subtitle}</Paragraph>
+                  <ul className="ti-list">
+                    {card.bullets.map((b, i) => <li key={i}>{b}</li>)}
                   </ul>
                 </div>
               </Card>
             </Col>
           ))}
         </Row>
-      </div>
+      </ProContainer>
     </section>
   );
-};
-
-export default TechnicalIntegration;
+}

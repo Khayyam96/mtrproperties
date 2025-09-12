@@ -1,68 +1,57 @@
 "use client";
 
-import { FC, useRef } from "react";
+import { FC, useMemo, useRef } from "react";
 import { Typography } from "antd";
 import Image from "next/image";
+import Link from "next/link";
 import Slider, { Settings } from "react-slick";
 import { Container } from "@/components/Lib/ProContainer/Container";
-import { RightOutlined, LeftOutlined } from "@ant-design/icons";
+import { RightOutlined } from "@ant-design/icons";
+import type { LastBlogListResponse } from "@/models/LastBlog.mode";
 
 const { Title, Text } = Typography;
 
-const blogData = [
-  {
-    id: 1,
-    image: "/blog1.png",
-    title: "Lorem Ipsum is simply dummy text of the printing",
-    date: "23 Dec 2022",
-    author: "Author name",
-  },
-  {
-    id: 2,
-    image: "/blog2.png",
-    title: "Lorem Ipsum is simply dummy text of the printing",
-    date: "23 Dec 2022",
-    author: "Author name",
-  },
-  {
-    id: 3,
-    image: "/blog1.png",
-    title: "Lorem Ipsum is simply dummy text of the printing",
-    date: "23 Dec 2022",
-    author: "Author name",
-  },
-  {
-    id: 4,
-    image: "/blog2.png",
-    title: "Lorem Ipsum is simply dummy text of the printing",
-    date: "23 Dec 2022",
-    author: "Author name",
-  },
-];
+type TProps = { data: LastBlogListResponse };
 
-export const LatestBlogSection: FC = () => {
-  const sliderRef = useRef<Slider | null>(null); 
+const BLOG_IMAGE_BASE =
+  process.env.NEXT_PUBLIC_BLOG_IMAGE_BASE ?? "https://api.dubaiyachts.com/uploads/blogs";
 
+function resolveImage(src?: string | null): string {
+  if (!src) return "/placeholder.png";
+  if (/^https?:\/\//i.test(src)) return src;
+  if (src.startsWith("/")) return `${BLOG_IMAGE_BASE}${src}`;
+  return `${BLOG_IMAGE_BASE}/${src}`;
+}
+
+// ✅ null-u da qəbul etsin
+function formatDate(iso?: string | null): string {
+  if (!iso) return "";
+  try {
+    return new Date(iso).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  } catch {
+    return String(iso);
+  }
+}
+
+export const LatestBlogSection: FC<TProps> = ({ data }) => {
+  const sliderRef = useRef<Slider | null>(null);
+  const items = useMemo(() => data ?? [], [data]);
+
+  const slidesToShow = 3;
   const settings: Settings = {
     dots: false,
-    infinite: blogData.length > 3,
+    infinite: items.length > slidesToShow,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow,
     slidesToScroll: 1,
     arrows: false,
     responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1.01,
-        },
-      },
+      { breakpoint: 1024, settings: { slidesToShow: 2 } },
+      { breakpoint: 768, settings: { slidesToShow: 1.01 } },
     ],
   };
 
@@ -72,9 +61,9 @@ export const LatestBlogSection: FC = () => {
         <div className="blog-header">
           <div className="left">
             <Title level={3}>Latest Blog</Title>
-            <a className="see-all" href="#">
+            <Link className="see-all" href="/blog">
               See all <RightOutlined />
-            </a>
+            </Link>
           </div>
           <div className="slider-nav">
             <span
@@ -101,30 +90,46 @@ export const LatestBlogSection: FC = () => {
 
         <div className="slider-wrapper">
           <Slider ref={sliderRef} {...settings}>
-            {blogData.map((item) => (
-              <div key={item.id} className="blog-card">
-                <div className="image">
-                  <Image
-                    src={item.image}
-                    alt={item.title}
-                    width={400}
-                    height={220}
-                    style={{ width: "100%", height: "310px" }}
-                  />
-                </div>
-                <div className="content">
-                  <Title level={5}>{item.title}</Title>
-                  <div className="meta">
-                    <Text>{item.date}</Text>
-                    <span style={{ margin: "0 8px" }}> </span>
-                    <Text>{item.author}</Text>
+            {items.map((item) => {
+              const img = resolveImage(item.mainImage);
+              const dateStr = formatDate(item.publishedAt);
+              const hasSlug = Boolean(item.slug && item.slug.trim());
+              const href = hasSlug ? `/blog/${encodeURIComponent(item.slug)}` : "/blog";
+              const title = item.title || "Untitled";
+
+              return (
+                <div key={item.id} className="blog-card">
+                  <div className="image">
+                    <Image
+                      src={img}
+                      alt={title}
+                      width={400}
+                      height={310}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      style={{ width: "100%", height: "310px", objectFit: "cover" }}
+                    />
                   </div>
-                  <a href="#" className="read-more">
-                    Read more <RightOutlined />
-                  </a>
+                  <div className="content">
+                    <Title level={5}>{title}</Title>
+                    <div className="meta">
+                      <Text>{dateStr}</Text>
+                      <span style={{ margin: "0 8px" }} />
+                      <Text>{item.authorName ?? "—"}</Text>
+                    </div>
+
+                    {hasSlug ? (
+                      <Link href={href} className="read-more">
+                        Read more <RightOutlined />
+                      </Link>
+                    ) : (
+                      <span className="read-more disabled" aria-disabled="true" title="Slug yoxdur">
+                        Read more <RightOutlined />
+                      </span>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </Slider>
         </div>
       </Container>

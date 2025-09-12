@@ -1,91 +1,74 @@
-"use client";
-
 import Image from "next/image";
-import { Typography, Divider } from "antd";
 import styles from "./page.module.scss";
 import BlogsSection from "../BlogsSection";
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
-import BreadcrumbBar from "../../../components/BreadcrumbBar/BreadcrumbBar"
+import BreadcrumbBar from "../../../components/BreadcrumbBar/BreadcrumbBar";
+import { fetchAPI } from "@/utils";
+import type { LastBlogListItem } from "@/models/LastBlog.mode";
 
-const { Title, Paragraph, Text } = Typography;
+type MaybePromise<T> = T | Promise<T>;
 
-type TextBlock = { type: "text"; heading: string; body: string };
-type ImageBlock = { type: "image"; src: string; alt?: string; width?: number; height?: number };
-type SubHeadingBlock = { type: "subheading"; heading: string; body: string };
-type ContentBlock = TextBlock | ImageBlock | SubHeadingBlock;
+const BLOG_IMAGE_BASE =
+  process.env.NEXT_PUBLIC_BLOG_IMAGE_BASE ??
+  "https://api.dubaiyachts.com/uploads/blogs";
 
-type Blog = {
-  title: string;
-  category: string;
-  date: string;
-  image: string;
-  content: ContentBlock[];
-};
+function resolveImage(src?: string | null) {
+  if (!src) return "/placeholder.png";
+  if (/^https?:\/\//i.test(src)) return src;
+  if (src.startsWith("/")) return `${BLOG_IMAGE_BASE}${src}`;
+  return `${BLOG_IMAGE_BASE}/${src}`;
+}
 
-export default function BlogInner({ params }: { params: { slug: string } }) {
-  const blog: Blog = {
-    title: "Thinking of Buying a Property in Dubai? Read our Guide First",
-    category: "Category",
-    date: "04 Jan 2023",
-    image: "/inner3.png",
-    content: [
-      {
-        type: "text",
-        heading:
-          "It is a long established fact that a reader will be distracted by the readable content of a page.",
-        body:
-          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites.\n\nIt is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed."
-      },
-      { type: "image", src: "/inner1.png", alt: "Living room", width: 760, height: 480 },
-      {
-        type: "subheading",
-        heading: "Sub heading",
-        body:
-          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites.\n\nIt is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed."
-      },
-      {
-        type: "subheading",
-        heading: "Sub heading",
-        body:
-          "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed."
-      }
-    ]
-  };
+function formatDate(iso?: string | null) {
+  if (!iso) return "";
+  try {
+    return new Date(iso).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  } catch {
+    return "";
+  }
+}
 
-  const heroSrc = blog.image || "/placeholder.png";
+export default async function BlogInner(props: {
+  params: MaybePromise<{ slug: string }>;
+}) {
+  const { slug } = await props.params; 
 
-  const renderBody = (text: string) =>
-    text.split("\n").map((p, i) => (
-      <Paragraph key={i} className={styles.p}>
-        {p}
-      </Paragraph>
-    ));
+  const blogData = await fetchAPI<LastBlogListItem>(
+    "/client/blogPosts/slug/" + slug
+  );
+
+  const heroSrc = resolveImage(blogData.mainImage ?? blogData.gallery?.[0]);
+  const innerSrc = resolveImage(blogData.gallery?.[1]);
+  const published = formatDate(blogData.publishedAt);
 
   return (
     <>
-    <BreadcrumbBar
-          className={styles.breadcrumb}
-          backLabel="Back to Blog"
-          backHref="/blog"
-          items={[
-            { label: "Blog", href: "/blog" },
-            { label: blog.title } 
-          ]}
-        />
+      <BreadcrumbBar
+        className={styles.breadcrumb}
+        backLabel="Back to Blog"
+        backHref="/blog"
+        items={[
+          { label: "Blog", href: "/blog" },
+          { label: blogData.title },
+        ]}
+      />
+
       <div className={styles.blogInner}>
         <header className={styles.header}>
-          <Text className={styles.meta}>
-            {blog.category} <span>{blog.date}</span>
-          </Text>
-          <Title level={2} className={styles.title}>
-            {blog.title}
-          </Title>
+          <h5 className={styles.meta}>
+            {blogData.category?.name} <span>{published}</span>
+          </h5>
+          <h2 className={styles.title}>{blogData.title}</h2>
         </header>
 
         <div className={styles.hero}>
           <Image
             src={heroSrc}
-            alt={blog.title}
+            alt={blogData.title}
             width={1200}
             height={640}
             priority
@@ -93,48 +76,47 @@ export default function BlogInner({ params }: { params: { slug: string } }) {
           />
         </div>
 
-        <Divider className={styles.sep} />
+        <h3
+          className={styles.h5}
+          style={{ fontSize: 20, lineHeight: "28px", color: "#000", fontWeight: 800 }}
+        >
+          {blogData.title}
+        </h3>
 
-        <section className={styles.content}>
-          {blog.content.map((block, i) => {
-            if (block.type === "text") {
-              return (
-                <div key={i} className={styles.textBlock}>
-                  <Title level={5} className={styles.h5}>
-                    {block.heading}
-                  </Title>
-                  {renderBody(block.body)}
-                </div>
-              );
-            }
-            if (block.type === "image") {
-              const w = block.width ?? 800;
-              const h = block.height ?? 500;
-              return (
-                <figure key={i} className={styles.imageBlock}>
-                  <Image
-                    src={block.src || "/placeholder.png"}
-                    alt={block.alt || ""}
-                    width={w}
-                    height={h}
-                    className={styles.innerImg}
-                  />
-                </figure>
-              );
-            }
-            return (
-              <div key={i} className={styles.subHeadingBlock}>
-                <Title level={4} className={styles.h4}>
-                  {block.heading}
-                </Title>
-                {renderBody(block.body)}
-              </div>
-            );
-          })}
-        </section>
+        <div
+          style={{ marginTop: 13, fontSize: 16, lineHeight: "24px", color: "#000" }}
+          dangerouslySetInnerHTML={{ __html: blogData.content ?? "" }}
+        />
 
+        <figure
+          className={styles.imageBlock}
+          style={{ marginTop: 20, display: "flex", justifyContent: "center" }}
+        >
+          <Image
+            src={innerSrc}
+            alt={blogData.title}
+            width={700}
+            height={300}
+            className={styles.innerImg}
+          />
+        </figure>
 
+        {blogData.seoTitle && (
+          <h4
+            className={styles.h4}
+            style={{ fontSize: 20, lineHeight: "28px", color: "#000", fontWeight: 800 }}
+          >
+            {blogData.seoTitle}
+          </h4>
+        )}
+
+        {blogData.seoDescription && (
+          <p style={{ marginTop: 13, fontSize: 16, lineHeight: "24px", color: "#000" }}>
+            {blogData.seoDescription}
+          </p>
+        )}
       </div>
+
       <BlogsSection />
       <SubscribeSection />
     </>

@@ -1,7 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useRef, useEffect, type FC } from "react";
+import { useMemo, useRef, useEffect, type FC, type ReactNode } from "react";
+import Image from "next/image";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.markercluster/dist/MarkerCluster.css";
@@ -22,7 +23,19 @@ const MapContainer = dynamic(() => import("react-leaflet").then(m => m.MapContai
 const TileLayer     = dynamic(() => import("react-leaflet").then(m => m.TileLayer), { ssr: false });
 const Marker        = dynamic(() => import("react-leaflet").then(m => m.Marker), { ssr: false });
 const Popup         = dynamic(() => import("react-leaflet").then(m => m.Popup), { ssr: false });
-const MarkerClusterGroup = dynamic(() => import("react-leaflet-markercluster"), { ssr: false });
+
+// --- FIX: import the default component, not the whole module, and type it
+type MarkerClusterGroupProps = {
+  children?: ReactNode;
+  chunkedLoading?: boolean;
+  removeOutsideVisibleBounds?: boolean;
+  maxClusterRadius?: number | ((zoom: number) => number);
+  iconCreateFunction?: (cluster: L.MarkerCluster) => L.DivIcon;
+};
+const MarkerClusterGroup = dynamic<MarkerClusterGroupProps>(
+  () => import("react-leaflet-markercluster").then(m => m.default),
+  { ssr: false }
+);
 
 export type LeafletMapProps = {
   items: Property[];
@@ -40,10 +53,10 @@ export const LeafletMap: FC<LeafletMapProps> = ({ items, isVisible = true, activ
   const defaultCenter = useMemo(() => ({ lat: 25.1972, lng: 55.2744 }), []);
   const mapRef = useRef<L.Map | null>(null);
 
-  // Map paneli görünəndə ölçünü yenilə
+  // Panel görünəndə xəritənin ölçüsünü yenilə
   useEffect(() => {
     if (!isVisible) return;
-    const t = setTimeout(() => { if (mapRef.current) mapRef.current.invalidateSize(); }, 350);
+    const t = setTimeout(() => { mapRef.current?.invalidateSize(); }, 350);
     return () => clearTimeout(t);
   }, [isVisible]);
 
@@ -86,7 +99,7 @@ export const LeafletMap: FC<LeafletMapProps> = ({ items, isVisible = true, activ
         style={{ height: "100%", width: "100%" }}
       >
         <TileLayer
-          attribution="&copy; OpenStreetMap"
+          attribution="&copy; OpenStreetMap contributors"
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
@@ -116,11 +129,18 @@ export const LeafletMap: FC<LeafletMapProps> = ({ items, isVisible = true, activ
             >
               <Popup>
                 <div style={{ width: 180 }}>
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    style={{ width: "100%", height: 90, objectFit: "cover", borderRadius: 6 }}
-                  />
+                  {/* FIX: use next/image to satisfy @next/next/no-img-element */}
+                  <div style={{ position: "relative", width: "100%", height: 90, borderRadius: 6, overflow: "hidden" }}>
+                    <Image
+                      src={p.image}
+                      alt={p.name}
+                      fill
+                      sizes="180px"
+                      style={{ objectFit: "cover" }}
+                      // Remove 'unoptimized' after adding your domain to next.config.js images.remotePatterns
+                      unoptimized
+                    />
+                  </div>
                   <div style={{ marginTop: 8, fontWeight: 600 }}>{p.name}</div>
                   <div style={{ fontSize: 12 }}>AED {p.price.toLocaleString()}</div>
                 </div>

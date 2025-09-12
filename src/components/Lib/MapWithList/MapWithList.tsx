@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useEffect, type FC } from "react";
-import { Select, Typography, Divider, Row, Col } from "antd";
+import { Select, Typography, Row, Col } from "antd";
 import { properties } from "@/data/propertiesMap";
 import { LeafletMap } from "./LeafletMap";
 import { PropertyListCard } from "./PropertyListCard";

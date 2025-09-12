@@ -1,9 +1,7 @@
 "use client";
 
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
-import AboutSection from "../Home/AboutSection";
 import LatestBlogSection from "../Home/LatestBlogSection";
-import RealEstateFaqSection from "../Home/RealEstateFaqSection";
 import ApplySection from "./ApplySection";
 import AreaTeamsSection from "./AreaTeamsSection";
 import Banner from "./Banner";
@@ -34,7 +32,6 @@ export default function BrokersPage() {
             />
             <SuccessMetricsSection />
             <StoriesAndTrendSection />
-            <RealEstateFaqSection />
             <LatestBlogSection />
             <SubscribeSection />
         </div>

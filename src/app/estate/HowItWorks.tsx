@@ -106,11 +106,9 @@ const HowItWorks: FC<Props> = ({ className, steps }) => {
   const total = data.length;
   const [active, setActive] = useState<number>(1);
 
-  // Refs
   const trackRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  // DÜZGÜN ref callback (void qaytarır)
   const setCardRef = useCallback(
     (index: number) => (el: HTMLDivElement | null) => {
       cardRefs.current[index] = el;
@@ -118,7 +116,6 @@ const HowItWorks: FC<Props> = ({ className, steps }) => {
     []
   );
 
-  // Aktiv slayda sürüş
   useEffect(() => {
     const idx = active - 1;
     const el = cardRefs.current[idx];
@@ -152,14 +149,13 @@ const HowItWorks: FC<Props> = ({ className, steps }) => {
 
         <Paragraph className={styles.sub}>
           Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's
+          industry. Lorem Ipsum has been the industry&apos;s
         </Paragraph>
 
         <Title level={4} className={styles.subHeading}>
           Step-by-Step Tokenization Process
         </Title>
 
-        {/* Step rail */}
         <div className={styles.stepRail}>
           <div className={styles.line} />
           {data.map((s, idx) => (
@@ -171,13 +167,13 @@ const HowItWorks: FC<Props> = ({ className, steps }) => {
               style={{ left: `${pos(idx)}%` }}
               onClick={() => goTo(idx + 1)}
               aria-label={`Go to step ${idx + 1}`}
+              type="button"
             >
               STEP - {idx + 1}
             </button>
           ))}
         </div>
 
-        {/* HORIZONTAL CAROUSEL */}
         <div className={styles.slider} ref={trackRef} aria-label="Steps slider">
           <div className={styles.track}>
             {data.map((s, idx) => (
@@ -209,7 +205,6 @@ const HowItWorks: FC<Props> = ({ className, steps }) => {
           </div>
         </div>
 
-        {/* Footer nav */}
         <div className={styles.footerNav}>
           <Button
             className={styles.prevBtn}

@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useRef, useState } from "react";
+import { FC, useState } from "react";
 import Image from "next/image";
 import Slider from "react-slick";
 import {
@@ -9,66 +9,27 @@ import {
   Row,
   Col,
   Breadcrumb,
-  Avatar,
   Button,
-  Form,
   Input,
-  Select,
 } from "antd";
 import {
   ArrowLeftOutlined,
   EnvironmentOutlined,
-  HomeOutlined,
-  BuildOutlined,
-  ExpandAltOutlined,
-  WhatsAppOutlined,
-  PhoneOutlined,
-  UserOutlined,
-  RightOutlined,
   ArrowRightOutlined,
 } from "@ant-design/icons";
 import { TProperty } from "@/types/property";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import  LocationNearby  from "./LocationNearby";
+import LocationNearby from "./LocationNearby";
 import "./index.scss";
 import PopularProperties from "../PopularProperties";
-import GoogleReviewsSection from "@/app/Home/GoogleReviewsSection";
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
 import LatestBlogSection from "@/app/Home/LatestBlogSection";
-import RealEstateFaqSection from "@/app/Home/RealEstateFaqSection";
 
 const { Title, Text, Paragraph } = Typography;
-const { Option } = Select;
 
 type Props = { property: TProperty };
-
-const Thumbs: FC<{ images: string[]; name: string; setAsNavFor: (s: Slider | null) => void; navFor?: Slider | null }> = ({ images, name, setAsNavFor, navFor }) => {
-  return (
-    <div className="thumbs-col">
-      <Slider
-        className="thumbs-slider"
-        vertical
-        verticalSwiping
-        slidesToShow={3}
-        swipeToSlide
-        focusOnSelect
-        arrows={false}
-        dots={false}
-        asNavFor={navFor as any}
-        ref={(s) => setAsNavFor(s)}
-        infinite
-      >
-        {images.slice(0, 3).map((src, i) => (
-          <div key={i} className="thumb">
-            <Image src={src} alt={`thumb-${i}-${name}`} fill className="thumb-img" />
-          </div>
-        ))}
-      </Slider>
-    </div>
-  );
-};
 
 const InfoCard: FC<{ icon: React.ReactNode; title: string; subtitle?: string }> = ({
   icon,
@@ -87,6 +48,7 @@ const InfoCard: FC<{ icon: React.ReactNode; title: string; subtitle?: string }> 
 const PropertyInner: FC<Props> = ({ property }) => {
   const [navMain, setNavMain] = useState<Slider | null>(null);
   const [navThumbs, setNavThumbs] = useState<Slider | null>(null);
+
   const whatsappNumber = "+994501234567";
   const phoneNumber = "+994501234567";
 
@@ -111,8 +73,8 @@ const PropertyInner: FC<Props> = ({ property }) => {
         <Row gutter={[16, 16]} align="top">
           <Col xs={24} lg={14}>
             <Slider
-              asNavFor={navThumbs as any}
-              ref={(s) => setNavMain(s)}
+              asNavFor={navThumbs ?? undefined}
+              ref={(s: Slider | null) => setNavMain(s)}
               arrows={false}
               dots={false}
               infinite
@@ -136,8 +98,8 @@ const PropertyInner: FC<Props> = ({ property }) => {
               focusOnSelect
               arrows={false}
               dots={false}
-              asNavFor={navMain as any}
-              ref={(s) => setNavThumbs(s)}
+              asNavFor={navMain ?? undefined}
+              ref={(s: Slider | null) => setNavThumbs(s)}
               infinite
             >
               {property.images.slice(0, 3).map((src, i) => (
@@ -205,7 +167,7 @@ const PropertyInner: FC<Props> = ({ property }) => {
                 <label>Message</label>
                 <Input.TextArea placeholder="eg: I want to know about..." rows={3} />
 
-                <Button type="primary" className="submit-btn" >
+                <Button type="primary" className="submit-btn">
                   Submit
                   <ArrowRightOutlined />
                 </Button>
@@ -213,7 +175,6 @@ const PropertyInner: FC<Props> = ({ property }) => {
             </div>
           </Col>
         </Row>
-
 
         <Row gutter={[16, 16]}>
           <Col xs={24} lg={19}>
@@ -255,11 +216,11 @@ const PropertyInner: FC<Props> = ({ property }) => {
                   </Title>
                 </del>
                 <Title level={2} className="price">
-                  AED {Number(property.price).toLocaleString()} / moth
+                  AED {Number(property.price).toLocaleString()} / month
                 </Title>
               </div>
               <Title level={4} className="headline">
-                {property.name || "Name of the appartment"}
+                {property.name || "Name of the apartment"}
               </Title>
               <Paragraph className="lead">
                 It is a long established fact that a reader will be distracted by the readable
@@ -274,29 +235,28 @@ const PropertyInner: FC<Props> = ({ property }) => {
             <Title level={4} className="section-title">Property Information</Title>
             <div className="pi-grid">
               <InfoCard
-              icon={<Image src="/propertimg1.png" alt="Bedroom" width={24} height={24} />}
-              title={`${property.bedrooms} Bedroom & maid`}
-             
+                icon={<Image src="/propertimg1.png" alt="Bedroom" width={24} height={24} />}
+                title={`${property.bedrooms} Bedroom & maid`}
               />
               <InfoCard
-              icon={<Image src="/propertimg2.png" alt="Bathroom" width={24} height={24} />}
-              title={`${property.bathrooms} Bathroom`}
+                icon={<Image src="/propertimg2.png" alt="Bathroom" width={24} height={24} />}
+                title={`${property.bathrooms} Bathroom`}
               />
               <InfoCard
-              icon={<Image src="/propertimg3.png" alt="Area" width={24} height={24} />}
-              title={`${property.area} sqft`}
+                icon={<Image src="/propertimg3.png" alt="Area" width={24} height={24} />}
+                title={`${property.area} sqft`}
               />
               <InfoCard
-              icon={<Image src="/propertimg4.png" alt="Large Balcony" width={24} height={24} />}
-              title="Large Balcony"
+                icon={<Image src="/propertimg4.png" alt="Large Balcony" width={24} height={24} />}
+                title="Large Balcony"
               />
               <InfoCard
-              icon={<Image src="/propertimg5.png" alt="Marina & Sea Views" width={24} height={24} />}
-              title="Marina & Sea Views"
+                icon={<Image src="/propertimg5.png" alt="Marina & Sea Views" width={24} height={24} />}
+                title="Marina & Sea Views"
               />
             </div>
 
-            <Title level={4} className="section-title">Aminities</Title>
+            <Title level={4} className="section-title">Amenities</Title>
             <div className="amenities">
               {(property.amenities?.length ? property.amenities : [
                 "Unfurnished", "Balcony", "Covered Parking", "Security", "Shared Gym", "Shared Pool",
@@ -326,15 +286,14 @@ const PropertyInner: FC<Props> = ({ property }) => {
                 For more information about this property or to arrange a viewing with the agent.
               </Paragraph>
             </div>
+
             <LocationNearby />
           </Col>
         </Row>
 
-        <PopularProperties/>
-        <GoogleReviewsSection/>
-        <SubscribeSection/>
-        <LatestBlogSection/>
-        <RealEstateFaqSection/>
+        <PopularProperties />
+        <SubscribeSection />
+        <LatestBlogSection />
       </Container>
     </div>
   );
