@@ -53,11 +53,6 @@ $text: #171717;
     border-radius: 8px;
     background: $primary;
     font-weight: 700;
-
-    &:hover,
-    &:focus {
-      background: darken($primary, 6%);
-    }
   }
 
   .mb0 { margin-bottom: 0; }
