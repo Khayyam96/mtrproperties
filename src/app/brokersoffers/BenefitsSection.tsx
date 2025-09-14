@@ -27,7 +27,6 @@ type Props = {
   subheading?: string;
   items?: BenefitItem[];
   ctaText?: string;
-  onCta?: () => void;
   className?: string;
 };
 
@@ -68,7 +67,6 @@ const BenefitsSection: FC<Props> = ({
   subheading = "Discover why thousands of brokers have made the switch to our revolutionary platform",
   items,
   ctaText = "Contact Us",
-  onCta,
   className,
 }) => {
   const data = useMemo(() => (items?.length ? items : defaultItems), [items]);
