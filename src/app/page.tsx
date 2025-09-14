@@ -22,6 +22,10 @@ import { FaqListResponse } from "@/models/Faq.model";
 import { Partner } from "@/models/Partner.model";
 import { ClientMostPopularListResponse } from "@/models/MostPopular.model";
 import { LastBlogListResponse } from "@/models/LastBlog.mode";
+import "../app/Home/index.scss";
+import { OffPlanListResponse } from "@/models/OffPlan.model";
+import { HeroBanner } from "@/models/HeroBanner.model";
+import { RealEstate } from "@/models/RealEstate.model";
 
 export default async function Home() {
 
@@ -30,12 +34,15 @@ export default async function Home() {
   const partneryData = await fetchAPI<Partner>('/client/forms/block/active')
   const popularPlacesRes = await fetchAPI<ClientMostPopularListResponse>('/client/popularPlaces');
   const blogRes = await fetchAPI<LastBlogListResponse>('/client/blogPosts/latest')
+  const offPlanRes = await fetchAPI<OffPlanListResponse>("/off-plan-new");
+  const heroBannerRes = await fetchAPI<HeroBanner>("/hero/web");
+  const realestateRes = await fetchAPI<RealEstate>("/realEstateAgencyDubai/active")
 
   return (
     <div className="home-page">
       <main>
-        <HeroSection />
-        <ProjectDubai />
+        <HeroSection data={heroBannerRes} />
+        <ProjectDubai data={offPlanRes.data} />
         <GetDiscountSection />
         <ProductSection />
         <MortgageCalculator />
@@ -45,15 +52,11 @@ export default async function Home() {
         <CommissionSection />
         <LuxuryProperties />
         <AboutSection />
-        <ContactAgentSection data={partneryData}/>
-        <MostPopularPlacesSection data={popularPlacesRes.items}/>
+        <ContactAgentSection data={partneryData} />
+        <MostPopularPlacesSection data={popularPlacesRes.items} />
         <SearchTrendsSection />
-        <LatestBlogSection data={blogRes}/>
-        <RealestateInfoCard
-          title="Realestate agency in dubai"
-          desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-          moreDesc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-        />
+        <LatestBlogSection data={blogRes} />
+        <RealestateInfoCard data={realestateRes} />
         <GoogleReviewsSection data={reviewData} />
         <RealEstateFaqSection data={faqData} />
       </main>

@@ -3,7 +3,6 @@
 
 import React from "react";
 import { Button, Col, Row, Typography } from "antd";
-import "./index.scss";
 import { Container } from "@/components/Lib/ProContainer/Container";
 
 const { Title, Text } = Typography;

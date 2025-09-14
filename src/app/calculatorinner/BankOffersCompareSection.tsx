@@ -1,13 +1,23 @@
 "use client";
 
 import { FC, useMemo } from "react";
+import Link from "next/link";
 import { Table, Typography } from "antd";
 import type { ColumnsType } from "antd/es/table";
+import type { BankListResponse } from "@/models/Bank.model";
 import styles from "./index.module.scss";
 
 const { Title, Paragraph, Text } = Typography;
 
-export type OfferRow = {
+type Props = {
+  heading?: string;
+  subheading?: string;
+  bankRes?: BankListResponse;
+  footnote?: string;
+  className?: string;
+};
+
+type OfferRow = {
   key: string;
   bank: string;
   product: string;
@@ -15,83 +25,86 @@ export type OfferRow = {
   downPayment: string;
   tenure: string;
   features: string;
+  logo?: string;
+  href?: string;
 };
 
-type Props = {
-  heading?: string;
-  subheading?: string;
-  rows?: OfferRow[];
-  footnote?: string;
-  className?: string;
-};
+const IMG_BASE = "https://api.dubaiyachts.com/uploads/properties";
 
-const defaultRows: OfferRow[] = [
-  {
-    key: "enbd",
-    bank: "Emirates NBD",
-    product: "Home Loan - Fixed",
-    interestRate: "3.40% Fixed",
-    downPayment: "20%",
-    tenure: "25 yrs",
-    features: "Salary transfer, fast approval",
-  },
-  {
-    key: "adcb",
-    bank: "ADCB",
-    product: "Dream Home Mortgage",
-    interestRate: "3.25% Variable",
-    downPayment: "20%",
-    tenure: "25 yrs",
-    features: "Free property insurance",
-  },
-  {
-    key: "mashreq",
-    bank: "Mashreq",
-    product: "Mashreq Home Loan",
-    interestRate: "3.50% Fixed/Reducing",
-    downPayment: "15% - 20%",
-    tenure: "25 yrs",
-    features: "Flexible repayment, no settlement fee (limited)",
-  },
-  {
-    key: "dubaiislamic",
-    bank: "Dubai Islamic",
-    product: "Al Islami Home Finance",
-    interestRate: "3.65% Reducing",
-    downPayment: "20%",
-    tenure: "25 yrs",
-    features: "Sharia compliant, Takaful incl.",
-  },
-  {
-    key: "fab",
-    bank: "FAB",
-    product: "MyHome Mortgage",
-    interestRate: "3.59% Fixed",
-    downPayment: "20%",
-    tenure: "25 yrs",
-    features: "Zero processing fee, cash back offer",
-  },
-];
+function withBase(src?: string) {
+  if (!src) return "";
+  if (src.startsWith("http")) return src;
+  return `${IMG_BASE}${src.startsWith("/") ? "" : "/"}${src}`;
+}
+
+function normalizeUrl(href?: string) {
+  if (!href) return undefined;
+  return href.startsWith("http") ? href : `https://${href}`;
+}
+
+function prettyType(t?: string) {
+  if (!t) return "";
+  return t
+    .split("/")
+    .map((s) => (s ? s[0].toUpperCase() + s.slice(1) : s))
+    .join("/");
+}
+
+function formatRate(rate?: string, type?: string) {
+  if (!rate && !type) return "";
+  const r = (rate || "").trim();
+  const pct = r ? (r.endsWith("%") ? r : `${r}%`) : "";
+  const tt = prettyType(type || "");
+  return [pct, tt].filter(Boolean).join(" ");
+}
 
 const BankOffersCompareSection: FC<Props> = ({
   heading = "Compare UAE Mortgage Offers by Banks",
   subheading =
     "Explore the latest mortgage rates and features from top UAE banks. Use this table to easily compare interest rates, down payments, tenures, and special benefits",
-  rows,
+  bankRes,
   footnote =
     "*Mortgage offers, interest rates, and terms listed are subject to change at any time in accordance with the policies of the respective banks and regulations set by the Central Bank of UAE (CBUAE)",
   className,
 }) => {
-  const data = useMemo(() => (rows?.length ? rows : defaultRows), [rows]);
+  const data: OfferRow[] = useMemo(
+    () =>
+      (bankRes?.data ?? []).map((b) => ({
+        key: String(b.id),
+        bank: b.name,
+        product: b.product,
+        interestRate: formatRate(b.interest_rate, b.interest_rate_type),
+        downPayment: b.down_payment,
+        tenure: b.tenure_years ? `${b.tenure_years} yrs` : "",
+        features: b.features,
+        logo: withBase(b.imgUrl),
+        href: normalizeUrl(b.link),
+      })),
+    [bankRes]
+  );
 
   const columns: ColumnsType<OfferRow> = [
     {
       title: "Bank",
       dataIndex: "bank",
       key: "bank",
-      width: 160,
+      width: 220,
       onHeaderCell: () => ({ className: styles.th }),
-      render: (v: string) => <Text strong>{v}</Text>,
+      render: (_v, row) => {
+        const nameEl = row.href ? (
+          <Link href={row.href} target="_blank" rel="noopener noreferrer">
+            <Text strong>{row.bank}</Text>
+          </Link>
+        ) : (
+          <Text strong>{row.bank}</Text>
+        );
+
+        return (
+          <div className={styles.bankCell}>
+            <span className={styles.bankName}>{nameEl}</span>
+          </div>
+        );
+      },
     },
     {
       title: "Product",
@@ -103,14 +116,14 @@ const BankOffersCompareSection: FC<Props> = ({
       title: "Interest Rate",
       dataIndex: "interestRate",
       key: "interestRate",
-      width: 160,
+      width: 170,
       onHeaderCell: () => ({ className: styles.th }),
     },
     {
       title: "Down Payment",
       dataIndex: "downPayment",
       key: "downPayment",
-      width: 150,
+      width: 140,
       onHeaderCell: () => ({ className: styles.th }),
     },
     {
@@ -127,6 +140,8 @@ const BankOffersCompareSection: FC<Props> = ({
       onHeaderCell: () => ({ className: styles.th }),
     },
   ];
+
+  if (!data.length) return null;
 
   return (
     <section className={`${styles.wrapoffers} ${className || ""}`}>

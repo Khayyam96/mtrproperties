@@ -25,7 +25,6 @@ if (!i18n.isInitialized) {
       react: { useSuspense: false },
     });
 
-  // HTML lang/dir idarə et
   const applyDir = (lng: string) => {
     if (typeof document !== "undefined") {
       document.documentElement.lang = lng;

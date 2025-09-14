@@ -1,5 +1,3 @@
-"use client";
-
 import PropertyFilterBar, { PropertyFilterValues } from "@/components/Lib/PropertyFilterBar";
 import PlanBanner from "./PlanBanner";
 import { Row, Col } from "antd";
@@ -8,9 +6,15 @@ import ReasonToInvest from "../newProject/ReasonToInvest";
 import RealestateInfoCard from "../Home/RealestateInfoCard";
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
 import "./index.scss"
+import { fetchAPI } from "@/utils";
+import { RealEstate } from "@/models/RealEstate.model";
+import { OffPlanListResponse } from "@/models/OffPlan.model";
 
 
-export default function PlanPage() {
+export default async function PlanPage() {
+
+    const realestateRes = await fetchAPI<RealEstate>("/realEstateAgencyDubai/active")
+    const offPlanRes = await fetchAPI<OffPlanListResponse>("/client/offPlanProjects");
 
     const handleSubmit = (values: PropertyFilterValues) => {
         console.log(values);
@@ -27,13 +31,9 @@ export default function PlanPage() {
                 </Row>
             </div>
             {/* <PlanCardSection /> */}
-            <ProjectDubai />
+            <ProjectDubai data={offPlanRes.data} />
             <ReasonToInvest />
-            <RealestateInfoCard
-                title="Realestate agency in dubai"
-                desc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-                moreDesc="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s."
-            />
+            <RealestateInfoCard data={realestateRes} />
             <SubscribeSection />
         </div>
     );

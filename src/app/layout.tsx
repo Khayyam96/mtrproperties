@@ -12,6 +12,7 @@ import { MainFooter } from "@/components/Layout/Footer";
 import ClientAntdProvider from "@/components/ClientAntdProvider";
 
 import "../../src/assets/styles/globals.scss";
+import Providers from "./providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -61,7 +62,7 @@ export default function RootLayout({
             <Content>
               <AntdRegistry>
                 <NextTopLoader showSpinner={false} height={3} />
-                {children}
+                <Providers>{children}</Providers>
               </AntdRegistry>
             </Content>
 

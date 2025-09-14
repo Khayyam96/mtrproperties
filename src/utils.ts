@@ -20,5 +20,7 @@ export async function fetchAPI<TResponse, TBody = unknown>(
     throw new Error(`API request failed with status ${res.status}`);
   }
 
-  return (await res.json()) as TResponse;
+  console.log(`API req method ${method} [ ${endpoint} ] status ${res.status}`)
+
+  return (await res?.json()) as TResponse;
 }

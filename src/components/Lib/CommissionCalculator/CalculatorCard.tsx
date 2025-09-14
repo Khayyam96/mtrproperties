@@ -1,3 +1,4 @@
+"use client";
 
 import { useMemo, useState } from "react";
 import { Card, InputNumber, Typography, Button } from "antd";
@@ -36,7 +37,6 @@ export default function CalculatorCard() {
             onChange={(v) => setPrice(Number(v) || 0)}
             prefix={
               <span className={cls.prefix}>
-                {/* AED symbol-ish */}
                 <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden>
                   <path fill="currentColor" d="M5 11h9a4 4 0 1 0 0-8H8v2h6a2 2 0 1 1 0 4H5v2zm0 2v2h7a2 2 0 1 1 0 4H8v2h4a4 4 0 1 0 0-8H5z"/>
                 </svg>

@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     includePaths: [path.join(__dirname, "src/assets/styles")],
   },
   experimental: {
-    optimizeCss: true, 
+    // optimizeCss: true, 
   },
   images: {
     remotePatterns: [

@@ -19,14 +19,6 @@ type Props = {
   data: MostPopularItem[] | ApiResp;
 };
 
-const API_BASE = "https://api.dubaiyachts.com";
-
-function withBase(src?: string) {
-  if (!src) return "";
-  if (src.startsWith("http")) return src;
-  return `${API_BASE}${src.startsWith("/") ? "" : "/"}${src}`;
-}
-
 export const MostPopularPlacesSection: FC<Props> = ({ data }) => {
   const items = useMemo<MostPopularItem[]>(() => {
     if (Array.isArray(data)) return data;
@@ -48,7 +40,7 @@ export const MostPopularPlacesSection: FC<Props> = ({ data }) => {
         <Row gutter={[20, 20]} justify="center" align="stretch">
           {items.map((item) => (
             <Col key={item.id} xs={24} sm={12} md={12} lg={8} xl={8} style={{ display: "flex" }}>
-              <PlaceCard image={withBase(item.image)} title={item.title} />
+              <PlaceCard image={item.image} title={item.title} />
             </Col>
           ))}
         </Row>

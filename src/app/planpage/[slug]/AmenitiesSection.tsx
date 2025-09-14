@@ -10,7 +10,6 @@ import {
     HeartOutlined,
     ShopOutlined,
 } from "@ant-design/icons";
-import "./index.scss";
 import { Container } from "@/components/Lib/ProContainer/Container";
 
 const { Title } = Typography;

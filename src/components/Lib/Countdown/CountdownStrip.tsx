@@ -3,16 +3,10 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Row, Col } from "antd";
 import classNames from "classnames";
+import "./index.scss";
 
 type Size = "sm" | "md" | "lg";
-
-type Props = {
-  deadline: string | number | Date;
-  className?: string;
-  size?: Size;
-  labels?: { days?: string; hours?: string; minutes?: string; seconds?: string };
-  onFinish?: () => void;
-};
+type Labels = { days?: string; hours?: string; minutes?: string; seconds?: string };
 
 type Left = { total: number; d: number; h: number; m: number; s: number };
 
@@ -29,20 +23,28 @@ function getLeft(targetMs: number): Left {
 
 const pad2 = (n: number) => String(n).padStart(2, "0");
 
+// ⬇️ Bu tipi EXPORT et ki başqa fayllar da düzgün görsün
+export type CountdownProps = {
+  deadline: string | number | Date;
+  className?: string;
+  size?: Size;
+  labels?: Labels;
+  onFinish?: () => void; // ⬅️ Burada var
+};
+
+// ⬇️ Funksiyanı mütləq eyni tip ilə imzala
 export default function CountdownStrip({
   deadline,
   className,
   size = "lg",
   labels,
   onFinish,
-}: Props) {
-  // deadline-ı təhlükəsiz parse et
+}: CountdownProps) {
   const target = useMemo(() => {
     const t = new Date(deadline).getTime();
     return Number.isFinite(t) ? t : NaN;
   }, [deadline]);
 
-  // onFinish ref (deps-lərdə istifadə etməmək üçün)
   const onFinishRef = useRef<(() => void) | undefined>(onFinish);
   useEffect(() => {
     onFinishRef.current = onFinish;
@@ -55,7 +57,6 @@ export default function CountdownStrip({
   const intervalIdRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
-    // invalid deadline üçün interval qurma
     if (!Number.isFinite(target)) {
       finishedRef.current = true;
       return;
@@ -64,7 +65,6 @@ export default function CountdownStrip({
     finishedRef.current = false;
     setLeft(getLeft(target));
 
-    // əvvəlki interval varsa təmizlə
     if (intervalIdRef.current) {
       clearInterval(intervalIdRef.current);
       intervalIdRef.current = null;
@@ -73,8 +73,6 @@ export default function CountdownStrip({
     intervalIdRef.current = setInterval(() => {
       setLeft((prev) => {
         const next = getLeft(target);
-
-        // bitəndə onFinish bir dəfə çağır və intervalı dayandır
         if (!finishedRef.current && prev.total > 0 && next.total === 0) {
           finishedRef.current = true;
           if (intervalIdRef.current) {
@@ -83,7 +81,6 @@ export default function CountdownStrip({
           }
           onFinishRef.current?.();
         }
-
         return next;
       });
     }, 1000);
@@ -94,7 +91,7 @@ export default function CountdownStrip({
         intervalIdRef.current = null;
       }
     };
-  }, [target]); // onFinish burada yoxdur; ref ilə idarə olunur
+  }, [target]);
 
   const l = {
     days: labels?.days ?? "Days",

@@ -1,145 +1,44 @@
-import React from "react";
+"use client";
+
+import React, { FC, useEffect } from "react";
 import Image from "next/image";
 import { Button, Select, Input } from "antd";
 import { EnvironmentOutlined } from "@ant-design/icons";
-import type { HeroAPI } from "@/types/herobanner";
 import "./index.scss";
+import { HeroBanner } from "@/models/HeroBanner.model";
 
 const { Option } = Select;
+const MEDIA_BASE = "https://api.dubaiyachts.com/uploads/properties/";
 
-const API_URL = "https://api.dubaiyachts.com/properties/api/v1/hero/web";
-export const dynamic = "force-dynamic";
+function buildMediaUrl(src?: string | null): string | null {
+  if (!src) return null;
 
-async function fetchJSONSafe(url: string, init?: RequestInit) {
-  const ac = new AbortController();
-  const timer = setTimeout(() => ac.abort(), 10_000);
+  if (/^(https?:\/\/|blob:)/i.test(src)) return src;
 
-  const res = await fetch(url, {
-    cache: "no-store",
-    headers: { Accept: "application/json", ...(init?.headers || {}) },
-    next: { revalidate: 0 },
-    signal: ac.signal,
-    ...init,
-  }).catch((e) => {
-    clearTimeout(timer);
-    throw e;
-  });
-
-  clearTimeout(timer);
-
-  const ok = res.ok;
-  const status = res.status;
-  const raw = await res.text();
-
-  return { ok, status, raw, res };
+  const clean = src.replace(/^\/+/, "");
+  return `${MEDIA_BASE}${clean}`;
 }
 
-function isObject(v: unknown): v is Record<string, unknown> {
-  return typeof v === "object" && v !== null;
-}
+type TProps = { data: HeroBanner };
 
-type WithLegacyHero = HeroAPI &
-  Partial<{
-    videoUrl: string;
-    videoUrlMp4: string;
-    videoMp4: string;
-    videoPosterUrl: string;
-    posterUrl: string;
-    poster: string;
-    image: string;
-  }>;
+const HeroSection: FC<TProps> = ({ data }) => {
+  const isVideo = data.backgroundType === "VIDEO";
+  const isImage = data.backgroundType === "IMAGE";
+  const imgPath = data.imageUrl ?? null;
 
-async function getHero(): Promise<HeroAPI | null> {
-  try {
-    const { ok, status, raw } = await fetchJSONSafe(API_URL);
+  const imgSrc = buildMediaUrl(imgPath);
+  const videoSrc = buildMediaUrl(data.videoUrl);
+  const videoPoster = buildMediaUrl(data.videoPosterUrl) ?? imgSrc ?? undefined;
 
-    if (!ok) {
-      console.error("HERO API not OK:", status, raw?.slice(0, 400));
-      return null;
-    }
-
-    if (!raw || !raw.trim()) {
-      console.error("HERO API returned empty body with status:", status);
-      return null;
-    }
-
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(raw) as unknown;
-    } catch (e) {
-      console.error("HERO API JSON parse error:", e, "Raw (first 400):", raw.slice(0, 400));
-      return null;
-    }
-
-    let rawData: unknown;
-    if (isObject(parsed) && "data" in parsed) {
-      rawData = (parsed as { data: unknown }).data;
-    } else {
-      rawData = parsed;
-    }
-
-    if (Array.isArray(rawData)) {
-      rawData = rawData[0];
-    }
-
-    if (!isObject(rawData)) return null;
-
-    return rawData as HeroAPI;
-  } catch (e) {
-    console.error("HERO API fetch error:", e);
-    return null;
-  }
-}
-
-function guessVideoMime(url: string): string {
-  const u = url?.toLowerCase?.() || "";
-  if (u.endsWith(".webm")) return "video/webm";
-  if (u.endsWith(".ogg") || u.endsWith(".ogv")) return "video/ogg";
-  return "video/mp4";
-}
-
-export default async function HeroSection() {
-  const hero = await getHero();
-
-  if (!hero || hero.isActive === false) return null;
-
-  const TITLE = hero.title ?? "";
-  const SUBTITLE = hero.subtitle ?? "";
-
-  const h = hero as WithLegacyHero;
-
-  const videoSrc =
-    h.videoUrl ??
-    h.videoUrlMp4 ??
-    h.videoMp4 ??
-    null;
-
-  const posterSrc =
-    h.videoPosterUrl ??
-    h.posterUrl ??
-    h.poster ??
-    hero.imageUrl ??
-    undefined;
-
-  const imageSrc = hero.imageUrl ?? h.image ?? null;
-
-  const showVideo = Boolean(videoSrc);
-  const showImage = !showVideo && Boolean(imageSrc);
-
-  if (!showVideo && !showImage) return null;
+ 
+  useEffect(() => {
+    console.log("[HeroSection] final imgSrc =", imgSrc);
+  }, [imgSrc]);
 
   return (
     <div className="hero-section">
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `console.log("HERO API (browser):", ${JSON.stringify(hero)
-            .replace(/</g, "\\u003c")
-            .replace(/<\/script>/gi, "<\\/script>")});`,
-        }}
-      />
-
-      <div className="hero-background" data-mode={showVideo ? "video" : "image"}>
-        {showVideo ? (
+      <div className="hero-background">
+        {isVideo && videoSrc && (
           <video
             className="hero-video"
             autoPlay
@@ -147,16 +46,18 @@ export default async function HeroSection() {
             loop
             playsInline
             preload="auto"
-            poster={posterSrc}
+            poster={videoPoster}
           >
-            <source src={videoSrc!} type={guessVideoMime(videoSrc!)} />
+            <source src={videoSrc} />
           </video>
-        ) : (
+        )}
+
+        {isImage && imgSrc && (
           <div className="hero-poster-wrapper">
             <Image
               className="hero-poster"
-              src={imageSrc!}
-              alt="Hero background"
+              src={imgSrc}
+              alt={data.title || "Hero background"}
               fill
               priority
               sizes="100vw"
@@ -169,8 +70,8 @@ export default async function HeroSection() {
 
         <div className="hero-content">
           <div className="hero-text">
-            {TITLE && <h1 className="hero-title">{TITLE}</h1>}
-            {SUBTITLE && <p className="hero-subtitle">{SUBTITLE}</p>}
+            <h1 className="hero-title">{data.title}</h1>
+            <p className="hero-subtitle">{data.subtitle}</p>
             <div className="hero-buttons">
               <Button type="primary" className="buy-btn">Buy</Button>
               <Button className="rent-btn">Rent</Button>
@@ -234,4 +135,6 @@ export default async function HeroSection() {
       </div>
     </div>
   );
-}
+};
+
+export default HeroSection;

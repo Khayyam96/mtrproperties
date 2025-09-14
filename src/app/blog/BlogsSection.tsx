@@ -50,7 +50,6 @@ export default function BlogsSection({ items, pageSize = 9, className }: Props) 
 
   // debug: log incoming items
   useEffect(() => {
-    console.log("[BlogsSection] incoming items:", items);
     if (items?.length) {
       console.table(
         items.map((i) => ({
@@ -65,9 +64,7 @@ export default function BlogsSection({ items, pageSize = 9, className }: Props) 
     }
   }, [items]);
 
-  // debug: log pagination and currently rendered items
   useEffect(() => {
-    console.log("[BlogsSection] page:", page, "pageSize:", pageSize);
     console.table(
       currentItems.map((i) => ({
         id: i.id,

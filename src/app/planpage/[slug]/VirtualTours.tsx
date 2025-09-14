@@ -11,8 +11,8 @@ const { Title } = Typography;
 export type TVirtualTour = {
   id: string;
   title: string;
-  poster: string;    // local file (e.g. /yacht.jpg) or remote (configure next.config.js domains if remote)
-  videoPath: string;
+  poster?: string;     // optional poster
+  videoPath: string;   // local MP4 və ya YouTube/Vimeo URL
 };
 
 type Props = {
@@ -24,6 +24,62 @@ const defaultTours: TVirtualTour[] = [
   { id: "1", title: "Modern Kitchen Tour", poster: "/yacht.jpg", videoPath: "/tour.mp4" },
 ];
 
+/* ---------------- Helpers ---------------- */
+function isYouTubeUrl(url: string) {
+  return /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//i.test(url);
+}
+
+function parseYouTubeId(url: string): { id: string | null; start: number } {
+  try {
+    const u = new URL(url);
+    let id: string | null = null;
+
+    if (u.hostname.includes("youtube.com")) {
+      if (u.pathname === "/watch") id = u.searchParams.get("v");
+      else if (u.pathname.startsWith("/embed/")) id = u.pathname.split("/embed/")[1] || null;
+      else if (u.pathname.startsWith("/shorts/")) id = u.pathname.split("/shorts/")[1] || null;
+    }
+
+    if (u.hostname === "youtu.be") {
+      id = (u.pathname || "").replace("/", "") || null;
+    }
+
+    let start = 0;
+    const t = u.searchParams.get("t") || u.searchParams.get("start");
+    if (t) start = parseYouTubeTimeToSeconds(t);
+
+    return { id, start };
+  } catch {
+    return { id: null, start: 0 };
+  }
+}
+
+function parseYouTubeTimeToSeconds(t: string): number {
+  if (/^\d+$/.test(t)) return parseInt(t, 10);
+  let total = 0;
+  const h = t.match(/(\d+)h/);
+  const m = t.match(/(\d+)m/);
+  const s = t.match(/(\d+)s/);
+  if (h) total += parseInt(h[1], 10) * 3600;
+  if (m) total += parseInt(m[1], 10) * 60;
+  if (s) total += parseInt(s[1], 10);
+  return total || 0;
+}
+
+function toYouTubeEmbed(url: string): string | null {
+  const { id, start } = parseYouTubeId(url);
+  if (!id) return null;
+  const params = new URLSearchParams({
+    autoplay: "1",
+    mute: "1",
+    rel: "0",
+    modestbranding: "1",
+    playsinline: "1",
+  });
+  if (start > 0) params.set("start", String(start));
+  return `https://www.youtube.com/embed/${id}?${params.toString()}`;
+}
+
 export default function VirtualTours({ tours, className }: Props) {
   const data = useMemo(() => (tours?.length ? tours : defaultTours), [tours]);
   const [playingId, setPlayingId] = useState<string | null>(null);
@@ -31,6 +87,8 @@ export default function VirtualTours({ tours, className }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const active = data.find((t) => t.id === playingId) || null;
+  const isActiveYouTube = active ? isYouTubeUrl(active.videoPath) : false;
+  const ytEmbed = active && isActiveYouTube ? toYouTubeEmbed(active.videoPath) : null;
 
   const handlePlay = (id: string) => {
     setPlayingId(id);
@@ -61,6 +119,8 @@ export default function VirtualTours({ tours, className }: Props) {
     }
   };
 
+  const posterSrc = data[0]?.poster || "/yacht.jpg";
+
   return (
     <section className={classNames("virtual-tours", className)}>
       <div className="vt-container">
@@ -71,12 +131,11 @@ export default function VirtualTours({ tours, className }: Props) {
             <div className={classNames("tour-card", { "is-playing": !!active })}>
               {!active && (
                 <>
-                  {/* Poster image (Next.js optimized) */}
                   <div className="thumb-wrap">
                     <Image
                       className="thumb"
-                      src={data[0].poster}
-                      alt={data[0].title}
+                      src={posterSrc}
+                      alt={data[0]?.title || "Virtual Tour"}
                       fill
                       sizes="(max-width: 576px) 100vw, (max-width: 992px) 90vw, 66vw"
                       priority={false}
@@ -86,7 +145,7 @@ export default function VirtualTours({ tours, className }: Props) {
                   <button
                     type="button"
                     className="play-btn"
-                    aria-label={`Play ${data[0].title}`}
+                    aria-label={`Play ${data[0]?.title || "Virtual Tour"}`}
                     onClick={() => handlePlay(data[0].id)}
                   >
                     <span className="play-circle">
@@ -107,29 +166,43 @@ export default function VirtualTours({ tours, className }: Props) {
                     <CloseOutlined />
                   </button>
 
-                  <video
-                    ref={videoRef}
-                    key={active.videoPath}
-                    src={active.videoPath}
-                    autoPlay
-                    muted
-                    playsInline
-                    preload="none"
-                    onClick={togglePlay}
-                    onPlay={() => setPaused(false)}
-                    onPause={() => setPaused(true)}
-                    onEnded={handleClose}
-                  />
-
-                  {paused && (
-                    <button
-                      type="button"
-                      className="center-play"
-                      aria-label="Play video"
-                      onClick={togglePlay}
-                    >
-                      <CaretRightFilled className="play-icon" />
-                    </button>
+                  {isActiveYouTube && ytEmbed ? (
+                    <div className="iframe-ratio">
+                      <iframe
+                        key={ytEmbed}
+                        src={ytEmbed}
+                        allow="autoplay; encrypted-media; picture-in-picture"
+                        allowFullScreen
+                        title={active.title}
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <video
+                        ref={videoRef}
+                        key={active.videoPath}
+                        src={active.videoPath}
+                        autoPlay
+                        muted
+                        playsInline
+                        preload="none"
+                        onClick={togglePlay}
+                        onPlay={() => setPaused(false)}
+                        onPause={() => setPaused(true)}
+                        onEnded={handleClose}
+                        controls
+                      />
+                      {paused && (
+                        <button
+                          type="button"
+                          className="center-play"
+                          aria-label="Play video"
+                          onClick={togglePlay}
+                        >
+                          <CaretRightFilled className="play-icon" />
+                        </button>
+                      )}
+                    </>
                   )}
                 </div>
               )}

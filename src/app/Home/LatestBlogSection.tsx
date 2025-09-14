@@ -23,7 +23,7 @@ function resolveImage(src?: string | null): string {
   return `${BLOG_IMAGE_BASE}/${src}`;
 }
 
-// ✅ null-u da qəbul etsin
+
 function formatDate(iso?: string | null): string {
   if (!iso) return "";
   try {

@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useMemo, useRef } from "react";
+import type { BankListResponse } from "@/models/Bank.model";
 import Slider, { Settings } from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -13,36 +14,43 @@ import styles from "./index.module.scss";
 
 const { Title, Paragraph } = Typography;
 
-type BankItem = {
-  name: string;
-  logo: string;     // public/ içindən yol, məsələn "/banks/enbd.png"
-  href?: string;    // verilərsə loqo kliklənə bilər
-};
-
 type Props = {
   heading?: string;
   subheading?: string;
-  items?: BankItem[];
+  bankRes?: BankListResponse;
   className?: string;
 };
 
-const defaultItems: BankItem[] = [
-  { name: "Emirates NBD", logo: "/banks/enbd.png" },
-  { name: "ADCB", logo: "/banks/adcb.png" },
-  { name: "Citi", logo: "/banks/citi.png" },
-  { name: "RAKBANK", logo: "/banks/rakbank.png" },
-  { name: "Mashreq", logo: "/banks/mashreq.png" },
-  { name: "FAB", logo: "/banks/fab.png" },
-  { name: "Dubai Islamic", logo: "/banks/dib.png" },
-];
+const IMG_BASE = "https://api.dubaiyachts.com/uploads/properties";
+
+function withBase(src?: string) {
+  if (!src) return "";
+  if (src.startsWith("http")) return src;
+  return `${IMG_BASE}${src.startsWith("/") ? "" : "/"}${src}`;
+}
+
+function normalizeUrl(href?: string) {
+  if (!href) return undefined;
+  return href.startsWith("http") ? href : `https://${href}`;
+}
 
 const BanksCarouselSection: FC<Props> = ({
   heading = "Our Banks in UAE",
-  subheading = "Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.",
-  items,
+  subheading = "Contrary to popular belief, Lorem Ipsum is not simply random text.",
+  bankRes,
   className,
 }) => {
-  const data = useMemo(() => (items?.length ? items : defaultItems), [items]);
+  const items = useMemo(
+    () =>
+      (bankRes?.data ?? []).map((b) => ({
+        id: b.id,
+        name: b.name,
+        logo: withBase(b.imgUrl),
+        href: normalizeUrl(b.link),
+      })),
+    [bankRes]
+  );
+
   const sliderRef = useRef<Slider | null>(null);
 
   const settings: Settings = {
@@ -60,6 +68,8 @@ const BanksCarouselSection: FC<Props> = ({
     ],
   };
 
+  if (!items.length) return null;
+
   return (
     <section className={`${styles.wrapcarousel} ${className || ""}`}>
       <div className={styles.container}>
@@ -70,7 +80,7 @@ const BanksCarouselSection: FC<Props> = ({
 
         <div className={styles.sliderWrap}>
           <Slider ref={sliderRef} {...settings}>
-            {data.map((b, idx) => {
+            {items.map((b) => {
               const content = (
                 <div className={styles.logoCard}>
                   <Image
@@ -83,9 +93,9 @@ const BanksCarouselSection: FC<Props> = ({
                 </div>
               );
               return (
-                <div key={idx} className={styles.slide}>
+                <div key={b.id} className={styles.slide}>
                   {b.href ? (
-                    <Link href={b.href} aria-label={b.name}>
+                    <Link href={b.href} aria-label={b.name} target="_blank">
                       {content}
                     </Link>
                   ) : (

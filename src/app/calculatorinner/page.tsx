@@ -1,9 +1,7 @@
-"use client";
-
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
-// import GoogleReviewsSection from "../Home/GoogleReviewsSection";
+import GoogleReviewsSection from "../Home/GoogleReviewsSection";
 import MortgageCalculator from "../Home/MortgageCalculator";
-// import { MostPopularPlacesSection } from "../Home/MostPopularPlacesSection";
+import { MostPopularPlacesSection } from "../Home/MostPopularPlacesSection";
 import BankOffersCompareSection from "./BankOffersCompareSection";
 import BanksCarouselSection from "./BanksCarouselSection";
 import DocumentsRequiredSection from "./DocumentsRequiredSection";
@@ -11,30 +9,42 @@ import MortgageHero from "./MortgageHero";
 import ResidentsVsNonResidents from "./ResidentsVsNonResidents";
 import SalaryEligibilitySection from "./SalaryEligibilitySection";
 import SpecialOffersSection from "./SpecialOffersSection";
-// import LatestBlogSection from "../Home/LatestBlogSection";
-// import RealEstateFaqSection from "../Home/RealEstateFaqSection";
+import { fetchAPI } from "@/utils";
+import { ClientMostPopularListResponse } from "@/models/MostPopular.model";
+import { IReviewResp } from "@/models/Review.model";
+import { LastBlogListResponse } from "@/models/LastBlog.mode";
+import LatestBlogSection from "../Home/LatestBlogSection";
+import RealEstateFaqSection from "../Home/RealEstateFaqSection";
+import { FaqListResponse } from "@/models/Faq.model";
+import { BankListResponse } from "@/models/Bank.model";
 
 
-export default function BrokersPage() {
+export default async function BrokersPage() {
+    const popularPlacesRes = await fetchAPI<ClientMostPopularListResponse>('/client/popularPlaces');
+    const reviewData = await fetchAPI<IReviewResp>('/client/reviews')
+    const blogRes = await fetchAPI<LastBlogListResponse>('/client/blogPosts/latest')
+    const faqData = await fetchAPI<FaqListResponse>('/client/faq')
+    const bankRes = await fetchAPI<BankListResponse>('/banks/client')
+
     return (
         <div className="calculatorinner-page">
             <MortgageHero
-                image="/hero.png"   
+                image="/hero.png"
                 height={260}
                 overlay={0.5}
             />
             <MortgageCalculator />
             <SpecialOffersSection />
-            {/* <MostPopularPlacesSection /> */}
+            <MostPopularPlacesSection data={popularPlacesRes.items} />
             <DocumentsRequiredSection />
             <ResidentsVsNonResidents />
             <SalaryEligibilitySection />
-            <BankOffersCompareSection />
-            <BanksCarouselSection />
-            {/* <GoogleReviewsSection /> */}
+            <BankOffersCompareSection bankRes={bankRes} />
+            <BanksCarouselSection bankRes={bankRes} />
+            <GoogleReviewsSection data={reviewData} />
             <SubscribeSection />
-            {/* <LatestBlogSection />
-            <RealEstateFaqSection /> */}
+            <LatestBlogSection data={blogRes} />
+            <RealEstateFaqSection data={faqData} />
         </div>
     );
 }

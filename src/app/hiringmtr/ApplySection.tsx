@@ -154,7 +154,6 @@ application process gets you started in just a few minutes.`,
     if (onSubmit) {
       onSubmit(payload);
     } else {
-      console.log("Application:", payload);
     }
     message.success("Application submitted!");
   };
