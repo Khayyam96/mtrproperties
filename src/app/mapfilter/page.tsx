@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import SearchFilter from "../../components/Lib/Filter/SearchFilter";
 import { MapWithList } from "../../components/Lib/MapWithList/MapWithList";
