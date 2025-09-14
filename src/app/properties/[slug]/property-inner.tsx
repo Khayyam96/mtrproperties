@@ -49,9 +49,6 @@ const PropertyInner: FC<Props> = ({ property }) => {
   const [navMain, setNavMain] = useState<Slider | null>(null);
   const [navThumbs, setNavThumbs] = useState<Slider | null>(null);
 
-  const whatsappNumber = "+994501234567";
-  const phoneNumber = "+994501234567";
-
   return (
     <div className="property-inner">
       <Container>
