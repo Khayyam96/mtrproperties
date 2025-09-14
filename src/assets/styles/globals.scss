@@ -1,8 +1,7 @@
-@import "../../components/Lib/Countdown/index.scss";
-@import "../../app/planpage/index.scss";
-@import "../../app/planpage/[slug]/index.scss";
-@import "../../app/page.scss";
-
+@use "../../components/Lib/Countdown/index" as *;
+@use "../../app/planpage/index" as *;
+@use "../../app/planpage/[slug]/index" as *;
+@use "../../app/page" as *;
 
 :root {
   --background: #ffffff;

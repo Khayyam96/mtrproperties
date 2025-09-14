@@ -137,7 +137,7 @@ export const ProjectCard: FC<Props> = ({
 
           <div className="price">{price}</div>
 
-          {developerLogo && (
+          {/* {developerLogo && (
             <div className="mag-logo">
               <Image
                 src={developerLogo}
@@ -148,7 +148,7 @@ export const ProjectCard: FC<Props> = ({
                 style={{ objectFit: "contain" }}
               />
             </div>
-          )}
+          )} */}
         </div>
       </Link>
     </div>
