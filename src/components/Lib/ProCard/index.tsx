@@ -65,12 +65,7 @@ export const ProCard: React.FC<TProCard> = ({
     sliderRef.current?.slickNext();
   };
 
-  const handleWhatsappClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.stopPropagation();
-    if (typeof window !== "undefined") {
-      window.open("https://wa.me/971XXXXXXXXX", "_blank");
-    }
-  };
+ 
 
   const settings: Settings = {
     dots: false,
@@ -155,7 +150,7 @@ export const ProCard: React.FC<TProCard> = ({
           >
             <PhoneOutlined /> Call Us
           </button>
-          <button className="whatsapp" onClick={handleWhatsappClick}>
+          <button className="whatsapp" >
             <WhatsAppOutlined /> Whatsapp
           </button>
         </div>

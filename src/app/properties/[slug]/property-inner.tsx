@@ -129,7 +129,6 @@ const PropertyInner: FC<Props> = ({ property }) => {
               <div className="agent-buttons">
                 <Button
                   className="call-btn"
-                  onClick={() => (window.location.href = `tel:${phoneNumber}`)}
                 >
                   <Image src="/phone.png" alt="Call" width={16} height={16} />
                   Call Us
@@ -137,9 +136,7 @@ const PropertyInner: FC<Props> = ({ property }) => {
 
                 <Button
                   className="whatsapp-btn"
-                  onClick={() =>
-                    window.open(`https://wa.me/${whatsappNumber.replace(/\D/g, "")}`, "_blank")
-                  }
+                  
                 >
                   <Image src="/what.png" alt="Whatsapp" width={16} height={16} />
                   Whatsapp
@@ -188,12 +185,7 @@ const PropertyInner: FC<Props> = ({ property }) => {
 
                 <Button
                   className="calc-btn whatsapp"
-                  onClick={() =>
-                    window.open(
-                      `https://wa.me/${whatsappNumber.replace(/\D/g, "")}`,
-                      "_blank"
-                    )
-                  }
+                 
                 >
                   Whatsapp
                   <Image

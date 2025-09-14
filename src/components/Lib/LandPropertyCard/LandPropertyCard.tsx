@@ -59,12 +59,7 @@ export const LandPropertyCard: React.FC<TProCard> = ({
     sliderRef.current?.slickNext();
   };
 
-  const handleWhatsappClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (typeof window !== "undefined") {
-      window.open("https://wa.me/971XXXXXXXXX", "_blank");
-    }
-  };
+ 
 
   const settings = { dots: false, arrows: false, infinite: true, speed: 400, slidesToShow: 1, slidesToScroll: 1 };
 
@@ -131,7 +126,7 @@ export const LandPropertyCard: React.FC<TProCard> = ({
             <PhoneOutlined /> Call Us
           </button>
 
-          <button className="whatsapp" onClick={handleWhatsappClick}>
+          <button className="whatsapp" >
             <WhatsAppOutlined /> Whatsapp
           </button>
         </div>
