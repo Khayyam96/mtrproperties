@@ -22,16 +22,10 @@ export default async function BrokersPage() {
                 ctaHref="/careers/apply"
             />
             <SuccessFrameworkSection />
-            <EarningPotentialSection onCta={() => console.log("View more")} />
+            <EarningPotentialSection  />
             <AreaTeamsSection positionsCount={5} />
-            <TeamDetailsSection
-                ctaHref="/careers/apply/downtown-dubai"
-            />
-            <ApplySection
-                onSubmit={(data) => {
-                    console.log("Submit payload:", data);
-                }}
-            />
+            <TeamDetailsSection/>
+            <ApplySection/>
             <SuccessMetricsSection />
             <StoriesAndTrendSection />
             <LatestBlogSection data={blogRes} />
