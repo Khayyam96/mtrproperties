@@ -1,9 +1,10 @@
+// components/Lib/MapWithList/MapWithList.tsx
 "use client";
 
-import { useMemo, useState, useEffect, type FC } from "react";
+import { useMemo, useState, type FC } from "react";
+import dynamic from "next/dynamic";
 import { Select, Typography, Row, Col } from "antd";
 import { properties } from "@/data/propertiesMap";
-import { LeafletMap } from "./LeafletMap";
 import { PropertyListCard } from "./PropertyListCard";
 import "./index.scss";
 import Image from "next/image";
@@ -26,15 +27,8 @@ type Props = {
   onToggleMap: (open: boolean) => void;
 };
 
-const LeafletPreloader: FC = () => {
-  useEffect(() => {
-    import("react-leaflet");
-    import("leaflet");
-    import("leaflet.markercluster");
-    import("react-leaflet-markercluster");
-  }, []);
-  return null;
-};
+// ⚠️ VACİB: LeafletMap SSR-siz dinamik yüklənir
+const LeafletMap = dynamic(() => import("./LeafletMap").then(m => m.LeafletMap), { ssr: false });
 
 export const MapWithList: FC<Props> = ({ filters, isMapOpen, onToggleMap }) => {
   const [sort, setSort] = useState<"newest" | "low" | "high">("newest");
@@ -75,8 +69,8 @@ export const MapWithList: FC<Props> = ({ filters, isMapOpen, onToggleMap }) => {
     filters.purpose === "Rent" ? "Rent" : "Buy"
   }${filters.location ? ` in ${filters.location}` : ""}`;
 
-  const gridWhenClosed = { xs: 24, sm: 12, md: 12, lg: 6, xl: 6, xxl: 6 }; // 4 sütun
-  const gridWhenOpen   = { xs: 24, sm: 12, md: 12, lg: 12, xl: 12, xxl: 12 }; // 2 sütun
+  const gridWhenClosed = { xs: 24, sm: 12, md: 12, lg: 6, xl: 6, xxl: 6 };
+  const gridWhenOpen   = { xs: 24, sm: 12, md: 12, lg: 12, xl: 12, xxl: 12 };
 
   const handleToggleMap = () => {
     if (!isMapOpen && sorted.length === 0) return;
@@ -85,27 +79,28 @@ export const MapWithList: FC<Props> = ({ filters, isMapOpen, onToggleMap }) => {
 
   const handleCardClick = (id: number) => {
     setActiveId(id);
-    if (!isMapOpen) onToggleMap(true); 
+    if (!isMapOpen) onToggleMap(true);
   };
 
   return (
     <div className={`map-with-list ${collapsed ? "collapsed" : ""}`}>
-      <LeafletPreloader />
-
       <div className="map-column">
-        <LeafletMap items={sorted} isVisible={!collapsed} activeId={activeId} />
-        <button className="exit-map" onClick={() => onToggleMap(false)}>Exit Map</button>
+        {/* Xəritə yalnız list boş olmayanda və panel açıq olanda göstərilsin */}
+        {!collapsed && <LeafletMap items={sorted} isVisible={!collapsed} activeId={activeId} />}
+        {!collapsed && (
+          <button className="exit-map" onClick={() => onToggleMap(false)}>Exit Map</button>
+        )}
       </div>
 
       <div className="list-column">
         <div className="list-toolbar">
           <a className="return-link" onClick={handleToggleMap}>
             <Image
-                src="/view-grid.png"
-                alt="Back"
-                width={20}
-                height={20}
-                style={{ marginRight: 8, verticalAlign: "middle" }}
+              src="/view-grid.png"
+              alt="Back"
+              width={20}
+              height={20}
+              style={{ marginRight: 8, verticalAlign: "middle" }}
             />
             {isMapOpen ? "Return to List View" : "Show Map View"}
           </a>
@@ -120,7 +115,6 @@ export const MapWithList: FC<Props> = ({ filters, isMapOpen, onToggleMap }) => {
         </div>
 
         <Title level={4} className="list-title">{titleText}</Title>
-        
 
         <Row gutter={[16, 16]}>
           {sorted.map((p) => (

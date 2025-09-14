@@ -1,36 +1,39 @@
+// components/Lib/MapWithList/LeafletMap.tsx
 "use client";
 
 import dynamic from "next/dynamic";
-import { useMemo, useRef, useEffect, type FC, type ReactNode } from "react";
+import { useMemo, useRef, useEffect, useState, type FC, type ReactNode } from "react";
 import Image from "next/image";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+// CSS faylları təhlükəsizdir:
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
-import "leaflet.markercluster";
+
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { Property } from "@/data/propertiesMap";
 
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: markerIcon2x.src,
-  iconUrl: markerIcon.src,
-  shadowUrl: markerShadow.src,
+  iconRetinaUrl: (markerIcon2x as unknown as { src: string }).src ?? (markerIcon2x as any),
+  iconUrl:       (markerIcon   as unknown as { src: string }).src ?? (markerIcon as any),
+  shadowUrl:     (markerShadow as unknown as { src: string }).src ?? (markerShadow as any),
 });
 
+// React-Leaflet hissələrini SSR-siz dinamik yükləyirik
 const MapContainer = dynamic(() => import("react-leaflet").then(m => m.MapContainer), { ssr: false });
-const TileLayer     = dynamic(() => import("react-leaflet").then(m => m.TileLayer), { ssr: false });
-const Marker        = dynamic(() => import("react-leaflet").then(m => m.Marker), { ssr: false });
-const Popup         = dynamic(() => import("react-leaflet").then(m => m.Popup), { ssr: false });
+const TileLayer    = dynamic(() => import("react-leaflet").then(m => m.TileLayer),    { ssr: false });
+const Marker       = dynamic(() => import("react-leaflet").then(m => m.Marker),       { ssr: false });
+const Popup        = dynamic(() => import("react-leaflet").then(m => m.Popup),        { ssr: false });
 
-// --- FIX: import the default component, not the whole module, and type it
+// MarkerClusterGroup default export-dur
 type MarkerClusterGroupProps = {
   children?: ReactNode;
   chunkedLoading?: boolean;
   removeOutsideVisibleBounds?: boolean;
   maxClusterRadius?: number | ((zoom: number) => number);
-  iconCreateFunction?: (cluster: L.MarkerCluster) => L.DivIcon;
+  iconCreateFunction?: (cluster: any) => L.DivIcon;
 };
 const MarkerClusterGroup = dynamic<MarkerClusterGroupProps>(
   () => import("react-leaflet-markercluster").then(m => m.default),
@@ -53,14 +56,26 @@ export const LeafletMap: FC<LeafletMapProps> = ({ items, isVisible = true, activ
   const defaultCenter = useMemo(() => ({ lat: 25.1972, lng: 55.2744 }), []);
   const mapRef = useRef<L.Map | null>(null);
 
-  // Panel görünəndə xəritənin ölçüsünü yenilə
+  // Pluginin runtime-yə qoşulmasını gözlə
+  const [clusterReady, setClusterReady] = useState(false);
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      // ⚠️ Vacib: plugin SSR-də import olunmasın deyə burada yüklənir
+      await import("leaflet.markercluster");
+      if (mounted) setClusterReady(true);
+    })();
+    return () => { mounted = false; };
+  }, []);
+
+  // Panel açılıb-bağlananda ölçünü yenilə
   useEffect(() => {
     if (!isVisible) return;
     const t = setTimeout(() => { mapRef.current?.invalidateSize(); }, 350);
     return () => clearTimeout(t);
   }, [isVisible]);
 
-  // Aktiv kart seçiləndə həmin koordinata fokusla
+  // Aktiv karta fokus
   useEffect(() => {
     if (activeId == null || !mapRef.current) return;
     const found = items.find(i => i.id === activeId);
@@ -69,29 +84,27 @@ export const LeafletMap: FC<LeafletMapProps> = ({ items, isVisible = true, activ
   }, [activeId, items]);
 
   const singleIcon = useMemo(
-    () =>
-      L.divIcon({
-        className: "mc-wrap",
-        html: `<div class="m-pin"><span class="m-pin-icon">${HOME_SVG}</span></div>`,
-        iconSize: L.point(34, 34, true),
-      }),
+    () => L.divIcon({
+      className: "mc-wrap",
+      html: `<div class="m-pin"><span class="m-pin-icon">${HOME_SVG}</span></div>`,
+      iconSize: L.point(34, 34, true),
+    }),
     []
   );
 
   const activeIcon = useMemo(
-    () =>
-      L.divIcon({
-        className: "mc-wrap",
-        html: `<div class="m-pin m-pin--active"><span class="m-pin-icon">${HOME_SVG}</span></div>`,
-        iconSize: L.point(38, 38, true),
-      }),
+    () => L.divIcon({
+      className: "mc-wrap",
+      html: `<div class="m-pin m-pin--active"><span class="m-pin-icon">${HOME_SVG}</span></div>`,
+      iconSize: L.point(38, 38, true),
+    }),
     []
   );
 
   return (
     <div className="leaflet-wrap">
       <MapContainer
-        ref={(instance) => { mapRef.current = instance; }}
+        ref={(instance) => { mapRef.current = instance as unknown as L.Map; }}
         center={defaultCenter}
         zoom={13}
         preferCanvas
@@ -103,51 +116,52 @@ export const LeafletMap: FC<LeafletMapProps> = ({ items, isVisible = true, activ
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        <MarkerClusterGroup
-          chunkedLoading
-          removeOutsideVisibleBounds
-          maxClusterRadius={60}
-          iconCreateFunction={(cluster: L.MarkerCluster): L.DivIcon => {
-            const count = cluster.getChildCount();
-            return L.divIcon({
-              className: "mc-wrap",
-              html: `
-                <div class="m-cluster">
-                  ${HOME_SVG}
-                  <span class="m-count">${count}</span>
-                </div>
-              `,
-              iconSize: L.point(40, 40, true),
-            });
-          }}
-        >
-          {items.map((p) => (
-            <Marker
-              key={p.id}
-              position={[p.lat, p.lng]}
-              icon={activeId === p.id ? activeIcon : singleIcon}
-            >
-              <Popup>
-                <div style={{ width: 180 }}>
-                  {/* FIX: use next/image to satisfy @next/next/no-img-element */}
-                  <div style={{ position: "relative", width: "100%", height: 90, borderRadius: 6, overflow: "hidden" }}>
-                    <Image
-                      src={p.image}
-                      alt={p.name}
-                      fill
-                      sizes="180px"
-                      style={{ objectFit: "cover" }}
-                      // Remove 'unoptimized' after adding your domain to next.config.js images.remotePatterns
-                      unoptimized
-                    />
+        {/* Cluster yalnız plugin yüklənəndən sonra render olunsun */}
+        {clusterReady && (
+          <MarkerClusterGroup
+            chunkedLoading
+            removeOutsideVisibleBounds
+            maxClusterRadius={60}
+            iconCreateFunction={(cluster: any): L.DivIcon => {
+              const count = cluster.getChildCount();
+              return L.divIcon({
+                className: "mc-wrap",
+                html: `
+                  <div class="m-cluster">
+                    ${HOME_SVG}
+                    <span class="m-count">${count}</span>
                   </div>
-                  <div style={{ marginTop: 8, fontWeight: 600 }}>{p.name}</div>
-                  <div style={{ fontSize: 12 }}>AED {p.price.toLocaleString()}</div>
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MarkerClusterGroup>
+                `,
+                iconSize: L.point(40, 40, true),
+              });
+            }}
+          >
+            {items.map((p) => (
+              <Marker
+                key={p.id}
+                position={[p.lat, p.lng]}
+                icon={activeId === p.id ? activeIcon : singleIcon}
+              >
+                <Popup>
+                  <div style={{ width: 180 }}>
+                    <div style={{ position: "relative", width: "100%", height: 90, borderRadius: 6, overflow: "hidden" }}>
+                      <Image
+                        src={p.image}
+                        alt={p.name}
+                        fill
+                        sizes="180px"
+                        style={{ objectFit: "cover" }}
+                        unoptimized
+                      />
+                    </div>
+                    <div style={{ marginTop: 8, fontWeight: 600 }}>{p.name}</div>
+                    <div style={{ fontSize: 12 }}>AED {p.price.toLocaleString()}</div>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
+          </MarkerClusterGroup>
+        )}
       </MapContainer>
     </div>
   );
