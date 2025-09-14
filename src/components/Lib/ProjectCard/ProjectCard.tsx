@@ -87,7 +87,6 @@ export const ProjectCard: FC<Props> = ({
   segment,
   handoverAt,
   paymentPlanLabel,
-  developerLogo,
 }) => {
   const href = `/planpage/${slug}`;
 
