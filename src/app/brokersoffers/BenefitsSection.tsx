@@ -113,7 +113,6 @@ const BenefitsSection: FC<Props> = ({
           ))}
         </Row>
 
-        {/* CTA */}
         <div className={styles.cta}>
           <Paragraph className={styles.ctaText}>
             Do you want to know more details contact our expert
@@ -122,7 +121,6 @@ const BenefitsSection: FC<Props> = ({
             type="primary"
             size="large"
             icon={<ArrowRightOutlined />}
-            onClick={onCta}
           >
             {ctaText}
           </Button>

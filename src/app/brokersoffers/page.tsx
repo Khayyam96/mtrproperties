@@ -22,7 +22,7 @@ export default async function BrokersPage() {
         <div className="brokers-page">
             <HeroCommission />
             <CommissionCalculatorSection />
-            <BenefitsSection onCta={() => console.log("Contact clicked")} />
+            <BenefitsSection />
             <HowItWorksSection />
             <CommissionPlansSection />
             <StatsSection />
