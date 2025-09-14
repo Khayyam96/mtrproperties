@@ -9,16 +9,28 @@ import "leaflet/dist/leaflet.css";
 // CSS faylları təhlükəsizdir:
 import "leaflet.markercluster/dist/MarkerCluster.css";
 import "leaflet.markercluster/dist/MarkerCluster.Default.css";
+// Yalnız tiplər üçün import — runtime-a heç nə gətirmir
+import type "leaflet.markercluster";
 
 import markerIcon2x from "leaflet/dist/images/marker-icon-2x.png";
 import markerIcon from "leaflet/dist/images/marker-icon.png";
 import markerShadow from "leaflet/dist/images/marker-shadow.png";
 import { Property } from "@/data/propertiesMap";
 
+// Next/Image və ya bundler importunun qaytardığı dəyərdən URL çıxarmaq üçün helper
+type WithSrc = { src: string };
+function getIconUrl(maybeUrl: unknown): string {
+  if (typeof maybeUrl === "string") return maybeUrl;
+  if (typeof maybeUrl === "object" && maybeUrl !== null && "src" in (maybeUrl as object)) {
+    return (maybeUrl as WithSrc).src;
+  }
+  return "";
+}
+
 L.Icon.Default.mergeOptions({
-  iconRetinaUrl: (markerIcon2x as unknown as { src: string }).src ?? (markerIcon2x as any),
-  iconUrl:       (markerIcon   as unknown as { src: string }).src ?? (markerIcon as any),
-  shadowUrl:     (markerShadow as unknown as { src: string }).src ?? (markerShadow as any),
+  iconRetinaUrl: getIconUrl(markerIcon2x),
+  iconUrl:       getIconUrl(markerIcon),
+  shadowUrl:     getIconUrl(markerShadow),
 });
 
 // React-Leaflet hissələrini SSR-siz dinamik yükləyirik
@@ -33,7 +45,7 @@ type MarkerClusterGroupProps = {
   chunkedLoading?: boolean;
   removeOutsideVisibleBounds?: boolean;
   maxClusterRadius?: number | ((zoom: number) => number);
-  iconCreateFunction?: (cluster: any) => L.DivIcon;
+  iconCreateFunction?: (cluster: L.MarkerCluster) => L.DivIcon;
 };
 const MarkerClusterGroup = dynamic<MarkerClusterGroupProps>(
   () => import("react-leaflet-markercluster").then(m => m.default),
@@ -122,7 +134,7 @@ export const LeafletMap: FC<LeafletMapProps> = ({ items, isVisible = true, activ
             chunkedLoading
             removeOutsideVisibleBounds
             maxClusterRadius={60}
-            iconCreateFunction={(cluster: any): L.DivIcon => {
+            iconCreateFunction={(cluster: L.MarkerCluster): L.DivIcon => {
               const count = cluster.getChildCount();
               return L.divIcon({
                 className: "mc-wrap",
