@@ -15,6 +15,16 @@ import "./index.scss";
 import { fetchAPI } from "@/utils";
 import { RealEstate } from "@/models/RealEstate.model";
 
+type ApiPaymentPlan = { label?: string | null; value?: string | null };
+
+type OffPlanProjectResp = {
+  id: number;
+  slug: string;
+  handover_at?: string | null;
+  media?: { gallery?: string[] } | null;
+  translation?: { payment_plans?: ApiPaymentPlan[] | null } | null;
+};
+
 const PROPERTIES_BASE = "https://api.dubaiyachts.com/uploads/properties";
 
 function withBase(path?: string | null): string {
@@ -34,9 +44,8 @@ export default async function PlanDetailPage(
 ) {
   const { slug } = await params;
 
-  // ⚡ Error-safe fetch
   let realestateRes: RealEstate | null = null;
-  let offPlanRes: any = null;
+  let offPlanRes: OffPlanProjectResp | null = null;
 
   try {
     realestateRes = await fetchAPI<RealEstate>("/realEstateAgencyDubai/active");
@@ -45,24 +54,25 @@ export default async function PlanDetailPage(
   }
 
   try {
-    offPlanRes = await fetchAPI<any>("/off-plan-new/" + slug);
+    offPlanRes = await fetchAPI<OffPlanProjectResp>("/off-plan-new/" + slug);
   } catch (err) {
     console.error("[PlanDetailPage] offplan fetch error:", err);
   }
 
   const handoverDeadline = offPlanRes?.handover_at ?? undefined;
+
   const galleryItems =
-    (offPlanRes?.media?.gallery ?? []).map((filename: string, i: number) => ({
+    (offPlanRes?.media?.gallery ?? []).map((filename, i) => ({
       id: i + 1,
       src: withBase(filename),
       alt: `Gallery ${i + 1}`,
-    })) ?? [];
+    }));
 
   const decoratedPaymentPlan =
-    (offPlanRes?.translation?.payment_plans ?? []).map((p: any, idx: number) => ({
-      key: p?.value ?? `step-${idx + 1}`,
-      label: p?.label ?? p?.value ?? `Step ${idx + 1}`,
-      percent: extractPercent(p?.label, p?.value),
+    (offPlanRes?.translation?.payment_plans ?? []).map((p, idx) => ({
+      key: p.value ?? `step-${idx + 1}`,
+      label: p.label ?? p.value ?? `Step ${idx + 1}`,
+      percent: extractPercent(p.label, p.value),
     }));
 
   return (
@@ -84,13 +94,11 @@ export default async function PlanDetailPage(
       )}
 
       <PlanBlogInfo />
-
       {galleryItems.length > 0 && <GallerySection items={galleryItems} />}
 
       <PaymentPlan items={decoratedPaymentPlan} />
       <ContactSection />
       <AmenitiesSection />
-
       <FloorPlanSection paths={[]} />
       {realestateRes && <RealestateInfoCard data={realestateRes} />}
       <SubscribeSection />
