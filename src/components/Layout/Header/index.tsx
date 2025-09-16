@@ -48,14 +48,20 @@ const renderDesktopNav = (items: NavItem[]) => (
 );
 
 export default function MainHeader() {
-  const { t, i18n } = useTranslation();
+  // 1) Namespace göstərin (məs: common)
+  const { t, i18n } = useTranslation("common");
+
   const [open, setOpen] = useState(false);
 
   const currentLang = (i18n.resolvedLanguage || i18n.language || "en").split("-")[0];
   const currentLangObj = LANGS.find((l) => l.key === currentLang) || LANGS[0];
 
+  // 2) Dil dəyişəndə lang/dir atributlarını yeniləyin (RTL üçün 'ar')
   useEffect(() => {
-    if (typeof document !== "undefined") document.documentElement.lang = currentLang;
+    if (typeof document !== "undefined") {
+      document.documentElement.lang = currentLang;
+      document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
+    }
   }, [currentLang]);
 
   const languageMenuItems: MenuProps["items"] = LANGS.map((l) => ({
@@ -68,24 +74,28 @@ export default function MainHeader() {
     ),
   }));
 
-  // ✅ Fix: avoid destructuring so 'key' is strongly typed (no implicit any)
   const onLanguageClick: MenuProps["onClick"] = (info) => {
-    i18n.changeLanguage(String(info.key));
+    const lang = String(info.key);
+    i18n.changeLanguage(lang);
+    // 3) Gələcək SSR/next-i18next uyğunluğu üçün cookie yazın
+    if (typeof document !== "undefined") {
+      document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000`;
+    }
     setOpen(false);
   };
 
   const navItems = useMemo<NavItem[]>(
     () => [
-      { key: "buy", label: <Space>{String(t("nav.buy"))}</Space>, href: "/buy" },
-      { key: "rent", label: <Space>{String(t("nav.rent"))}</Space>, href: "/rent" },
+      { key: "buy",      label: <Space>{String(t("nav.buy"))}</Space>, href: "/buy" },
+      { key: "rent",     label: <Space>{String(t("nav.rent"))}</Space>, href: "/rent" },
       { key: "projects", label: <Space>{String(t("nav.newProjects"))}</Space>, href: "/projects" },
-      { key: "areas", label: <Space>{String(t("nav.areas"))}</Space>, href: "/areas" },
+      { key: "areas",    label: <Space>{String(t("nav.areas"))}</Space>, href: "/areas" },
       {
         key: "services",
         label: <Space>{String(t("nav.services"))}</Space>,
         children: [
           { key: "consulting", label: String(t("nav.consulting")), href: "/services/consulting" },
-          { key: "mortgage", label: String(t("nav.mortgage")), href: "/services/mortgage" },
+          { key: "mortgage",   label: String(t("nav.mortgage")),   href: "/services/mortgage" },
         ],
       },
       {
@@ -93,7 +103,7 @@ export default function MainHeader() {
         label: <Space>{String(t("nav.exploreMore"))}</Space>,
         children: [
           { key: "about", label: String(t("nav.about")), href: "/about" },
-          { key: "blog", label: String(t("nav.blog")), href: "/blog" },
+          { key: "blog",  label: String(t("nav.blog")),  href: "/blog" },
         ],
       },
     ],
@@ -181,7 +191,14 @@ export default function MainHeader() {
             </a>
           </Dropdown>
 
-          <Dropdown menu={{ items: languageMenuItems, onClick: onLanguageClick }}>
+          <Dropdown
+            menu={{
+              items: languageMenuItems,
+              onClick: onLanguageClick,
+              // 4) Aktiv dili vurğulamaq üçün
+              selectedKeys: [currentLang],
+            }}
+          >
             <a className="dropdown-link">
               <Image className="flag-icon" src={currentLangObj.flag} alt={currentLangObj.label} width={20} height={14} />
               {currentLangObj.label}
@@ -211,7 +228,6 @@ export default function MainHeader() {
         </div>
       </div>
 
-      {/* SOLDAN açılan drawer – dizayndakı kimi */}
       <Drawer
         placement="left"
         open={open}
