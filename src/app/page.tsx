@@ -22,7 +22,7 @@ import { FaqListResponse } from "@/models/Faq.model";
 import { Partner } from "@/models/Partner.model";
 import { ClientMostPopularListResponse } from "@/models/MostPopular.model";
 import { LastBlogListResponse } from "@/models/LastBlog.mode";
-import "../app/Home/index.scss";
+import "../app/page.tsx";
 import { OffPlanListResponse } from "@/models/OffPlan.model";
 import { HeroBanner } from "@/models/HeroBanner.model";
 import { RealEstate } from "@/models/RealEstate.model";
