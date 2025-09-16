@@ -3,7 +3,7 @@ import { Row, Col } from "antd";
 import Banner from "./Banner";
 import CountdownStrip from "../../../components/Lib/Countdown/CountdownStrip";
 import PlanBlogInfo from "./PlanBlogInfo";
-import VirtualTours from "./VirtualTours";
+// import VirtualTours from "./VirtualTours";
 import GallerySection from "../../../components/Lib/GallerySection";
 import PaymentPlan from "./PaymentPlan";
 import ContactSection from "./ContactSection";
