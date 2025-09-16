@@ -2,7 +2,7 @@ import PropertyFilterBar, { PropertyFilterValues } from "@/components/Lib/Proper
 import PlanBanner from "./PlanBanner";
 import { Row, Col } from "antd";
 import ProjectDubai from "../Home/ProjectDubai";
-import ReasonToInvest from "../newProject/ReasonToInvest";
+// import ReasonToInvest from "../newProject/ReasonToInvest";
 import RealestateInfoCard from "../Home/RealestateInfoCard";
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
 import "./index.scss"
@@ -32,7 +32,7 @@ export default async function PlanPage() {
             </div>
             {/* <PlanCardSection /> */}
             <ProjectDubai data={offPlanRes.data} />
-            <ReasonToInvest />
+            {/* <ReasonToInvest /> */}
             <RealestateInfoCard data={realestateRes} />
             <SubscribeSection />
         </div>
