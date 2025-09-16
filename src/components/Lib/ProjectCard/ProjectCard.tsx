@@ -1,4 +1,3 @@
-// ProjectCard.tsx
 "use client";
 
 import { FC, KeyboardEvent, useEffect, useState, useMemo, useCallback } from "react";

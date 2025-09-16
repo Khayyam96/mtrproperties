@@ -9,6 +9,7 @@ import { AppstoreOutlined } from "@ant-design/icons";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import { ProjectCard } from "@/components/Lib/ProjectCard/ProjectCard";
 import type { OffPlanItem } from "@/models/OffPlan.model";
+import "./index.scss"
 
 const { Title, Text } = Typography;
 
@@ -117,7 +118,7 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
     slidesToScroll: 1,
     arrows: false,
     responsive: [
-      { breakpoint: 992, settings: { slidesToShow: 2 } },
+      { breakpoint: 992, settings: { slidesToShow: 2.1 } },
       { breakpoint: 576, settings: { slidesToShow: 1 } },
     ],
   };
