@@ -1,3 +1,4 @@
+// planpage/[slug]/page.tsx
 import type { Metadata } from "next";
 import { Row, Col } from "antd";
 import Banner from "./Banner";
@@ -45,15 +46,12 @@ type OffPlanProjectResp = {
   price_to?: string | null;
   currency?: string | null;
   segment?: string | null;
-  media?: {
-    id: number;
-    gallery?: string[];
-  } | null;
+  media?: { id: number; gallery?: string[] } | null;
   propertyType?: { id: number; name?: string | null } | null;
-  developer?: { id: number; logoUrl?: string | null } | null;
+  developer?: { id?: number; logoUrl?: string | null } | null;
   translation?: {
-    id: number;
-    lang: string;
+    id?: number;
+    lang?: string;
     title?: string | null;
     subtitle?: string | null;
     content_1?: string | null;
@@ -88,14 +86,28 @@ export default async function PlanPage(
 ) {
   const { slug } = await params;
 
-  const realestateRes = await fetchAPI<RealEstate>("/realEstateAgencyDubai/active");
-  const offPlanRes = await fetchAPI<OffPlanProjectResp>("/off-plan-new/" + slug);
+  // ⚡ Error-safe fetch
+  let realestateRes: RealEstate | null = null;
+  let offPlanRes: OffPlanProjectResp | null = null;
+
+  try {
+    realestateRes = await fetchAPI<RealEstate>("/realEstateAgencyDubai/active");
+  } catch (err) {
+    console.error("[PlanPage] realestate fetch error:", err);
+  }
+
+  try {
+    offPlanRes = await fetchAPI<OffPlanProjectResp>("/off-plan-new/" + slug);
+  } catch (err) {
+    console.error("[PlanPage] offplan fetch error:", err);
+  }
 
   const handoverDeadline = offPlanRes?.handover_at ?? undefined;
 
-  const tours = undefined as
-    | { id: string; title: string; poster: string; videoPath: string }[]
-    | undefined;
+  const tours =
+    undefined as
+      | { id: string; title: string; poster: string; videoPath: string }[]
+      | undefined;
 
   const floorplanPaths: string[] = [];
 
@@ -142,7 +154,7 @@ export default async function PlanPage(
       <FloorPlanSection paths={floorplanPaths} />
       {tours && <VirtualTours tours={tours} />}
 
-      <RealestateInfoCard data={realestateRes} />
+      {realestateRes && <RealestateInfoCard data={realestateRes} />}
       <SubscribeSection />
     </div>
   );
