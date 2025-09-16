@@ -34,13 +34,13 @@ export default async function PlanPage() {
   return (
     <div className="plan-page">
       <PlanBanner />
-      <div className="filter-bar-block">
+      {/* <div className="filter-bar-block">
         <Row justify="center">
           <Col xs={24} sm={12} md={10} lg={10}>
             <PropertyFilterBar onSubmit={handleSubmit} />
           </Col>
         </Row>
-      </div>
+      </div> */}
 
       {/* ProjectDubai safe */}
       <ProjectDubai data={offPlanRes?.data ?? []} />
