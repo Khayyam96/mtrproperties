@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { FC, useMemo, useState } from "react";
 import Image from "next/image";
 import { Button, Select, Input } from "antd";
 import { EnvironmentOutlined } from "@ant-design/icons";
@@ -29,16 +29,13 @@ type TProps = { data: HeroBanner };
 
 const HeroSection: FC<TProps> = ({ data }) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [iframeLoaded, setIframeLoaded] = useState(false);
 
-  // media detection
   const isVideo = data.backgroundType === "VIDEO";
   const isImage = data.backgroundType === "IMAGE";
 
   const imgPath = data.imageUrl ?? null;
   const imgSrc = buildMediaUrl(imgPath);
 
-  // videoUrl might be a direct video file or a YouTube url
   const rawVideo = data.videoUrl ?? null;
   const videoSrc = buildMediaUrl(rawVideo);
   const videoPoster = buildMediaUrl(data.videoPosterUrl) ?? imgSrc ?? undefined;
@@ -59,15 +56,9 @@ const HeroSection: FC<TProps> = ({ data }) => {
     return `https://www.youtube.com/embed/${youTubeId}?${params.toString()}`;
   }, [youTubeId]);
 
-  useEffect(() => {
-    // for debugging if lazım olarsa
-    // console.log("[HeroSection] imgSrc:", imgSrc, "videoSrc:", videoSrc, "youTubeId:", youTubeId, "poster:", videoPoster);
-  }, [imgSrc, videoSrc, youTubeId, videoPoster]);
-
   return (
     <div className="hero-section">
       <div className="hero-background">
-        {/* Poster always behind media (if available) */}
         {videoPoster && (
           <div className="hero-poster-wrapper">
             <Image
@@ -81,7 +72,6 @@ const HeroSection: FC<TProps> = ({ data }) => {
           </div>
         )}
 
-        {/* If it's a video and NOT a YouTube link, render native <video> tag */}
         {isVideo && videoSrc && !youTubeId && (
           <video
             className="hero-video"
@@ -96,7 +86,6 @@ const HeroSection: FC<TProps> = ({ data }) => {
           </video>
         )}
 
-       
         {isVideo && youTubeEmbedUrl && (
           <div className="hero-iframe-wrapper" aria-hidden={false}>
             <iframe
@@ -105,13 +94,11 @@ const HeroSection: FC<TProps> = ({ data }) => {
               frameBorder={0}
               allow="autoplay; fullscreen; picture-in-picture"
               allowFullScreen
-              onLoad={() => setIframeLoaded(true)}
               className="hero-iframe"
             />
           </div>
         )}
 
-        {/* If it's an image background */}
         {isImage && imgSrc && (
           <div className="hero-poster-wrapper">
             <Image
@@ -153,7 +140,6 @@ const HeroSection: FC<TProps> = ({ data }) => {
               </div>
             </div>
 
-            {/* Desktop layout (>=768px) */}
             <div className="search-form desktop-only">
               <div className="form-labels">
                 <span>Property Category</span>
@@ -192,14 +178,13 @@ const HeroSection: FC<TProps> = ({ data }) => {
               </div>
             </div>
 
-            {/* Mobile layout (<=767px) */}
             <div className="search-form mobile-only">
               <Button
                 type="default"
                 className="advanced-btn"
                 onClick={() => setShowAdvanced(!showAdvanced)}
               >
-                Advanced Search
+                Advanced Search {showAdvanced ? "▲" : "▼"}
               </Button>
 
               <div className={`advanced-wrapper ${showAdvanced ? "open" : ""}`}>
