@@ -1,5 +1,5 @@
 // planpage/page.tsx
-import PropertyFilterBar, { PropertyFilterValues } from "@/components/Lib/PropertyFilterBar";
+// import PropertyFilterBar, { PropertyFilterValues } from "@/components/Lib/PropertyFilterBar";
 import PlanBanner from "./PlanBanner";
 import { Row, Col } from "antd";
 import ProjectDubai from "../Home/ProjectDubai";
@@ -27,9 +27,9 @@ export default async function PlanPage() {
     console.error("[PlanPage] offplan fetch error:", err);
   }
 
-  const handleSubmit = (values: PropertyFilterValues) => {
-    console.log(values);
-  };
+//   const handleSubmit = (values: PropertyFilterValues) => {
+//     console.log(values);
+//   };
 
   return (
     <div className="plan-page">
