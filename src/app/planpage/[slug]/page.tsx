@@ -1,5 +1,4 @@
 // planpage/[slug]/page.tsx
-import type { Metadata } from "next";
 import { Row, Col } from "antd";
 import Banner from "./Banner";
 import CountdownStrip from "../../../components/Lib/Countdown/CountdownStrip";
@@ -16,57 +15,6 @@ import "./index.scss";
 import { fetchAPI } from "@/utils";
 import { RealEstate } from "@/models/RealEstate.model";
 
-function humanizeSlug(slug: string) {
-  return decodeURIComponent(slug)
-    .replace(/[-_]+/g, " ")
-    .replace(/\s+/g, " ")
-    .trim()
-    .replace(/\b\w/g, (c) => c.toUpperCase());
-}
-
-export async function generateMetadata(
-  { params }: { params: Promise<{ slug: string }> }
-): Promise<Metadata> {
-  const { slug } = await params;
-  const titlePart = humanizeSlug(slug);
-  return {
-    title: `${titlePart} — Payment Plan & Details`,
-    description: `${titlePart}. Explore payment plan, amenities, floor plans and more.`,
-  };
-}
-
-type ApiPaymentPlan = { label?: string | null; value?: string | null };
-
-type OffPlanProjectResp = {
-  id: number;
-  slug: string;
-  address?: string | null;
-  handover_at?: string | null;
-  price_from?: string | null;
-  price_to?: string | null;
-  currency?: string | null;
-  segment?: string | null;
-  media?: { id: number; gallery?: string[] } | null;
-  propertyType?: { id: number; name?: string | null } | null;
-  developer?: { id?: number; logoUrl?: string | null } | null;
-  translation?: {
-    id?: number;
-    lang?: string;
-    title?: string | null;
-    subtitle?: string | null;
-    content_1?: string | null;
-    content_2?: string | null;
-    amenity_1?: string | null;
-    amenity_2?: string | null;
-    amenity_3?: string | null;
-    amenity_4?: string | null;
-    amenity_5?: string | null;
-    payment_plans?: ApiPaymentPlan[] | null;
-  } | null;
-};
-
-type DecoratedPaymentPlan = { key: string; percent: number; label: string };
-
 const PROPERTIES_BASE = "https://api.dubaiyachts.com/uploads/properties";
 
 function withBase(path?: string | null): string {
@@ -81,49 +29,41 @@ function extractPercent(label?: string | null, value?: string | null): number {
   return m ? parseFloat(m[1]) : 0;
 }
 
-export default async function PlanPage(
+export default async function PlanDetailPage(
   { params }: { params: Promise<{ slug: string }> }
 ) {
   const { slug } = await params;
 
   // ⚡ Error-safe fetch
   let realestateRes: RealEstate | null = null;
-  let offPlanRes: OffPlanProjectResp | null = null;
+  let offPlanRes: any = null;
 
   try {
     realestateRes = await fetchAPI<RealEstate>("/realEstateAgencyDubai/active");
   } catch (err) {
-    console.error("[PlanPage] realestate fetch error:", err);
+    console.error("[PlanDetailPage] realestate fetch error:", err);
   }
 
   try {
-    offPlanRes = await fetchAPI<OffPlanProjectResp>("/off-plan-new/" + slug);
+    offPlanRes = await fetchAPI<any>("/off-plan-new/" + slug);
   } catch (err) {
-    console.error("[PlanPage] offplan fetch error:", err);
+    console.error("[PlanDetailPage] offplan fetch error:", err);
   }
 
   const handoverDeadline = offPlanRes?.handover_at ?? undefined;
-
-  const tours =
-    undefined as
-      | { id: string; title: string; poster: string; videoPath: string }[]
-      | undefined;
-
-  const floorplanPaths: string[] = [];
-
-  const decoratedPaymentPlan: DecoratedPaymentPlan[] =
-    (offPlanRes?.translation?.payment_plans ?? []).map((p, idx) => ({
-      key: p?.value ?? `step-${idx + 1}`,
-      label: p?.label ?? p?.value ?? `Step ${idx + 1}`,
-      percent: extractPercent(p?.label, p?.value),
-    }));
-
   const galleryItems =
-    (offPlanRes?.media?.gallery ?? []).map((filename, i) => ({
+    (offPlanRes?.media?.gallery ?? []).map((filename: string, i: number) => ({
       id: i + 1,
       src: withBase(filename),
       alt: `Gallery ${i + 1}`,
     })) ?? [];
+
+  const decoratedPaymentPlan =
+    (offPlanRes?.translation?.payment_plans ?? []).map((p: any, idx: number) => ({
+      key: p?.value ?? `step-${idx + 1}`,
+      label: p?.label ?? p?.value ?? `Step ${idx + 1}`,
+      percent: extractPercent(p?.label, p?.value),
+    }));
 
   return (
     <div className="plan-page-inner">
@@ -151,9 +91,7 @@ export default async function PlanPage(
       <ContactSection />
       <AmenitiesSection />
 
-      <FloorPlanSection paths={floorplanPaths} />
-      {tours && <VirtualTours tours={tours} />}
-
+      <FloorPlanSection paths={[]} />
       {realestateRes && <RealestateInfoCard data={realestateRes} />}
       <SubscribeSection />
     </div>
