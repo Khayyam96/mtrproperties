@@ -1,4 +1,3 @@
-// src/app/Home/ProductSection.tsx (və ya komponenti harda saxlayırsansa)
 "use client";
 
 import { Row, Col, Button, Typography } from "antd";
@@ -6,7 +5,6 @@ import { AppstoreOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { ProCard } from "@/components/Lib/ProCard";
 import { Container } from "@/components/Lib/ProContainer/Container";
-import { properties } from "@/data/properties";
 import { LandProjectResponse } from "@/models/LatesProject.model";
 import { FC } from "react";
 

@@ -32,7 +32,6 @@ const HeroSection: FC<TProps> = ({ data }) => {
   const [videoReady, setVideoReady] = useState(false);
 
   const isVideo = !!data.video_url;
-  const isImage = data.background_type === "IMAGE" || !isVideo;
 
   const imgSrc = buildMediaUrl(data.image_url ?? null);
   const videoSrc = buildMediaUrl(data.video_url ?? null);

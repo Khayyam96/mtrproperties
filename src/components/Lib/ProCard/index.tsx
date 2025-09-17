@@ -9,9 +9,8 @@ import {
   PhoneOutlined,
   WhatsAppOutlined,
 } from "@ant-design/icons";
-import Slider, { Settings } from "react-slick";
+import Slider from "react-slick";
 import { useRef } from "react";
-import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./index.scss";
