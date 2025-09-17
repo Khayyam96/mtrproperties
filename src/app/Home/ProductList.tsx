@@ -7,10 +7,17 @@ import { useRouter } from "next/navigation";
 import { ProCard } from "@/components/Lib/ProCard";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import { properties } from "@/data/properties";
+import { LandProjectResponse } from "@/models/LatesProject.model";
+import { FC } from "react";
 
 const { Title, Text } = Typography;
 
-export const ProductSection: React.FC = () => {
+type TProps = {
+  data: LandProjectResponse; 
+};
+
+export const ProductSection: FC<TProps> = ({ data }) =>  {
+  console.log(data, "latesproject")
   const router = useRouter();
 
   return (
@@ -26,7 +33,7 @@ export const ProductSection: React.FC = () => {
         </div>
 
         <Row gutter={[24, 32]}>
-          {properties.map((p) => (
+          {data.data.map((p) => (
             <Col key={p.slug} xs={24} sm={12} md={12} lg={8} xl={6}>
               <ProCard {...p} />
             </Col>

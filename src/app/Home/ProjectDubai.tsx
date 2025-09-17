@@ -1,24 +1,24 @@
 "use client";
 
-import React, { FC, useEffect, useMemo, useRef } from "react";
+import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import { Typography, Button } from "antd";
 import Slider, { Settings } from "react-slick";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { AppstoreOutlined } from "@ant-design/icons";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import { ProjectCard } from "@/components/Lib/ProjectCard/ProjectCard";
 import type { OffPlanItem } from "@/models/OffPlan.model";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./index.scss"
+import "./index.scss";
+import CustomPagination from "../../components/Lib/ProPagination/CustomPagination"; 
 
 const { Title, Text } = Typography;
 
 type TProps = { data: OffPlanItem[] };
 
 const PROPERTY_IMAGE_BASE = "https://api.dubaiyachts.com/uploads/properties";
-const DEVELOPER_LOGO_BASE = "https://api.dubaiyachts.com/uploads/properties";
 
 type OffPlanItemAPI = OffPlanItem & {
   handover_at?: string | null;
@@ -52,17 +52,22 @@ type CardItem = {
 const ProjectDubai: FC<TProps> = ({ data }) => {
   const sliderRef = useRef<Slider | null>(null);
   const router = useRouter();
+  const pathname = usePathname();
 
-  console.log(data, "adasdasdasdasd")
+  const [currentPage, setCurrentPage] = useState<number>(1);
+
   useEffect(() => {
-    console.log("[ProjectDubai] data:", data);
-  }, [data]);
+    setCurrentPage(1);
+  }, [pathname, data]);
+
+  console.log("new offf plasdasdan ", data)
+
 
   const items = useMemo<CardItem[]>(() => {
     return (data ?? []).map((pBase) => {
       const p = pBase as OffPlanItemAPI;
 
-      const handoverAt: string | null = p.handoverAt ?? p.handover_at ?? null;
+      const handoverAt: string | null = (p as any).handoverAt ?? p.handover_at ?? null;
       const handoverYear = handoverAt ? new Date(handoverAt).getFullYear() : undefined;
 
       const paymentPlan = Array.isArray(p.paymentPlan) ? p.paymentPlan : [];
@@ -84,14 +89,14 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
           ? `Starting at ${currency} ${priceNumber.toLocaleString()}`
           : "";
 
-      const galleryPaths = p.media?.galleryPaths ?? p.media?.gallery ?? [];
+      const galleryPaths = (p.media as any)?.galleryPaths ?? (p.media as any)?.gallery ?? [];
       const firstGallery = Array.isArray(galleryPaths) ? galleryPaths[0] : undefined;
       const imageUrl = firstGallery ? `${PROPERTY_IMAGE_BASE}/${firstGallery}` : "/img4.png";
 
-      const developerLogo = resolveWithBase(p.developer?.logoUrl ?? "", DEVELOPER_LOGO_BASE);
+      const developerLogo = resolveWithBase(p.developer?.image_url ?? "", PROPERTY_IMAGE_BASE);
 
       const name =
-        p.translations?.[0]?.title ??
+        (p as any).translations?.[0]?.title ??
         p.translation?.title ??
         p.developer?.name ??
         `Property #${p.id}`;
@@ -113,17 +118,26 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
     });
   }, [data]);
 
+  const SLIDES_TO_SHOW_DEFAULT = 3; 
   const settings: Settings = {
     dots: false,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: SLIDES_TO_SHOW_DEFAULT,
     slidesToScroll: 1,
     arrows: false,
     responsive: [
       { breakpoint: 992, settings: { slidesToShow: 2.1 } },
       { breakpoint: 576, settings: { slidesToShow: 1 } },
     ],
+  };
+
+  const totalPages = Math.max(1, Math.ceil(items.length / SLIDES_TO_SHOW_DEFAULT));
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    const targetIndex = (page - 1) * SLIDES_TO_SHOW_DEFAULT;
+    sliderRef.current?.slickGoTo(targetIndex);
   };
 
   return (
@@ -144,7 +158,7 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
 
           <Slider {...settings} ref={sliderRef} className="project-slider">
             {items.map((project) => (
-              <ProjectCard key={project.slug} {...project} handoverAt={project.handoverAt} />
+              <ProjectCard key={project.slug || project.name} {...project} handoverAt={project.handoverAt} />
             ))}
           </Slider>
 
@@ -157,14 +171,19 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
         </div>
 
         <div className="view-more-wrapper text-center" style={{ marginTop: 30 }}>
-          <Button
-            type="primary"
-            icon={<AppstoreOutlined />}
-            size="large"
-            onClick={() => router.push("/planpage")}
-          >
-            View More
-          </Button>
+          {pathname === "/planpage" ? (
+            <CustomPagination current={currentPage} total={totalPages} onChange={handlePageChange} />
+          ) : (
+            // otherwise show the original view-more button
+            <Button
+              type="primary"
+              icon={<AppstoreOutlined />}
+              size="large"
+              onClick={() => router.push("/planpage")}
+            >
+              View More
+            </Button>
+          )}
         </div>
       </Container>
     </section>

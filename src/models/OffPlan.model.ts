@@ -12,7 +12,7 @@ export type OffPlanItem = {
   startingPrice?: string;
   segment?: string;
   handoverAt?: string | null;
-  developer?: { id: number; name?: string; key?: string; logoUrl?: string | null } | null;
+  developer?: { id: number; name?: string; key?: string; image_url?: string | null } | null;
   propertyType?: { id: number; key?: string; name?: string } | null;
   paymentPlan?: { key?: string; percent?: number }[];
   translations?: { title?: string }[];

@@ -15,45 +15,43 @@ import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./index.scss";
+import { LandProjectArea, LandProjectMedia, LandProjectTranslation } from "@/models/LatesProject.model";
 
 const { Title } = Typography;
 
 export type TProCard = {
+  id: number;
   slug: string;
-  images: string[];
-  name: string;
-  price: string | number;
-  type: string;
-  bedrooms: number;
-  bathrooms: number;
-  area: number;
-  location: string;
-  isReadyToMove?: boolean;
-  isOffPlan?: boolean;
-  onClick?: () => void;
+  utility_count: number,
+  build_status: string,
+  address: string;
+  whatsappNumber: string;
+  purpose: string,
+  phoneNumber: string;
+  bathroom_count: number;
+  bedroom_count: number;
+  sq_ft: string;
+  price: string;
+  currency: string;
+  media: LandProjectMedia;
+  areas: LandProjectArea[];
+  translation: LandProjectTranslation;
+
 };
 
 export const ProCard: React.FC<TProCard> = ({
-  slug,
-  images,
-  name,
+  address,
+  bathroom_count,
+  bedroom_count,
+  build_status,
+  purpose,
+  sq_ft,
   price,
-  type,
-  bedrooms,
-  bathrooms,
-  area,
-  location,
-  onClick,
-  isReadyToMove,
-  isOffPlan,
+  currency,
+  media,
+  translation,
 }) => {
   const sliderRef = useRef<Slider>(null);
-  const router = useRouter();
-
-  const handleCardClick = () => {
-    if (onClick) return onClick();
-    router.push(`/properties/${slug}`);
-  };
 
   const goPrev: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     e.stopPropagation();
@@ -67,41 +65,40 @@ export const ProCard: React.FC<TProCard> = ({
 
  
 
-  const settings: Settings = {
-    dots: false,
-    arrows: false,
-    infinite: true,
-    speed: 400,
-    slidesToShow: 1,
-    slidesToScroll: 1,
+  const formatPrice = (price: string | number) => {
+    const num = typeof price === "string" ? parseInt(price) : price;
+    if (num >= 1_000_000) {
+      return `${num / 1_000_000}M`;
+    } else if (num >= 100_000) {
+      return `${num / 1_000}k`;
+    } else {
+      return num.toLocaleString();
+    }
   };
 
-  const displayPrice = typeof price === "number" ? price.toLocaleString() : price;
-  const imgs = Array.isArray(images) && images.length ? images : ["/placeholder.jpg"];
+  const settings = { dots: false, arrows: false, infinite: true, speed: 400, slidesToShow: 1, slidesToScroll: 1 };
 
   return (
-    <div className="pro-card" onClick={handleCardClick}>
+    <div className="pro-card">
       <div className="pro-card__img">
         <Slider {...settings} ref={sliderRef}>
-          {imgs.map((img, idx) => (
+          {media?.gallery?.map((img, idx) => (
             <div key={idx} className="carousel-slide">
-              <div style={{ position: "relative", width: "100%", paddingTop: "66.6667%" }}>
-                <Image
-                  src={img}
-                  alt={`${name}-${idx}`}
-                  fill
-                  className="pro-card__img--image"
-                  priority={idx === 0}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-              </div>
+              <Image
+                src={`https://api.dubaiyachts.com/uploads/properties/${img}`}
+                alt={`${translation.title}-${idx}`}
+                fill
+                className="pro-card__img--image"
+                sizes="(max-width: 768px) 100vw, 400px"
+                priority={idx === 0}
+              />
             </div>
           ))}
         </Slider>
 
         <div className="pro-card__labels">
-          {isReadyToMove && <Tag className="ready">Ready to Move</Tag>}
-          {isOffPlan && <Tag className="plan">Off Plan</Tag>}
+          {purpose && <Tag className="ready">{purpose}</Tag>}
+          {build_status && <Tag className="plan">{build_status}</Tag>}
         </div>
 
         <button className="carousel-btn left" onClick={goPrev}>
@@ -114,29 +111,29 @@ export const ProCard: React.FC<TProCard> = ({
 
       <div className="pro-card__body">
         <div className="pro-card__price">
-          <Title level={3}>AED {displayPrice}</Title>
-          <Tag className="type">{type}</Tag>
+          <Title level={3} style={{margin: "0px"}}>{currency} {formatPrice(price)}</Title>
+          {/* <Tag className="type">{property_type}</Tag> */}
         </div>
 
         <div className="pro-card__location">
           <EnvironmentOutlined />
-          <span className="location_text">{location}</span>
+          <span className="location_text">{address}</span>
         </div>
 
         <div className="pro-card__meta">
           <span className="meta-item">
             <Image src="/propertimg1.png" alt="Bedrooms" width={18} height={18} />
-            {bedrooms}
+            {bedroom_count ? bedroom_count : 0}
           </span>
 
           <span className="meta-item">
             <Image src="/propertimg2.png" alt="Bathrooms" width={18} height={18} />
-            {bathrooms}
+            {bathroom_count ? bathroom_count : 0}
           </span>
 
           <span className="meta-item">
             <Image src="/propertimg2.png" alt="Area" width={18} height={18} />
-            {area} Sq.Ft.
+            {sq_ft} Sq.Ft.
           </span>
         </div>
 

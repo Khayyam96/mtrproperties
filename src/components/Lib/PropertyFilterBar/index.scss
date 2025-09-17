@@ -3,7 +3,6 @@ $shadow: #E5E5E5;
 $text: #171717;
 
 .filter-bar-block{
-    padding-bottom: 40px;
     position: relative;
     top:-40px;
     z-index: 9;
@@ -16,16 +15,17 @@ $text: #171717;
   padding: 16px;
 
   .field-label {
+    font-size: 16px;
     display: block;
-    font-weight: 700;
-    color: $text;
-    margin-bottom: 6px;
+    line-height: 24px;
+    color:#000000;
+    margin-bottom: 10px;
+    font-weight: 500;
   }
 
   .control {
     height: 44px;
 
-    // Ant Design Select height fix
     :global(.ant-select-selector) {
       height: 44px !important;
       border-radius: 8px !important;

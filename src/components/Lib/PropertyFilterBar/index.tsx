@@ -55,7 +55,7 @@ export const PropertyFilterBar: FC<Props> = ({
         layout="vertical"
         initialValues={initialValues}
       >
-        <Row gutter={[16, 16]} align="bottom" wrap>
+        <Row gutter={[18, 18]} align="bottom" wrap>
           <Col xs={24} md={6}>
             <Text className="field-label">Developer</Text>
             <Form.Item name="developer" className="mb0">
@@ -82,7 +82,7 @@ export const PropertyFilterBar: FC<Props> = ({
             </Form.Item>
           </Col>
 
-          <Col xs={24} md={8}>
+          <Col xs={24} md={6}>
             <Text className="field-label">Search Location</Text>
             <Form.Item name="location" className="mb0">
               <Input
@@ -94,7 +94,7 @@ export const PropertyFilterBar: FC<Props> = ({
             </Form.Item>
           </Col>
 
-          <Col xs={24} md={4} className="btn-col">
+          <Col xs={24} md={6} className="btn-col">
             <Button
               type="primary"
               htmlType="submit"

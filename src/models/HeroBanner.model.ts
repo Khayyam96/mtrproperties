@@ -3,11 +3,10 @@ export type BackgroundType = "IMAGE" | "VIDEO";
 export interface HeroBanner {
   id: number;
   isActive: boolean;
-  backgroundType: BackgroundType;
-  imageUrl: string | null;
+  background_type: BackgroundType;
+  image_url: string | null;
   imageUrlMobile: string | null;
-  videoUrl: string | null;
-  videoPosterUrl: string | null;
+  video_url: string | null;
   title: string;
   subtitle: string;
 }

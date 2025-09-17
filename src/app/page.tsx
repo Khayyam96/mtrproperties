@@ -1,42 +1,62 @@
+
+import { fetchAPI } from "@/utils";
 import HeroSection from "./Home/HeroSection"
-import ProductSection from "./Home/ProductList";
-import MortgageCalculator from "./Home/MortgageCalculator";
-import LuxuryProperties from "./Home/LuxuryProperties";
-import ContactAgentSection from "./Home/ContactAgentSection";
+import { HeroBanner } from "@/models/HeroBanner.model";
 import ProjectDubai from "./Home/ProjectDubai";
-import StatsSection from "./Home/StatsSection";
-import AboutSection from "./Home/AboutSection";
-import SearchTrendsSection from "./Home/SearchTrendsSection";
-import LatestBlogSection from "./Home/LatestBlogSection";
-import RealEstateFaqSection from "./Home/RealEstateFaqSection";
+import { OffPlanListResponse } from "@/models/OffPlan.model";
+import ProductSection from "./Home/ProductList";
 import { GetDiscountSection } from "./Home/GetDiscountSection";
+import MortgageCalculator from "./Home/MortgageCalculator";
 import { TrendingProjectsSection } from "./Home/TrendingProjectsSection";
 import { PremiumLandSection } from "./Home/PremiumLandSection";
+import StatsSection from "./Home/StatsSection";
+import { LandPropertiesResponse } from "@/models/LandProperties.model";
 import CommissionSection from "./Home/CommissionSection";
-import { MostPopularPlacesSection } from "./Home/MostPopularPlacesSection";
-import { GoogleReviewsSection } from "./Home/GoogleReviewsSection";
-import RealestateInfoCard from "./Home/RealestateInfoCard";
-import { IReviewResp } from "@/models/Review.model";
-import { fetchAPI } from "@/utils";
-import { FaqListResponse } from "@/models/Faq.model";
-import { Partner } from "@/models/Partner.model";
-import { ClientMostPopularListResponse } from "@/models/MostPopular.model";
-import { LastBlogListResponse } from "@/models/LastBlog.mode";
+import LuxuryProperties from "./Home/LuxuryProperties";
+import AboutSection from "./Home/AboutSection";
+import { LandProjectResponse } from "@/models/LatesProject.model";
+
+
+
+// import ContactAgentSection from "./Home/ContactAgentSection";
+// import SearchTrendsSection from "./Home/SearchTrendsSection";
+// import LatestBlogSection from "./Home/LatestBlogSection";
+// import RealEstateFaqSection from "./Home/RealEstateFaqSection";
+// import { MostPopularPlacesSection } from "./Home/MostPopularPlacesSection";
+// import { GoogleReviewsSection } from "./Home/GoogleReviewsSection";
+// import RealestateInfoCard from "./Home/RealestateInfoCard";
+// import { IReviewResp } from "@/models/Review.model";
+
+// import { FaqListResponse } from "@/models/Faq.model";
+// import { Partner } from "@/models/Partner.model";
+// import { ClientMostPopularListResponse } from "@/models/MostPopular.model";
+// import { LastBlogListResponse } from "@/models/LastBlog.mode";
 import "../app/page.scss";
-import { OffPlanListResponse } from "@/models/OffPlan.model";
-import { HeroBanner } from "@/models/HeroBanner.model";
-import { RealEstate } from "@/models/RealEstate.model";
+
+
+
+// import { RealEstate } from "@/models/RealEstate.model";
 
 export default async function Home() {
 
-  const reviewData = await fetchAPI<IReviewResp>('/client/reviews')
-  const faqData = await fetchAPI<FaqListResponse>('/client/faq')
-  const partneryData = await fetchAPI<Partner>('/client/forms/block/active')
-  const popularPlacesRes = await fetchAPI<ClientMostPopularListResponse>('/client/popularPlaces');
-  const blogRes = await fetchAPI<LastBlogListResponse>('/client/blogPosts/latest')
-  const offPlanRes = await fetchAPI<OffPlanListResponse>("/off-plan-new");
-  const heroBannerRes = await fetchAPI<HeroBanner>("/hero/web");
-  const realestateRes = await fetchAPI<RealEstate>("/realEstateAgencyDubai/active")
+  const offPlanRes = await fetchAPI<OffPlanListResponse>("/client/off-plans");
+  const heroBannerRes = await fetchAPI<HeroBanner>("/client/hero-banner");
+  const landPropertiesRes = await fetchAPI<LandPropertiesResponse>("/client/lands");
+  const latesProject = await fetchAPI<LandProjectResponse>("/client/lands"); 
+
+  console.log(landPropertiesRes, "landProplandPropertiesReslandPropertiesResertiesRes")
+
+
+
+  // const reviewData = await fetchAPI<IReviewResp>('/client/reviews')
+  // const faqData = await fetchAPI<FaqListResponse>('/client/faq')
+  // const partneryData = await fetchAPI<Partner>('/client/forms/block/active')
+  // const popularPlacesRes = await fetchAPI<ClientMostPopularListResponse>('/client/popularPlaces');
+  // const blogRes = await fetchAPI<LastBlogListResponse>('/client/blogPosts/latest')
+
+
+
+  // const realestateRes = await fetchAPI<RealEstate>("/realEstateAgencyDubai/active")
 
   return (
     <div className="home-page">
@@ -44,21 +64,23 @@ export default async function Home() {
         <HeroSection data={heroBannerRes} />
         <ProjectDubai data={offPlanRes.data} />
         <GetDiscountSection />
-        <ProductSection />
+        <ProductSection data={latesProject}/>
         <MortgageCalculator />
         <TrendingProjectsSection />
-        <PremiumLandSection />
+        <PremiumLandSection data={landPropertiesRes}/>
         <StatsSection />
         <CommissionSection />
         <LuxuryProperties />
         <AboutSection />
-        <ContactAgentSection data={partneryData} />
+
+
+        {/* <ContactAgentSection data={partneryData} />
         <MostPopularPlacesSection data={popularPlacesRes.items} />
         <SearchTrendsSection />
         <LatestBlogSection data={blogRes} />
         <RealestateInfoCard data={realestateRes} />
         <GoogleReviewsSection data={reviewData} />
-        <RealEstateFaqSection data={faqData} />
+        <RealEstateFaqSection data={faqData} /> */}
       </main>
     </div>
   );

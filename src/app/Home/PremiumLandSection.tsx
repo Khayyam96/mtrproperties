@@ -4,21 +4,17 @@ import { Row, Col, Button } from "antd";
 import { LandPropertyCard } from "../../components/Lib/LandPropertyCard/LandPropertyCard";
 import SpeakToExpertSection from "@/components/Lib/SpeakToExpertSection/SpeakToExpertSection";
 import { AppstoreOutlined } from "@ant-design/icons";
+import { FC } from "react";
+import { LandPropertiesResponse } from "@/models/LandProperties.model";
 
-const landList = Array.from({ length: 8 }).map((_, i) => ({
-  slug: `dubai-hills-plot-${i + 1}`, // ✅ slug əlavə olundu
-  images: ["/cardimggg.png", "/cardimggg.png", "/cardimggg.png"],
-  price: "2,850,000",
-  name: `Dubai Hills Plot ${i + 1}`,
-  type: "Residential",
-  bedrooms: 0,
-  bathrooms: 0,
-  area: 8500,
-  location: "Dubai Hills, Dubai",
-  badges: ["Residential", "Ready to Build"],
-}));
 
-export const PremiumLandSection = () => (
+type TProps = {
+  data: LandPropertiesResponse; 
+};
+
+export const PremiumLandSection: FC<TProps> = ({ data }) => {
+  console.log(data, "datadatadatadata")
+  return (
   <div className="premium-land-section">
     <h2 className="section-title">Premium Land Properties in UAE</h2>
     <p>
@@ -27,7 +23,7 @@ export const PremiumLandSection = () => (
 
     <div className="land-card-grid">
       <Row gutter={[24, 32]}>
-        {landList.map((land, idx) => (
+        {data.data.map((land, idx) => (
           <Col xs={24} sm={12} md={8} lg={6} key={idx}>
             <LandPropertyCard {...land} /> 
           </Col>
@@ -47,6 +43,7 @@ export const PremiumLandSection = () => (
       </Col>
     </Row>
   </div>
-);
+)
+}
 
 export default PremiumLandSection;

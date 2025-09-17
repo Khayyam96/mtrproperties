@@ -29,18 +29,15 @@ type TProps = { data: HeroBanner };
 
 const HeroSection: FC<TProps> = ({ data }) => {
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [videoReady, setVideoReady] = useState(false);
 
-  const isVideo = data.backgroundType === "VIDEO";
-  const isImage = data.backgroundType === "IMAGE";
+  const isVideo = !!data.video_url;
+  const isImage = data.background_type === "IMAGE" || !isVideo;
 
-  const imgPath = data.imageUrl ?? null;
-  const imgSrc = buildMediaUrl(imgPath);
+  const imgSrc = buildMediaUrl(data.image_url ?? null);
+  const videoSrc = buildMediaUrl(data.video_url ?? null);
 
-  const rawVideo = data.videoUrl ?? null;
-  const videoSrc = buildMediaUrl(rawVideo);
-  const videoPoster = buildMediaUrl(data.videoPosterUrl) ?? imgSrc ?? undefined;
-
-  const youTubeId = useMemo(() => extractYouTubeId(rawVideo ?? undefined), [rawVideo]);
+  const youTubeId = useMemo(() => extractYouTubeId(data.video_url ?? undefined), [data.video_url]);
 
   const youTubeEmbedUrl = useMemo(() => {
     if (!youTubeId) return null;
@@ -59,11 +56,11 @@ const HeroSection: FC<TProps> = ({ data }) => {
   return (
     <div className="hero-section">
       <div className="hero-background">
-        {videoPoster && (
+        {imgSrc && (!videoReady || !isVideo) && (
           <div className="hero-poster-wrapper">
             <Image
               className="hero-poster"
-              src={videoPoster}
+              src={imgSrc}
               alt={data.title || "Hero poster"}
               fill
               priority
@@ -80,7 +77,8 @@ const HeroSection: FC<TProps> = ({ data }) => {
             loop
             playsInline
             preload="auto"
-            poster={videoPoster ?? undefined}
+            poster={imgSrc ?? undefined}
+            onCanPlay={() => setVideoReady(true)}
           >
             <source src={videoSrc} />
           </video>
@@ -99,27 +97,12 @@ const HeroSection: FC<TProps> = ({ data }) => {
           </div>
         )}
 
-        {isImage && imgSrc && (
-          <div className="hero-poster-wrapper">
-            <Image
-              className="hero-poster"
-              src={imgSrc}
-              alt={data.title || "Hero background"}
-              fill
-              priority
-              sizes="100vw"
-            />
-          </div>
-        )}
-
         <div className="hero-content">
           <div className="hero-text">
             <h1 className="hero-title">{data.title}</h1>
             <p className="hero-subtitle">{data.subtitle}</p>
             <div className="hero-buttons">
-              <Button type="primary" className="buy-btn">
-                Buy
-              </Button>
+              <Button type="primary" className="buy-btn">Buy</Button>
               <Button className="rent-btn">Rent</Button>
             </div>
           </div>
@@ -127,9 +110,7 @@ const HeroSection: FC<TProps> = ({ data }) => {
           <div className="search-section">
             <div className="search-tabs">
               <div className="btn-groups">
-                <Button type="primary" className="tab-active">
-                  All
-                </Button>
+                <Button type="primary" className="tab-active">All</Button>
                 <Button className="tab-inactive">Ready to Move</Button>
                 <Button className="tab-inactive">Off Plans</Button>
               </div>
@@ -172,9 +153,7 @@ const HeroSection: FC<TProps> = ({ data }) => {
                   <Option value="500k-1M">500k-1M</Option>
                 </Select>
 
-                <Button type="primary" className="search-btn">
-                  Search Now <span className="search-arrow">→</span>
-                </Button>
+                <Button type="primary" className="search-btn">Search Now <span className="search-arrow">→</span></Button>
               </div>
             </div>
 
@@ -212,9 +191,7 @@ const HeroSection: FC<TProps> = ({ data }) => {
                 </Select>
               </div>
 
-              <Button type="primary" className="search-btn">
-                Search Now <span className="search-arrow">→</span>
-              </Button>
+              <Button type="primary" className="search-btn">Search Now <span className="search-arrow">→</span></Button>
             </div>
           </div>
         </div>
