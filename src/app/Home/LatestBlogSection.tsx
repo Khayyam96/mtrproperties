@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useMemo, useRef } from "react";
+import React, { FC, useMemo, useRef } from "react";
 import { Typography } from "antd";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,6 +16,14 @@ import "slick-carousel/slick/slick-theme.css";
 const { Title, Text } = Typography;
 
 type TProps = { data: LastBlogListResponse };
+
+// Small interface describing the slider methods we use.
+// Extend this if you need more methods from the slider instance.
+interface SlickSliderRef {
+  slickNext?: () => void;
+  slickPrev?: () => void;
+  slickGoTo?: (index: number) => void;
+}
 
 const BLOG_IMAGE_BASE =
   process.env.NEXT_PUBLIC_BLOG_IMAGE_BASE ?? "https://api.dubaiyachts.com/uploads/properties/";
@@ -41,12 +49,9 @@ function formatDate(iso?: string | null): string {
 }
 
 export const LatestBlogSection: FC<TProps> = ({ data }) => {
-  // use a relaxed ref type to avoid possible typing/ref forwarding issues
-  const sliderRef = useRef<any>(null);
+  // typed ref — no more `any`
+  const sliderRef = useRef<SlickSliderRef | null>(null);
   const items = useMemo(() => data ?? [], [data]);
-
-  // debug: uncomment if you want to see the slider instance
-  // console.log("sliderRef.current", sliderRef.current);
 
   const slidesToShow = 3;
   const settings: Settings = {
@@ -96,7 +101,7 @@ export const LatestBlogSection: FC<TProps> = ({ data }) => {
         </div>
 
         <div className="slider-wrapper">
-          <Slider ref={sliderRef} {...settings}>
+          <Slider ref={sliderRef as any} {...settings}>
             {items.map((item) => {
               const img = resolveImage(item.mainImage);
               const dateStr = formatDate(item.publishedAt);
