@@ -17,8 +17,6 @@ const { Title, Text } = Typography;
 
 type TProps = { data: LastBlogListResponse };
 
-// Small interface describing the slider methods we use.
-// Extend this if you need more methods from the slider instance.
 interface SlickSliderRef {
   slickNext?: () => void;
   slickPrev?: () => void;
@@ -49,7 +47,7 @@ function formatDate(iso?: string | null): string {
 }
 
 export const LatestBlogSection: FC<TProps> = ({ data }) => {
-  // typed ref — no more `any`
+  // use a typed ref for the slider methods we rely on
   const sliderRef = useRef<SlickSliderRef | null>(null);
   const items = useMemo(() => data ?? [], [data]);
 
@@ -101,7 +99,12 @@ export const LatestBlogSection: FC<TProps> = ({ data }) => {
         </div>
 
         <div className="slider-wrapper">
-          <Slider ref={sliderRef as any} {...settings}>
+          <Slider
+            ref={(instance) => {
+              sliderRef.current = instance as unknown as SlickSliderRef | null;
+            }}
+            {...settings}
+          >
             {items.map((item) => {
               const img = resolveImage(item.mainImage);
               const dateStr = formatDate(item.publishedAt);
