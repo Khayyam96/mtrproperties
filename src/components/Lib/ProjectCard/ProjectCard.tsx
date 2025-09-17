@@ -28,7 +28,6 @@ const msIn = {
 };
 
 const Countdown: FC<{ target?: string | Date | null }> = ({ target }) => {
-  // Parse once, reuse
   const targetMs = useMemo(() => {
     if (!target) return null;
     const t = typeof target === "string" ? new Date(target) : target;
@@ -86,6 +85,7 @@ export const ProjectCard: FC<Props> = ({
   segment,
   handoverAt,
   paymentPlanLabel,
+  developerLogo
 }) => {
   const href = `/planpage/${slug}`;
 
@@ -120,7 +120,7 @@ export const ProjectCard: FC<Props> = ({
             </div>
           </div>
 
-          <Countdown target={handoverAt} />
+          {handoverAt && <Countdown target={handoverAt} />}
         </div>
 
         <div className="info">
@@ -129,13 +129,14 @@ export const ProjectCard: FC<Props> = ({
 
           {location && (
             <div className="location" title={location}>
-              <EnvironmentOutlined /> {location}
+              <EnvironmentOutlined className="anticon" />
+              {location}
             </div>
           )}
 
           <div className="price">{price}</div>
 
-          {/* {developerLogo && (
+          {developerLogo && (
             <div className="mag-logo">
               <Image
                 src={developerLogo}
@@ -146,7 +147,7 @@ export const ProjectCard: FC<Props> = ({
                 style={{ objectFit: "contain" }}
               />
             </div>
-          )} */}
+          )}
         </div>
       </Link>
     </div>

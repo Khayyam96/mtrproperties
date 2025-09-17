@@ -51,6 +51,7 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
   const sliderRef = useRef<Slider | null>(null);
   const router = useRouter();
 
+  console.log(data, "adasdasdasdasd")
   useEffect(() => {
     console.log("[ProjectDubai] data:", data);
   }, [data]);
@@ -141,11 +142,11 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
 
           <Slider {...settings} ref={sliderRef} className="project-slider">
             {items.map((project) => (
-              <ProjectCard key={project.slug} {...project} />
+              <ProjectCard key={project.slug} {...project} handoverAt={project.handoverAt} />
             ))}
           </Slider>
 
-        <Button
+          <Button
             className="slider-arrow right"
             shape="circle"
             icon={<Image src="/nexticon.png" alt="next" width={16} height={16} />}

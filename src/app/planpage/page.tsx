@@ -1,7 +1,5 @@
-// planpage/page.tsx
-// import PropertyFilterBar, { PropertyFilterValues } from "@/components/Lib/PropertyFilterBar";
+
 import PlanBanner from "./PlanBanner";
-// import { Row, Col } from "antd";
 import ProjectDubai from "../Home/ProjectDubai";
 import RealestateInfoCard from "../Home/RealestateInfoCard";
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
@@ -11,7 +9,6 @@ import { RealEstate } from "@/models/RealEstate.model";
 import { OffPlanListResponse } from "@/models/OffPlan.model";
 
 export default async function PlanPage() {
-  // ⚡ Error-safe fetch
   let realestateRes: RealEstate | null = null;
   let offPlanRes: OffPlanListResponse | null = null;
 
@@ -27,9 +24,6 @@ export default async function PlanPage() {
     console.error("[PlanPage] offplan fetch error:", err);
   }
 
-//   const handleSubmit = (values: PropertyFilterValues) => {
-//     console.log(values);
-//   };
 
   return (
     <div className="plan-page">

@@ -41,12 +41,15 @@
       .slick-dots {
         bottom: 8px;
         z-index: 4;
+
         li {
           margin: 0 2px;
+
           button:before {
             font-size: 8px;
             opacity: 0.6;
           }
+
           &.slick-active button:before {
             opacity: 1;
           }
@@ -69,7 +72,8 @@
       place-items: center;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-      @media(max-width: 767px){
+
+      @media(max-width: 767px) {
         display: none;
       }
 
@@ -78,8 +82,13 @@
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
       }
 
-      &.left { left: 10px; }
-      &.right { right: 10px; }
+      &.left {
+        left: 10px;
+      }
+
+      &.right {
+        right: 10px;
+      }
 
       .arrow-chev {
         font-size: 18px;
@@ -148,7 +157,10 @@
           right: -13px;
           color: #ffffff;
         }
-        &:last-child::after { display: none; }
+
+        &:last-child::after {
+          display: none;
+        }
       }
     }
   }
@@ -163,7 +175,8 @@
       color: white;
       font-size: 12px;
       font-weight: 600;
-      padding: 2px 8px;
+      height: 24px;
+      padding: 5px;
       border-radius: 4px;
       margin-bottom: 6px;
     }
@@ -181,12 +194,18 @@
       font-weight: 500;
       display: flex;
       align-items: center;
+      width: 270px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       .anticon {
         margin-right: 6px;
         color: #565454;
+        flex-shrink: 0;
       }
     }
+
 
     .price {
       font-weight: 700;
@@ -198,7 +217,14 @@
     .mag-logo {
       position: absolute;
       right: 16px;
-      bottom: 16px;
+      bottom: 43px;
+      width: 70px;
+      height: 70px;
+      margin-top:-30px;
+      img{
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 
@@ -206,5 +232,5 @@
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
   }
-  
+
 }

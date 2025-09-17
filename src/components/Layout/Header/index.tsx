@@ -232,14 +232,14 @@ export default function MainHeader() {
         placement="left"
         open={open}
         onClose={() => setOpen(false)}
-        width="100%"
+        width="90%"
         closeIcon={<CloseOutlined />}
-        styles={{ body: { padding: 0 } }}
+        className="mobil-burger-menu"
       >
         <div className="drawer-content">
           <div className="drawer-head">
             <div className="drawer-logo">
-              <Image src="/logo.png" alt="MTR Properties" fill />
+              <Image src="/logo.png" className="logo" alt="MTR Properties" fill />
             </div>
           </div>
 
