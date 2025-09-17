@@ -4,6 +4,7 @@ import { useState, KeyboardEvent } from "react";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import type { RealEstate } from "@/models/RealEstate.model";
+import "./index.scss";
 
 type TProps = { data: RealEstate };
 

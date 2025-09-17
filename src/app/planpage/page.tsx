@@ -1,45 +1,47 @@
 
 import PlanBanner from "./PlanBanner";
 import ProjectDubai from "../Home/ProjectDubai";
-import RealestateInfoCard from "../Home/RealestateInfoCard";
+// import RealestateInfoCard from "../Home/RealestateInfoCard";
 import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
 import "./index.scss"
 import { fetchAPI } from "@/utils";
 import { RealEstate } from "@/models/RealEstate.model";
 import { OffPlanListResponse } from "@/models/OffPlan.model";
+import { Col, Row } from "antd";
+import PropertyFilterBar from "@/components/Lib/PropertyFilterBar";
+import RealestateInfoCard from "../Home/RealestateInfoCard";
+import RealEstateFaqSection from "../Home/RealEstateFaqSection";
+import { FaqListResponse } from "@/models/Faq.model";
+import { LastBlogListResponse } from "@/models/LastBlog.mode";
+import LatestBlogSection from "../Home/LatestBlogSection";
 
 export default async function PlanPage() {
-  let realestateRes: RealEstate | null = null;
-  let offPlanRes: OffPlanListResponse | null = null;
+  const realestateRes = await fetchAPI<RealEstate>("/realEstateAgencyDubai/active")
+  const offPlanRes = await fetchAPI<OffPlanListResponse>("/off-plan-new");
+  const faqData = await fetchAPI<FaqListResponse>('/client/faq')
+  const blogRes = await fetchAPI<LastBlogListResponse>('/client/blogPosts/latest')
 
-  try {
-    realestateRes = await fetchAPI<RealEstate>("/realEstateAgencyDubai/active");
-  } catch (err) {
-    console.error("[PlanPage] realestate fetch error:", err);
-  }
 
-  try {
-    offPlanRes = await fetchAPI<OffPlanListResponse>("/client/offPlanProjects");
-  } catch (err) {
-    console.error("[PlanPage] offplan fetch error:", err);
-  }
+  console.log(offPlanRes, "offPlanResoffPlanResoffPlanRes")
+  console.log(blogRes,"blogResblogResblogRes")
 
 
   return (
     <div className="plan-page">
       <PlanBanner />
-      {/* <div className="filter-bar-block">
+      <div className="filter-bar-block">
         <Row justify="center">
           <Col xs={24} sm={12} md={10} lg={10}>
-            <PropertyFilterBar onSubmit={handleSubmit} />
+            <PropertyFilterBar />
           </Col>
         </Row>
-      </div> */}
+      </div>
 
-      {/* ProjectDubai safe */}
-      <ProjectDubai data={offPlanRes?.data ?? []} />
+      <ProjectDubai data={offPlanRes.data} />
 
-      {realestateRes && <RealestateInfoCard data={realestateRes} />}
+      <RealestateInfoCard data={realestateRes} />
+      <RealEstateFaqSection data={faqData} />
+      <LatestBlogSection data={blogRes} />
       <SubscribeSection />
     </div>
   );

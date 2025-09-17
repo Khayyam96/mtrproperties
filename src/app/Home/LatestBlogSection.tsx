@@ -8,13 +8,17 @@ import Slider, { Settings } from "react-slick";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import { RightOutlined } from "@ant-design/icons";
 import type { LastBlogListResponse } from "@/models/LastBlog.mode";
+import "./index.scss";
+
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const { Title, Text } = Typography;
 
 type TProps = { data: LastBlogListResponse };
 
 const BLOG_IMAGE_BASE =
-  process.env.NEXT_PUBLIC_BLOG_IMAGE_BASE ?? "https://api.dubaiyachts.com/uploads/blogs";
+  process.env.NEXT_PUBLIC_BLOG_IMAGE_BASE ?? "https://api.dubaiyachts.com/uploads/properties/";
 
 function resolveImage(src?: string | null): string {
   if (!src) return "/placeholder.png";
@@ -22,7 +26,6 @@ function resolveImage(src?: string | null): string {
   if (src.startsWith("/")) return `${BLOG_IMAGE_BASE}${src}`;
   return `${BLOG_IMAGE_BASE}/${src}`;
 }
-
 
 function formatDate(iso?: string | null): string {
   if (!iso) return "";
@@ -38,8 +41,12 @@ function formatDate(iso?: string | null): string {
 }
 
 export const LatestBlogSection: FC<TProps> = ({ data }) => {
-  const sliderRef = useRef<Slider | null>(null);
+  // use a relaxed ref type to avoid possible typing/ref forwarding issues
+  const sliderRef = useRef<any>(null);
   const items = useMemo(() => data ?? [], [data]);
+
+  // debug: uncomment if you want to see the slider instance
+  // console.log("sliderRef.current", sliderRef.current);
 
   const slidesToShow = 3;
   const settings: Settings = {
@@ -70,8 +77,8 @@ export const LatestBlogSection: FC<TProps> = ({ data }) => {
               className="nav left"
               role="button"
               tabIndex={0}
-              onClick={() => sliderRef.current?.slickPrev()}
-              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && sliderRef.current?.slickPrev()}
+              onClick={() => sliderRef.current?.slickPrev?.()}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && sliderRef.current?.slickPrev?.()}
             >
               <Image src="/previcon.png" alt="Previous" width={18} height={18} />
             </span>
@@ -80,8 +87,8 @@ export const LatestBlogSection: FC<TProps> = ({ data }) => {
               className="nav right"
               role="button"
               tabIndex={0}
-              onClick={() => sliderRef.current?.slickNext()}
-              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && sliderRef.current?.slickNext()}
+              onClick={() => sliderRef.current?.slickNext?.()}
+              onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && sliderRef.current?.slickNext?.()}
             >
               <Image src="/nexticon.png" alt="Next" width={18} height={18} />
             </span>

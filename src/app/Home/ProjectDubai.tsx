@@ -9,6 +9,8 @@ import { AppstoreOutlined } from "@ant-design/icons";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import { ProjectCard } from "@/components/Lib/ProjectCard/ProjectCard";
 import type { OffPlanItem } from "@/models/OffPlan.model";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./index.scss"
 
 const { Title, Text } = Typography;

@@ -45,13 +45,8 @@ export const PropertyFilterBar: FC<Props> = ({
   initialValues,
   loading,
   className,
-  // onSubmit,
 }) => {
   const [form] = Form.useForm<PropertyFilterValues>();
-
-  // const handleFinish = (values: PropertyFilterValues) => {
-  //   onSubmit?.(values);
-  // };
 
   return (
     <div className={classNames("filter-bar", className)}>
@@ -59,7 +54,6 @@ export const PropertyFilterBar: FC<Props> = ({
         form={form}
         layout="vertical"
         initialValues={initialValues}
-        // onFinish={handleFinish}
       >
         <Row gutter={[16, 16]} align="bottom" wrap>
           <Col xs={24} md={6}>
