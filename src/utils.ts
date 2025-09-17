@@ -8,13 +8,14 @@ export async function fetchAPI<TResponse, TBody = unknown>(
   const init: RequestInit = {
     method,
     headers: { 'Content-Type': 'application/json' },
+    cache: 'no-store',
   };
 
   if (method !== 'GET' && body !== undefined) {
     init.body = JSON.stringify(body);
   }
 
-  const res = await fetch(`https://api.dubaiyachts.com/properties/api/v1${endpoint}`, init);
+  const res = await fetch(`https://api.dubaiyachts.com/properties/api/v1${endpoint}`,  init);
 
   if (!res.ok) {
     throw new Error(`API request failed with status ${res.status}`);
