@@ -4,20 +4,22 @@ import React, { FC, useMemo } from "react";
 import { Typography } from "antd";
 import { FaqAccordion } from "@/components/Lib/ProAccardion/FaqAccordion";
 import { Container } from "@/components/Lib/ProContainer/Container";
-import type { FaqListResponse } from "@/models/Faq.model";
+import type { FaqResponse } from "@/models/Faq.model";
 
 const { Title } = Typography;
 
 type TPropsFaq = {
-  data: FaqListResponse;
+  data: FaqResponse;
 };
 
 const RealEstateFaqSection: FC<TPropsFaq> = ({ data }) => {
+  console.log(data, "FAQ DATA");
+
   const items = useMemo(
     () =>
       (data?.data ?? [])
         .slice()
-        .sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0))
+        .sort((a, b) => a.id - b.id) 
         .map((i) => ({
           key: String(i.id),
           label: i.question,
@@ -26,7 +28,7 @@ const RealEstateFaqSection: FC<TPropsFaq> = ({ data }) => {
     [data]
   );
 
-  const defaultActiveKey = items[0]?.key as string | undefined;
+  const defaultActiveKey = items[0]?.key;
 
   return (
     <section className="realestate-faq-section">

@@ -9,12 +9,12 @@ import moment from "moment";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { IReviewResp } from "@/models/Review.model";
+import { ReviewResponse } from "@/models/Review.model";
 
 const { Title, Text } = Typography;
 
 type TProps = {
-  data: IReviewResp;
+  data: ReviewResponse;
 };
 
 const PALETTE = ["#6fcf97", "#27ae60", "#9b51e0", "#2d9cdb", "#eb5757", "#f2994a", "#56ccf2"];
@@ -38,20 +38,24 @@ function formatDate(d?: string | number | Date) {
 }
 
 export const GoogleReviewsSection: FC<TProps> = ({ data }) => {
+  console.log(data, "review data");
   const sliderRef = useRef<Slider | null>(null);
 
-  // ✅ Memoize items to avoid new [] identity each render
-  const items = useMemo(() => data?.items ?? [], [data?.items]);
+  const items = useMemo(() => data?.data ?? [], [data?.data]);
   const itemsLength = items.length;
 
   const avgRating = useMemo(() => {
+    // Prefer API-provided average if exists and parseable
+    const apiAvg = data?.average ? parseFloat(String(data.average)) : NaN;
+    if (!Number.isNaN(apiAvg)) return Math.round(apiAvg * 10) / 10;
+
     if (!itemsLength) return 0;
-    const sum = items.reduce(
-      (acc, r) => acc + (Number.isFinite(Number(r.rating)) ? Number(r.rating) : 0),
-      0
-    );
+    const sum = items.reduce((acc, r) => {
+      const val = Number.isFinite(Number(r.rating)) ? Number(r.rating) : parseFloat(String(r.rating)) || 0;
+      return acc + val;
+    }, 0);
     return Math.round((sum / itemsLength) * 10) / 10;
-  }, [items, itemsLength]);
+  }, [data?.average, items, itemsLength]);
 
   const sliderSettings: Settings = useMemo(
     () => ({
@@ -87,7 +91,9 @@ export const GoogleReviewsSection: FC<TProps> = ({ data }) => {
     <div className="google-reviews-section">
       <Container>
         <div className="reviews-row-header">
-          <Title level={4} className="reviews-title">Customer reviews on Google</Title>
+          <Title level={4} className="reviews-title">
+            Customer reviews on Google
+          </Title>
           <div className="slider-btn-group">
             <button className="slider-btn" aria-label="Previous" onClick={handlePrev} type="button">
               <Image src="/previcon.png" alt="Prev" width={32} height={32} />
@@ -118,21 +124,21 @@ export const GoogleReviewsSection: FC<TProps> = ({ data }) => {
                     <Avatar
                       size={40}
                       style={{
-                        backgroundColor: colorFromString(item.reviewerName),
+                        backgroundColor: colorFromString(item.fullname),
                         width: 40,
                         height: 40,
                         lineHeight: "40px",
                       }}
                     >
-                      {firstInitial(item.reviewerName)}
+                      {firstInitial(item.fullname)}
                     </Avatar>
                     <div className="review-info">
-                      <Text className="review-name">{item.reviewerName}</Text>
-                      <Text className="review-date">{formatDate(item.reviewedAt)}</Text>
+                      <Text className="review-name">{item.fullname}</Text>
+                      <Text className="review-date">{formatDate(item.created_at)}</Text>
                     </div>
                   </div>
                   <Rate disabled allowHalf value={Number(item.rating) || 0} />
-                  {item.comment ? <div className="review-comment">{item.comment}</div> : null}
+                  {item.review ? <div className="review-comment">{item.review}</div> : null}
                 </div>
               </div>
             ))}

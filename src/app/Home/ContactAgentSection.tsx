@@ -4,6 +4,7 @@ import React, { useState, FC } from "react";
 import { Row, Col, Form, Input, Button, Typography, Select, message } from "antd";
 import type { SelectProps } from "antd";
 import { COUNTRIES, iso2ToFlag } from "@/constants/countries";
+import { notification } from "antd";
 
 const { Title, Text } = Typography;
 
@@ -16,33 +17,21 @@ type ContactFormValues = {
   name: string;
   email: string;
   phone: PhoneValue;
+  message: string;
 };
 
-const API_URL = "https://api.dubaiyachts.com/properties/api/v1/client/forms/lead";
-const UPLOAD_BASE = "https://api.dubaiyachts.com/uploads/properties";
-
-type LeadFormData = {
-  id: number;
-  imageUrl: string;
-  title: string;
-  subtitle: string;
-  buttonText: string;
+const MOCK_LEAD_DATA = {
+  title: "Contact Our Agent",
+  subtitle: "Fill out the form and we will get back to you shortly.",
+  buttonText: "Submit Request",
+  imageUrl: "/sectionimg.png",
 };
 
-type TProps = {
-  data: LeadFormData;
-};
-
-const toImageUrl = (p?: string) => {
-  if (!p) return "";
-  if (/^https?:\/\//i.test(p)) return p;
-  const clean = p.replace(/^\/+/, "");
-  return `${UPLOAD_BASE}/${clean}`;
-};
-
-const ContactAgentSection: FC<TProps> = ({ data }) => {
+const ContactAgentSection: FC = () => {
   const [form] = Form.useForm<ContactFormValues>();
   const [loading, setLoading] = useState(false);
+  const [messageLength, setMessageLength] = useState(0);
+  const maxLength = 500;
 
   const findDial = (iso2?: string) =>
     COUNTRIES.find((c) => c.iso2 === iso2)?.dialCode || "";
@@ -59,56 +48,77 @@ const ContactAgentSection: FC<TProps> = ({ data }) => {
   };
 
   const onFinish = async (values: ContactFormValues) => {
+    setLoading(true);
     try {
-      setLoading(true);
       const dial = findDial(values.phone.country);
-      const phoneCountryCode = dial ? `+${dial}` : "";
       const phoneNumber = (values.phone.national || "").replace(/[^\d]/g, "");
-      const payload = { name: values.name, email: values.email, phoneCountryCode, phoneNumber };
+      const fullPhone = dial ? `+${dial}${phoneNumber}` : phoneNumber;
 
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(payload),
-      });
+      const payload = {
+        fullname: values.name,
+        email: values.email,
+        phone: fullPhone,
+        message: values.message,
+      };
 
-      if (!res.ok) {
+      const res = await fetch(
+        "https://api.dubaiyachts.com/properties/api/v1/client/contact-requests",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      if (res.status === 201) {
+        form.resetFields();
+        setMessageLength(0);
+        notification.success({
+          message: "Uğurludur!",
+          description: "Sizin müraciətiniz uğurla göndərildi.",
+          placement: "topRight",
+        });
+        console.log("Created"); // ekranda və ya konsolda göstərə bilərsən
+      } else {
         let errText = `Request failed: ${res.status}`;
         try {
           const d = await res.json();
           errText = d?.message || d?.error || errText;
-        } catch {}
+        } catch { }
         throw new Error(errText);
       }
-
-      message.success("Your request has been submitted successfully.");
-      form.setFieldsValue({ name: "", email: "", phone: { country: "AE", national: "" } });
     } catch (e: unknown) {
       const errMsg =
         e instanceof Error ? e.message : typeof e === "string" ? e : "Submission failed. Please try again.";
-      message.error(errMsg);
+      notification.error({
+        message: "Xəta baş verdi",
+        description: errMsg,
+        placement: "topRight",
+      });
     } finally {
       setLoading(false);
     }
   };
 
-  const bgUrl = toImageUrl(data?.imageUrl);
-  const bgStyle: React.CSSProperties = bgUrl
+
+  const bgStyle: React.CSSProperties = MOCK_LEAD_DATA.imageUrl
     ? {
-        backgroundImage: `url(${bgUrl})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-      }
+      backgroundImage: `url(${MOCK_LEAD_DATA.imageUrl})`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    }
     : {};
+
+  const messageValue = Form.useWatch("message", form);
 
   return (
     <div className="contact-agent-section" style={bgStyle}>
       <Row gutter={[24, 24]} align="middle">
         <Col xs={24} md={12} className="contact-agent-section__left">
           <div className="contact-agent-section__content">
-            <Title level={2}>{data?.title}</Title>
-            <Text>{data?.subtitle}</Text>
+            <Title level={2}>{MOCK_LEAD_DATA.title}</Title>
+            <Text>{MOCK_LEAD_DATA.subtitle}</Text>
           </div>
         </Col>
 
@@ -120,7 +130,7 @@ const ContactAgentSection: FC<TProps> = ({ data }) => {
               form={form}
               layout="vertical"
               onFinish={onFinish}
-              initialValues={{ phone: { country: "AE", national: "" } }}
+              initialValues={{ phone: { country: "AE", national: "" }, message: "" }}
             >
               <Form.Item
                 label="Name"
@@ -151,7 +161,7 @@ const ContactAgentSection: FC<TProps> = ({ data }) => {
                         showSearch
                         options={countryOptions}
                         filterOption={filterOption}
-                        style={{ width: 180 }}
+                        style={{ width: 100 }}
                         optionRender={(option) => {
                           const iso2 = String(option.value);
                           const dial = findDial(iso2);
@@ -208,9 +218,29 @@ const ContactAgentSection: FC<TProps> = ({ data }) => {
                 </Form.Item>
               </Form.Item>
 
+              <Form.Item
+                label="Message / Notes"
+                name="message"
+                rules={[{ required: true, message: "Please enter a message" }]}
+              >
+                <Input.TextArea
+                  placeholder="Write your message here..."
+                  maxLength={maxLength}
+                  style={{ height: 60, resize: "none" }}
+                  value={messageValue}
+                  onChange={(e) => {
+                    setMessageLength(e.target.value.length);
+                    form.setFieldValue("message", e.target.value);
+                  }}
+                />
+                <div style={{ textAlign: "right", fontSize: 12, opacity: 0.6 }}>
+                  {messageLength} / {maxLength}
+                </div>
+              </Form.Item>
+
               <Form.Item>
                 <Button type="primary" htmlType="submit" block loading={loading} disabled={loading}>
-                  {data?.buttonText || "Submit"}
+                  {MOCK_LEAD_DATA.buttonText}
                 </Button>
               </Form.Item>
             </Form>

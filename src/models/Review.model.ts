@@ -1,13 +1,15 @@
-export interface IReview {
-    id: string;
-    rating: number;
-    reviewerName: string;
-    reviewedAt: string;
-    comment: string;
+export interface ReviewItem {
+  id: number;
+  created_at: string;
+  fullname: string;
+  rating: string;
+  review: string;
 }
 
-export interface IReviewResp {
-    average: number;
-    items: IReview[];
-    total: number;
+export interface ReviewResponse {
+  data: ReviewItem[];
+  average: string;
+  total: number;
+  page: number;
+  per_page: number;
 }

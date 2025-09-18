@@ -748,8 +748,8 @@ $text-muted: #6f6f6f;
     }
 
     .blog-card {
-      height: 500px;
-      box-shadow: 0 2px 24px #34353529;
+      height: 470px;
+      // box-shadow: 0 2px 24px #34353529;
       background: #fff;
       border-radius: 10px;
       overflow: hidden;
@@ -772,7 +772,7 @@ $text-muted: #6f6f6f;
 
       .content {
         padding: 20px;
-
+        padding-bottom: 0px;
         h5 {
           font-size: 24px;
           line-height: 30px;

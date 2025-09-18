@@ -8,7 +8,7 @@ import { Container } from "../ProContainer/Container";
 const { Option } = Select;
 
 type FilterValues = {
-  purpose: string;
+  property_category: string;
   type: string;
   bedBath: string;
   price: string;
@@ -22,7 +22,7 @@ type Props = {
 
 export const SearchFilter: React.FC<Props> = ({ onSearch }) => {
   const [filters, setFilters] = useState<FilterValues>({
-    purpose: "Buy",
+    property_category: "Buy",
     type: "Any",
     bedBath: "Any",
     price: "Any",
@@ -44,7 +44,7 @@ export const SearchFilter: React.FC<Props> = ({ onSearch }) => {
         <Row gutter={[16, 16]} align="bottom">
           <Col xs={24} sm={12} md={4}>
             <label className="label">Purpose</label>
-            <Select value={filters.purpose} onChange={(val) => handleChange("purpose", val)} className="full-width">
+            <Select value={filters.property_category} onChange={(val) => handleChange("property_category", val)} className="full-width">
               <Option value="Buy">Buy</Option>
               <Option value="Rent">Rent</Option>
             </Select>

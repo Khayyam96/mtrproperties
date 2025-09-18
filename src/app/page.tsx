@@ -19,22 +19,29 @@ import { MostPopularPlacesSection } from "./Home/MostPopularPlacesSection";
 import { MostTrendingResponse } from "@/models/MostTrending.model";
 import { LuxuryTabResponse } from "@/models/LuxuryTab.model";
 import { MostPopularResponse } from "@/models/MostPopular.model";
+import SearchTrendsSection from "./Home/SearchTrendsSection";
+import LatestBlogSection from "./Home/LatestBlogSection";
+import RealestateInfoCard from "./Home/RealestateInfoCard";
+import { RealEstate } from "@/models/RealEstate.model";
+import { GoogleReviewsSection } from "./Home/GoogleReviewsSection";
+import { ReviewResponse } from "@/models/Review.model";
+import RealEstateFaqSection from "./Home/RealEstateFaqSection";
+import { FaqResponse } from "@/models/Faq.model";
+import ContactAgentSection from "./Home/ContactAgentSection";
 
 
-// import ContactAgentSection from "./Home/ContactAgentSection";
-// import SearchTrendsSection from "./Home/SearchTrendsSection";
-// import LatestBlogSection from "./Home/LatestBlogSection";
-// import RealEstateFaqSection from "./Home/RealEstateFaqSection";
 
-// import { GoogleReviewsSection } from "./Home/GoogleReviewsSection";
-// import RealestateInfoCard from "./Home/RealestateInfoCard";
-// import { IReviewResp } from "@/models/Review.model";
 
-// import { FaqListResponse } from "@/models/Faq.model";
+
+
+
+
 // import { Partner } from "@/models/Partner.model";
 // import { ClientMostPopularListResponse } from "@/models/MostPopular.model";
 // import { LastBlogListResponse } from "@/models/LastBlog.mode";
 import "../app/page.scss";
+import { LastBlogResponse } from "@/models/LastBlog.mode";
+
 
 
 
@@ -50,23 +57,25 @@ export default async function Home() {
   const mostTrending = await fetchAPI<MostTrendingResponse>("/client/most-trending");
   const luxuryTab = await fetchAPI<LuxuryTabResponse>("/shared/property-types");
   const mostPopular = await fetchAPI<MostPopularResponse>("/client/areas?is_most_popular=true&per_page=6");
+  const blogRes = await fetchAPI<LastBlogResponse>('/client/blogs')
+  const realestateRes = await fetchAPI<RealEstate>("/client/real-estate-agency")
+  const reviewData = await fetchAPI<ReviewResponse>('/client/google-reviews')
+  const faqData = await fetchAPI<FaqResponse>('/client/faq')
+
+
+  console.log(realestateRes, "realestateResrealestateResrealestateRes")
+
+
+
 
   
-
-
-  console.log(latesProject, "latesProjectlatesProjectlatesProject")
-
-
-
-  // const reviewData = await fetchAPI<IReviewResp>('/client/reviews')
-  // const faqData = await fetchAPI<FaqListResponse>('/client/faq')
   // const partneryData = await fetchAPI<Partner>('/client/forms/block/active')
   // const popularPlacesRes = await fetchAPI<ClientMostPopularListResponse>('/client/popularPlaces');
-  // const blogRes = await fetchAPI<LastBlogListResponse>('/client/blogPosts/latest')
 
 
 
-  // const realestateRes = await fetchAPI<RealEstate>("/realEstateAgencyDubai/active")
+
+
 
   return (
     <div className="home-page">
@@ -76,21 +85,22 @@ export default async function Home() {
         <GetDiscountSection />
         <ProductSection data={latesProject} />
         <MortgageCalculator />
-        <TrendingProjectsSection data={mostTrending}/>
+        <TrendingProjectsSection data={mostTrending} />
         <PremiumLandSection data={landPropertiesRes} />
         <StatsSection />
         <CommissionSection />
-        <LuxuryProperties tab={luxuryTab}/>
+        <LuxuryProperties tab={luxuryTab} />
         <AboutSection />
-
-
-        {/* <ContactAgentSection data={partneryData} /> */}
+        <ContactAgentSection />
         <MostPopularPlacesSection data={mostPopular} />
-        {/* <SearchTrendsSection />
+        <SearchTrendsSection />
+
+
         <LatestBlogSection data={blogRes} />
         <RealestateInfoCard data={realestateRes} />
+
         <GoogleReviewsSection data={reviewData} />
-        <RealEstateFaqSection data={faqData} /> */}
+        <RealEstateFaqSection data={faqData} />
       </main>
     </div>
   );

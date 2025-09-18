@@ -1,21 +1,19 @@
 "use client";
 
-import React, { FC, useMemo, useRef } from "react";
+import React, { FC, useRef } from "react";
 import { Typography } from "antd";
 import Image from "next/image";
 import Link from "next/link";
 import Slider, { Settings } from "react-slick";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import { RightOutlined } from "@ant-design/icons";
-import type { LastBlogListResponse } from "@/models/LastBlog.mode";
 import "./index.scss";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { LastBlogResponse } from "@/models/LastBlog.mode";
 
 const { Title, Text } = Typography;
-
-type TProps = { data: LastBlogListResponse };
 
 interface SlickSliderRef {
   slickNext?: () => void;
@@ -23,38 +21,29 @@ interface SlickSliderRef {
   slickGoTo?: (index: number) => void;
 }
 
-const BLOG_IMAGE_BASE =
-  process.env.NEXT_PUBLIC_BLOG_IMAGE_BASE ?? "https://api.dubaiyachts.com/uploads/properties/";
+type TProps = {
+  data: LastBlogResponse;
+};
 
-function resolveImage(src?: string | null): string {
-  if (!src) return "/placeholder.png";
-  if (/^https?:\/\//i.test(src)) return src;
-  if (src.startsWith("/")) return `${BLOG_IMAGE_BASE}${src}`;
-  return `${BLOG_IMAGE_BASE}/${src}`;
-}
+const IMAGE_BASE = "https://api.dubaiyachts.com/uploads/properties/";
 
-function formatDate(iso?: string | null): string {
-  if (!iso) return "";
+function formatDate(dateStr?: string) {
+  if (!dateStr) return "—";
   try {
-    return new Date(iso).toLocaleDateString("en-GB", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
+    const d = new Date(dateStr);
+    // Asia/Baku timezone not directly applied here; toLocaleDateString will use user's environment timezone.
+    return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
   } catch {
-    return String(iso);
+    return dateStr;
   }
 }
 
 export const LatestBlogSection: FC<TProps> = ({ data }) => {
-  // use a typed ref for the slider methods we rely on
   const sliderRef = useRef<SlickSliderRef | null>(null);
-  const items = useMemo(() => data ?? [], [data]);
 
   const slidesToShow = 3;
   const settings: Settings = {
     dots: false,
-    infinite: items.length > slidesToShow,
     speed: 500,
     slidesToShow,
     slidesToScroll: 1,
@@ -105,18 +94,24 @@ export const LatestBlogSection: FC<TProps> = ({ data }) => {
             }}
             {...settings}
           >
-            {items.map((item) => {
-              const img = resolveImage(item.mainImage);
-              const dateStr = formatDate(item.publishedAt);
-              const hasSlug = Boolean(item.slug && item.slug.trim());
-              const href = hasSlug ? `/blog/${encodeURIComponent(item.slug)}` : "/blog";
-              const title = item.title || "Untitled";
+            {data.data.map((item) => {
+              const imagePath = item.main_image ? `${IMAGE_BASE}${item.main_image}` : "/placeholder.png";
+              const title =
+                item.translations?.[0]?.title ??
+                item.translations?.[0]?.subtitle ??
+                item.category?.name_EN ??
+                "Blog";
+
+              const dateStr = formatDate(item.created_at);
+              const authorName = item.author_name ?? "—";
+              const hasSlug = Boolean(item.slug);
+              const href = hasSlug ? `/blog/${item.slug}` : "#";
 
               return (
                 <div key={item.id} className="blog-card">
                   <div className="image">
                     <Image
-                      src={img}
+                      src={imagePath}
                       alt={title}
                       width={400}
                       height={310}
@@ -124,12 +119,18 @@ export const LatestBlogSection: FC<TProps> = ({ data }) => {
                       style={{ width: "100%", height: "310px", objectFit: "cover" }}
                     />
                   </div>
+
                   <div className="content">
-                    <Title level={5}>{title}</Title>
-                    <div className="meta">
-                      <Text>{dateStr}</Text>
-                      <span style={{ margin: "0 8px" }} />
-                      <Text>{item.authorName ?? "—"}</Text>
+                    <Title level={5} ellipsis={{ rows: 2 }}>
+                      {title}
+                    </Title>
+
+                    <div className="meta" style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                      <Text type="secondary">{dateStr}</Text>
+                      <span style={{ margin: "0 6px" }} aria-hidden>
+                        •
+                      </span>
+                      <Text type="secondary">{authorName}</Text>
                     </div>
 
                     {hasSlug ? (
@@ -137,8 +138,14 @@ export const LatestBlogSection: FC<TProps> = ({ data }) => {
                         Read more <RightOutlined />
                       </Link>
                     ) : (
-                      <span className="read-more disabled" aria-disabled="true" title="Slug yoxdur">
-                        Read more <RightOutlined />
+                      <span
+                        className="read-more disabled"
+                        aria-disabled="true"
+                        title="Slug yoxdur"
+                        style={{ opacity: 0.5, cursor: "not-allowed" }}
+                      >
+                        Read more                        
+                        <Image src="/nexticon.png" alt="Next" width={16} height={16} style={{ marginLeft: 4 }} />
                       </span>
                     )}
                   </div>

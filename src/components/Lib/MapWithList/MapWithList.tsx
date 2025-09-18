@@ -13,7 +13,7 @@ const { Option } = Select;
 const { Text, Title } = Typography;
 
 type Filters = {
-  purpose: string;
+  property_category: string;
   type: string;
   bedBath: string;
   price: string;
@@ -36,7 +36,7 @@ export const MapWithList: FC<Props> = ({ filters, isMapOpen, onToggleMap }) => {
 
   const filtered = useMemo(() => {
     return properties
-      .filter((p) => (filters.purpose ? p.purpose === filters.purpose : true))
+      .filter((p) => (filters.property_category ? p.property_category === filters.property_category : true))
       .filter((p) => (filters.type !== "Any" ? p.type === filters.type : true))
       .filter((p) => {
         if (filters.bedBath === "Any") return true;
@@ -66,7 +66,7 @@ export const MapWithList: FC<Props> = ({ filters, isMapOpen, onToggleMap }) => {
   const collapsed = !isMapOpen || sorted.length === 0;
 
   const titleText = `${filters.type !== "Any" ? filters.type + "s" : "Properties"} for ${
-    filters.purpose === "Rent" ? "Rent" : "Buy"
+    filters.property_category === "Rent" ? "Rent" : "Buy"
   }${filters.location ? ` in ${filters.location}` : ""}`;
 
   const gridWhenClosed = { xs: 24, sm: 12, md: 12, lg: 6, xl: 6, xxl: 6 };

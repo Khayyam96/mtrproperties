@@ -9,6 +9,8 @@ import "./index.scss";
 type TProps = { data: RealEstate };
 
 export default function RealestateInfoCard({ data }: TProps) {
+
+  console.log(data, "datadatadatadatadata real")
   const [expanded, setExpanded] = useState(false);
 
   const toggle = () => setExpanded((v) => !v);
@@ -20,16 +22,16 @@ export default function RealestateInfoCard({ data }: TProps) {
   };
 
   const short =
-    data.content && data.content.length > 220
-      ? data.content.slice(0, 220) + "…"
-      : data.content;
+    data.content_EN && data.content_EN.length > 220
+      ? data.content_EN.slice(0, 220) + "…"
+      : data.content_EN;
 
   return (
     <div className="realestate-info-card">
       <Container>
-        <div className="re-title">{data.title}</div>
+        <div className="re-title">{data.title_EN}</div>
         <div className="re-desc">
-          {expanded ? data.content : short}
+          {expanded ? data.content_EN : short}
         </div>
 
         <div className="read-btns" style={{display:"flex", width:"100%", justifyContent: "flex-end"}}>

@@ -31,7 +31,7 @@ export interface LandProperty {
     sq_ft: string;
     price: string;
     utility_count: number;
-    purpose: string;
+    property_category: string;
     property_state: string;
     currency: string;
     property_type: PropertyType;

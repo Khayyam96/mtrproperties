@@ -25,7 +25,7 @@ export type TProCard = {
   property_state: string,
   address: string;
   whatsappNumber: string;
-  purpose: string,
+  property_category: string,
   phoneNumber: string;
   bathroom_count: number;
   bedroom_count: number;
@@ -43,7 +43,7 @@ export const ProCard: React.FC<TProCard> = ({
   bathroom_count,
   bedroom_count,
   property_state,
-  purpose,
+  property_category,
   sq_ft,
   price,
   currency,
@@ -96,7 +96,7 @@ export const ProCard: React.FC<TProCard> = ({
         </Slider>
 
         <div className="pro-card__labels">
-          {purpose && <Tag className="ready">{purpose}</Tag>}
+          {property_category && <Tag className="ready">{property_category}</Tag>}
           {property_state && <Tag className="plan">{property_state}</Tag>}
         </div>
 
