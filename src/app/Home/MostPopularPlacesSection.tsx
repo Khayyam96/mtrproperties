@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { Typography, Row, Col } from "antd";
 import { PlaceCard } from "@/components/Lib/PopularPlaces/PlaceCard";
 import { Container } from "@/components/Lib/ProContainer/Container";
@@ -27,7 +27,7 @@ export const MostPopularPlacesSection: FC<TProps> = ({ data }) => {
         </Paragraph>
 
         <Row gutter={[20, 20]} justify="center" align="stretch">
-          {data.data.map((item, idx) => (
+          {data.data.map((item) => (
             <Col key={item.id} xs={24} sm={12} md={12} lg={8} xl={8} style={{ display: "flex" }} >
               <PlaceCard {...item}/>
             </Col>
