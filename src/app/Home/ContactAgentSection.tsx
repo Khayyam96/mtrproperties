@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, FC } from "react";
-import { Row, Col, Form, Input, Button, Typography, Select, message } from "antd";
+import { Row, Col, Form, Input, Button, Typography, Select } from "antd";
 import type { SelectProps } from "antd";
 import { COUNTRIES, iso2ToFlag } from "@/constants/countries";
 import { notification } from "antd";
