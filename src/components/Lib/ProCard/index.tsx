@@ -22,7 +22,7 @@ export type TProCard = {
   id: number;
   slug: string;
   utility_count: number,
-  build_status: string,
+  property_state: string,
   address: string;
   whatsappNumber: string;
   purpose: string,
@@ -42,7 +42,7 @@ export const ProCard: React.FC<TProCard> = ({
   address,
   bathroom_count,
   bedroom_count,
-  build_status,
+  property_state,
   purpose,
   sq_ft,
   price,
@@ -97,7 +97,7 @@ export const ProCard: React.FC<TProCard> = ({
 
         <div className="pro-card__labels">
           {purpose && <Tag className="ready">{purpose}</Tag>}
-          {build_status && <Tag className="plan">{build_status}</Tag>}
+          {property_state && <Tag className="plan">{property_state}</Tag>}
         </div>
 
         <button className="carousel-btn left" onClick={goPrev}>

@@ -27,7 +27,7 @@ export interface LandProperty {
     price: string;
     utility_count: number;
     purpose: string;
-    build_status: string;
+    property_state: string;
     currency: string;
     media: LandPropertyMedia;
     areas: LandPropertyArea[];

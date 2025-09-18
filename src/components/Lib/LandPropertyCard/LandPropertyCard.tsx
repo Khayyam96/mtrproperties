@@ -22,7 +22,7 @@ export type TProCard = {
   id: number;
   slug: string;
   utility_count: number,
-  build_status: string,
+  property_state: string,
   address: string;
   whatsappNumber: string;
   purpose: string,
@@ -38,7 +38,7 @@ export type TProCard = {
 
 export const LandPropertyCard: React.FC<TProCard> = ({
   address,
-  build_status,
+  property_state,
   purpose,
   utility_count,
   sq_ft,
@@ -76,7 +76,7 @@ export const LandPropertyCard: React.FC<TProCard> = ({
     <div className="pro-card">
       <div className="tags">
         <div className="left-tag">{purpose}</div>
-        <div className="right-tag">{build_status}</div>
+        <div className="right-tag">{property_state}</div>
       </div>
 
       <div className="pro-card__img">

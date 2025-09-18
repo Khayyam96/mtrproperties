@@ -4,27 +4,16 @@ import { FC, useMemo } from "react";
 import { Typography, Row, Col } from "antd";
 import { PlaceCard } from "@/components/Lib/PopularPlaces/PlaceCard";
 import { Container } from "@/components/Lib/ProContainer/Container";
+import { MostPopularResponse } from "@/models/MostPopular.model";
 
 const { Title, Paragraph } = Typography;
 
-type MostPopularItem = {
-  id: number;
-  title: string;
-  image: string;
+type TProps = {
+    data: MostPopularResponse;
 };
 
-type ApiResp = { items: MostPopularItem[] };
-
-type Props = {
-  data: MostPopularItem[] | ApiResp;
-};
-
-export const MostPopularPlacesSection: FC<Props> = ({ data }) => {
-  const items = useMemo<MostPopularItem[]>(() => {
-    if (Array.isArray(data)) return data;
-    if (data && "items" in data) return data.items ?? [];
-    return [];
-  }, [data]);
+export const MostPopularPlacesSection: FC<TProps> = ({ data }) => {
+  console.log(data, "most popularaedasdadasdad")
 
   return (
     <section className="popular-places-section">
@@ -38,9 +27,9 @@ export const MostPopularPlacesSection: FC<Props> = ({ data }) => {
         </Paragraph>
 
         <Row gutter={[20, 20]} justify="center" align="stretch">
-          {items.map((item) => (
-            <Col key={item.id} xs={24} sm={12} md={12} lg={8} xl={8} style={{ display: "flex" }}>
-              <PlaceCard image={item.image} title={item.title} />
+          {data.data.map((item, idx) => (
+            <Col key={item.id} xs={24} sm={12} md={12} lg={8} xl={8} style={{ display: "flex" }} >
+              <PlaceCard {...item}/>
             </Col>
           ))}
         </Row>

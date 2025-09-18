@@ -32,7 +32,7 @@ export interface LandProperty {
     price: string;
     utility_count: number;
     purpose: string;
-    build_status: string;
+    property_state: string;
     currency: string;
     property_type: PropertyType;
     media: LandProjectMedia;

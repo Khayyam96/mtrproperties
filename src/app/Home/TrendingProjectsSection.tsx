@@ -4,52 +4,14 @@
 import { FC } from "react";
 import { Row, Col, Button } from "antd";
 import Link from "next/link";
+import { MostTrendingResponse } from "@/models/MostTrending.model";
 
-type Project = {
-  image: string;
-  price: string;
-  title: string;
-  location: string;
-  badge: string;
-  slug: string; // <-- slug əlavə
+type TProps = {
+  data: MostTrendingResponse;
 };
 
-const projects: Project[] = [
-  {
-    image: "/card1.png",
-    price: "Starts From 8.8M",
-    title: "Six Senses",
-    location: "The Palm Jumeirah, Dubai",
-    badge: "Ready to Move",
-    slug: "six-senses",
-  },
-  {
-    image: "/card2.png",
-    price: "Starts From 8.8M",
-    title: "Palm Views",
-    location: "The Palm Jumeirah, Dubai",
-    badge: "Ready to Move",
-    slug: "palm-views",
-  },
-  {
-    image: "/card3.png",
-    price: "Starts From 8.8M",
-    title: "Dubai Marina Heights",
-    location: "Dubai Marina, Dubai",
-    badge: "Ready to Move",
-    slug: "dubai-marina-heights",
-  },
-  {
-    image: "/card4.png",
-    price: "Starts From 8.8M",
-    title: "Emaar Beachfront",
-    location: "Dubai Harbour, Dubai",
-    badge: "Ready to Move",
-    slug: "emaar-beachfront",
-  },
-];
-
-export const TrendingProjectsSection: FC = () => {
+export const TrendingProjectsSection: FC<TProps> = ({ data }) => {
+  console.log(data, "trending data")
   return (
     <div className="trending-projects-section">
       <div className="trending-projects-header">
@@ -61,21 +23,22 @@ export const TrendingProjectsSection: FC = () => {
       </div>
 
       <Row gutter={[24, 0]} className="trending-projects-row">
-        {projects.map((project, idx) => (
+        {data.data.map((project, idx) => (
           <Col xs={24} md={6} key={idx}>
             <div
               className="project-card"
-              style={{ backgroundImage: `url(${project.image})` }}
+              style={{ backgroundImage: `url(https://api.dubaiyachts.com/uploads/properties/${project.media.gallery[0]})` }}
             >
               <div className="overlay" />
               <div className="badges">
-                <div className="badge">{project.badge}</div>
+                {project.property_state ? <div className="badge">{project.property_state}</div> : "" }
+                
                 <div className="price">{project.price}</div>
               </div>
 
               <div className="project-info">
-                <div className="title">{project.title}</div>
-                <div className="location">{project.location}</div>
+                <div className="title">{project.translations[0].title}</div>
+                <div className="location">{project.translations[0].subtitle}</div>
 
                 <Link href={`/planpage/${project.slug}`} prefetch>
                   <Button className="view-more-btn" size="large">

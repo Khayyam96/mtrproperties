@@ -1,3 +1,4 @@
+// src/components/MainHeader.tsx
 "use client";
 
 import "@/i18n";
@@ -9,6 +10,7 @@ import { CloseOutlined, DownOutlined, MenuOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Drawer, Space } from "antd";
 import type { MenuProps } from "antd";
 import "./index.scss";
+import { useRouter } from "next/navigation";
 
 type NavChild = { key: string; label: React.ReactNode; href: string };
 type NavItem = { key: string; label: React.ReactNode; href?: string; children?: NavChild[] };
@@ -48,15 +50,14 @@ const renderDesktopNav = (items: NavItem[]) => (
 );
 
 export default function MainHeader() {
-  // 1) Namespace göstərin (məs: common)
-  const { t, i18n } = useTranslation("common");
+  const { t, i18n } = useTranslation();
+  const router = useRouter();
 
   const [open, setOpen] = useState(false);
 
   const currentLang = (i18n.resolvedLanguage || i18n.language || "en").split("-")[0];
   const currentLangObj = LANGS.find((l) => l.key === currentLang) || LANGS[0];
 
-  // 2) Dil dəyişəndə lang/dir atributlarını yeniləyin (RTL üçün 'ar')
   useEffect(() => {
     if (typeof document !== "undefined") {
       document.documentElement.lang = currentLang;
@@ -74,14 +75,17 @@ export default function MainHeader() {
     ),
   }));
 
-  const onLanguageClick: MenuProps["onClick"] = (info) => {
+  const onLanguageClick: MenuProps['onClick'] = (info) => {
     const lang = String(info.key);
     i18n.changeLanguage(lang);
-    // 3) Gələcək SSR/next-i18next uyğunluğu üçün cookie yazın
+
     if (typeof document !== "undefined") {
       document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000`;
     }
+
     setOpen(false);
+
+    router.refresh();
   };
 
   const navItems = useMemo<NavItem[]>(
@@ -110,15 +114,17 @@ export default function MainHeader() {
     [t]
   );
 
-  // Dizayndakı kimi: Services bağlı, Explore More açıq
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
     services: false,
     explore: true,
   });
   const toggleGroup = (key: string) => setOpenGroups((s) => ({ ...s, [key]: !s[key] }));
 
+  // Daha etibarlı: label ReactNode ola bilər, ona görə nav açarı fallback ilə çevrilir
   const getItemText = (item: NavItem): string => {
+    // Əgər label stringdirsə birbaşa qaytar
     if (typeof item.label === "string") return item.label;
+    // Əks halda i18n-dən açarı al
     return String(t(`nav.${item.key}`));
   };
 
@@ -195,7 +201,6 @@ export default function MainHeader() {
             menu={{
               items: languageMenuItems,
               onClick: onLanguageClick,
-              // 4) Aktiv dili vurğulamaq üçün
               selectedKeys: [currentLang],
             }}
           >
