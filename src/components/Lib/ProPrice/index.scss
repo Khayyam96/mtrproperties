@@ -1,0 +1,129 @@
+.price-select {
+  width: 100%;
+
+  .ant-select-selector {
+    height: 50px !important;
+    border-radius: 8px !important;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+  }
+}
+
+/* Dropdown */
+.pr-drop {
+  padding: 8px 8px 10px;
+  width: 420px; // Select genişliyi ilə auto da edə bilərsən
+
+  .pr-head {
+    display: block;
+    color: #6b7280;
+    font-weight: 700;
+    padding: 6px 10px 10px;
+  }
+
+  .pr-box {
+    background: #fff;
+    border-radius: 14px;
+    padding: 14px;
+    box-shadow: 0 2px 0 rgba(0,0,0,0.02);
+    border: 1px solid #eee;
+  }
+
+  .pr-inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 12px;
+
+    .pr-input {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+
+      label {
+        font-weight: 700;
+        color: #111827;
+      }
+
+      .pr-number {
+        width: 100%;
+        height: 52px;
+
+        .ant-input-number-input {
+          font-size: 18px;
+          font-weight: 700;
+        }
+        .ant-input-number-handler-wrap { display: none; }
+      }
+    }
+  }
+
+  .pr-minihead {
+    display: flex;
+    justify-content: space-between;
+    color: #4b5563;
+    font-weight: 600;
+    margin: 2px 2px 6px;
+  }
+
+  .pr-slider {
+    padding: 14px 8px 8px;
+
+    .ant-slider-rail {
+      background: #e5e7eb;
+      height: 8px;
+      border-radius: 999px;
+    }
+    .ant-slider-track {
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #5b21b6, #7c3aed);
+    }
+    .ant-slider-handle {
+      width: 26px;
+      height: 26px;
+      margin-top: -9px;
+      border: 0;
+      box-shadow: 0 6px 20px rgba(91, 33, 182, 0.35);
+
+      &::after {
+        width: 26px;
+        height: 26px;
+        background: #5b21b6;
+      }
+      &:hover::after,
+      &.ant-tooltip-open::after {
+        background: #6d28d9;
+      }
+    }
+  }
+
+  .pr-foot {
+    display: flex;
+    align-items: center;
+    margin-top: 6px;
+    font-weight: 700;
+    color: #1f2937;
+
+    .spacer { flex: 1; }
+    .pr-currency { margin: 0 8px; color: #6b7280; font-weight: 600; }
+    .pr-val { min-width: 96px; text-align: left; }
+  }
+
+  .pr-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 12px;
+
+    .gap { flex: 1; }
+  }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .pr-drop { width: 100%; }
+  .pr-drop .pr-inputs { grid-template-columns: 1fr; }
+}

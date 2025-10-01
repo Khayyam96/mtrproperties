@@ -1,30 +1,18 @@
-export interface Media {
+export interface Area {
   id: number;
-  created_at?: string | null;
-  updated_at?: string | null;
-  deleted_at?: string | null;
-  project_id?: number | null;
-  gallery: string[];
+  name: string;
 }
 
-export interface Translation {
-  id: number;
-  title: string;
-  subtitle: string;
-}
-
-export type PropertyState = 'READY_TO_BUILD' | null;
-
-export type ProjectType = 'off_plan' | 'land';
+export type ProjectType = 'ready' | 'off_plan' | 'land' | string;
 
 export interface MostTrendingItem {
   id: number;
+  name: string;
   slug: string;
-  property_state: PropertyState;
-  price: number;
-  media: Media;
-  translations: Translation[];
+  image_url: string | null;
+  price_from: string;       
   project_type: ProjectType;
+  area?: Area | null;
 }
 
 export interface MostTrendingResponse {

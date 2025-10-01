@@ -15,6 +15,7 @@ export type BlogItem = {
     dateISO: string;
     href?: string;
     image: string;
+    slug: string;
 };
 
 type Props = { item: BlogItem };
@@ -56,7 +57,7 @@ export default function BlogCard({ item }: Props) {
                 {item.excerpt}
             </Paragraph>
 
-            <Link href={`/blog/${item.id}`} className={styles.readMore}>
+            <Link href={`/blog/${item.slug}`} className={styles.readMore}>
                 Read more
                 <Image
                     src="/nexticon.png"

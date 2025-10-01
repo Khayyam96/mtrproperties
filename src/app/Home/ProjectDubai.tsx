@@ -1,44 +1,52 @@
 "use client";
 
-import React, { FC, useEffect, useMemo, useRef, useState } from "react";
+import React, { FC, useMemo, useRef } from "react";
 import { Typography, Button } from "antd";
 import Slider, { Settings } from "react-slick";
 import Image from "next/image";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { AppstoreOutlined } from "@ant-design/icons";
 import { Container } from "@/components/Lib/ProContainer/Container";
-import { ProjectCard } from "@/components/Lib/ProjectCard/ProjectCard";
-import type { OffPlanItem } from "@/models/OffPlan.model";
+import { ProjectCard } from "../../components/Lib/ProOffCard/ProjectCard";
+import "./index.scss";
+
+// *** ŞƏRTDİR: slick CSS-lər yüklənməlidir ***
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import "./index.scss";
-import CustomPagination from "../../components/Lib/ProPagination/CustomPagination";
+
+// ===== API modelləri =====
+export interface OffPlanListResponse {
+  data: OffPlanAPIItem[];
+  page: number;
+  per_page: number;
+  total: number;
+}
+
+export interface OffPlanAPIItem {
+  id: number;
+  title: string;
+  slug: string;
+  address: string | null;
+  handover_at: string | null;
+  segment?: string | null;
+  media?: { gallery?: string[] } | null;
+  developer?: { id: number; name?: string; image_url?: string | null } | null;
+  translation?: { subtitle?: string } | null;
+}
+
+type TProps = { data: OffPlanAPIItem[] };
 
 const { Title, Text } = Typography;
 
-type TProps = { data: OffPlanItem[] };
-
 const PROPERTY_IMAGE_BASE = "https://api.dubaiyachts.com/uploads/properties";
+const DEVELOPER_IMAGE_BASE = "https://api.dubaiyachts.com/uploads/properties";
 
-type OffPlanItemAPI = OffPlanItem & {
-  handover_at?: string | null;
-  handoverAt?: string | null;
-  price_from?: string;
-  translation?: { title?: string };
-  translations?: { title?: string }[];
-  address?: string | null;
-  media?: {
-    gallery?: string[];
-    galleryPaths?: string[];
-  } | null;
-};
-
-function resolveWithBase(src?: string | null, base?: string) {
-  if (!src) return "";
-  if (/^https?:\/\//i.test(src)) return src;
+function withBase(path?: string | null, base?: string) {
+  if (!path) return "";
+  if (/^https?:\/\//i.test(path)) return path;
   const b = (base ?? "").replace(/\/+$/, "");
-  const s = src.replace(/^\/+/, "");
-  return `${b}/${s}`;
+  const p = path.replace(/^\/+/, "");
+  return `${b}/${p}`;
 }
 
 type CardItem = {
@@ -47,99 +55,49 @@ type CardItem = {
   location: string;
   price: string;
   imageUrl: string;
-  segment?: string;
-  handoverYear?: number;
+  segment?: string | null;
   handoverAt?: string | null;
   paymentPlanLabel?: string;
-  developerLogo: string;
+  developerLogo?: string;
 };
 
 const ProjectDubai: FC<TProps> = ({ data }) => {
   const sliderRef = useRef<Slider | null>(null);
   const router = useRouter();
-  const pathname = usePathname();
-
-  const [currentPage, setCurrentPage] = useState<number>(1);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [pathname, data]);
 
   const items = useMemo<CardItem[]>(() => {
-    return (data ?? []).map((pBase) => {
-      const p: OffPlanItemAPI = pBase;
+    return (data ?? []).map((p) => {
+      const gallery = p.media?.gallery ?? [];
+      const imageUrl =
+        gallery.length > 0 ? withBase(gallery[0], PROPERTY_IMAGE_BASE) : "/img4.png";
 
-      const handoverAt: string | null = p.handoverAt ?? p.handover_at ?? null;
-      const handoverYear = handoverAt ? new Date(handoverAt).getFullYear() : undefined;
-
-      const paymentPlan = Array.isArray(p.paymentPlan) ? p.paymentPlan : [];
-      const handoverPercent =
-        paymentPlan.find((x) => x.key?.toLowerCase() === "handover")?.percent ?? 0;
-      const othersPercent = paymentPlan
-        .filter((x) => x.key?.toLowerCase() !== "handover")
-        .reduce((sum, x) => sum + (x.percent ?? 0), 0);
-      const paymentPlanLabel =
-        handoverPercent > 0 && othersPercent > 0
-          ? `${othersPercent}/${handoverPercent}`
-          : undefined;
-
-      const priceFrom = p.startingPrice ?? p.price_from ?? "";
-      const currency = p.currency ?? "";
-      const priceNumber = priceFrom ? Number.parseFloat(priceFrom) : NaN;
-      const price =
-        priceFrom && currency && Number.isFinite(priceNumber)
-          ? `Starting at ${currency} ${priceNumber.toLocaleString()}`
-          : "";
-
-      const galleryPaths = p.media?.galleryPaths ?? p.media?.gallery ?? [];
-      const firstGallery = Array.isArray(galleryPaths) ? galleryPaths[0] : undefined;
-      const imageUrl = firstGallery ? `${PROPERTY_IMAGE_BASE}/${firstGallery}` : "/img4.png";
-
-      const developerLogo = resolveWithBase(p.developer?.image_url ?? "", PROPERTY_IMAGE_BASE);
-
-      const name =
-        p.translations?.[0]?.title ??
-        p.translation?.title ??
-        p.developer?.name ??
-        `Property #${p.id}`;
-
-      const location = p.address ?? p.propertyType?.name ?? "";
+      const developerLogo = withBase(p.developer?.image_url ?? "", DEVELOPER_IMAGE_BASE);
 
       return {
-        slug: p.slug ?? "",
-        name,
-        location,
-        price,
+        slug: p.slug,
+        name: p.title,
+        location: p.address ?? "",
+        price: "", 
         imageUrl,
-        segment: p.segment,
-        handoverYear,
-        handoverAt,
-        paymentPlanLabel,
+        segment: p.segment ?? undefined,
+        handoverAt: p.handover_at ?? null,
+        paymentPlanLabel: undefined, 
         developerLogo,
       };
     });
   }, [data]);
 
-  const SLIDES_TO_SHOW_DEFAULT = 3;
   const settings: Settings = {
     dots: false,
-    infinite: true,
+    infinite: items.length > 3,
     speed: 500,
-    slidesToShow: SLIDES_TO_SHOW_DEFAULT,
+    slidesToShow: 3,
     slidesToScroll: 1,
     arrows: false,
     responsive: [
-      { breakpoint: 992, settings: { slidesToShow: 2.1 } },
+      { breakpoint: 992, settings: { slidesToShow: 2 } },
       { breakpoint: 576, settings: { slidesToShow: 1 } },
     ],
-  };
-
-  const totalPages = Math.max(1, Math.ceil(items.length / SLIDES_TO_SHOW_DEFAULT));
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    const targetIndex = (page - 1) * SLIDES_TO_SHOW_DEFAULT;
-    sliderRef.current?.slickGoTo(targetIndex);
   };
 
   return (
@@ -147,12 +105,14 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
       <Container>
         <div className="header text-center">
           <Title level={2}>New Off Plan Projects In Dubai</Title>
-          <Text>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</Text>
+          <Text className="description">
+            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+          </Text>
         </div>
 
         <div className="slider-container">
           <Button
-            className="slider-arrow left"
+            className="slider-arrow left-btn"
             shape="circle"
             icon={<Image src="/previcon.png" alt="prev" width={16} height={16} />}
             onClick={() => sliderRef.current?.slickPrev()}
@@ -160,12 +120,12 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
 
           <Slider {...settings} ref={sliderRef} className="project-slider">
             {items.map((project) => (
-              <ProjectCard key={project.slug || project.name} {...project} />
+              <ProjectCard key={project.slug} {...project} />
             ))}
           </Slider>
 
           <Button
-            className="slider-arrow right"
+            className="slider-arrow right-btn"
             shape="circle"
             icon={<Image src="/nexticon.png" alt="next" width={16} height={16} />}
             onClick={() => sliderRef.current?.slickNext()}
@@ -173,18 +133,14 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
         </div>
 
         <div className="view-more-wrapper text-center" style={{ marginTop: 30 }}>
-          {pathname === "/planpage" ? (
-            <CustomPagination current={currentPage} total={totalPages} onChange={handlePageChange} />
-          ) : (
-            <Button
-              type="primary"
-              icon={<AppstoreOutlined />}
-              size="large"
-              onClick={() => router.push("/planpage")}
-            >
-              View More
-            </Button>
-          )}
+          <Button
+            type="primary"
+            icon={<AppstoreOutlined />}
+            size="large"
+            onClick={() => router.push("/planpage")}
+          >
+            View More
+          </Button>
         </div>
       </Container>
     </section>

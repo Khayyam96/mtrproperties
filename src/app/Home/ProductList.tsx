@@ -1,3 +1,4 @@
+// app/Home/ProductList/index.tsx (və ya sənin fayl yolun)
 "use client";
 
 import { Row, Col, Button, Typography } from "antd";
@@ -5,17 +6,16 @@ import { AppstoreOutlined } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import { ProCard } from "@/components/Lib/ProCard";
 import { Container } from "@/components/Lib/ProContainer/Container";
-import { LandProjectResponse } from "@/models/LatesProject.model";
 import { FC } from "react";
+import { LandProjectResponse } from "@/models/LatesProject.model";
 
 const { Title, Text } = Typography;
 
 type TProps = {
-  data: LandProjectResponse; 
+  data: LandProjectResponse;
 };
 
-export const ProductSection: FC<TProps> = ({ data }) =>  {
-  console.log(data, "latesproject")
+export const ProductSection: FC<TProps> = ({ data }) => {
   const router = useRouter();
 
   return (
@@ -31,9 +31,16 @@ export const ProductSection: FC<TProps> = ({ data }) =>  {
         </div>
 
         <Row gutter={[24, 32]}>
-          {data.data.map((p) => (
-            <Col key={p.slug} xs={24} sm={12} md={12} lg={8} xl={6}>
-              <ProCard {...p} />
+          {data?.data?.map((item) => (
+            <Col
+              key={item.id}
+              xs={12}
+              sm={12}
+              md={12}
+              lg={8}
+              xl={6}
+            >
+              <ProCard {...item} />
             </Col>
           ))}
         </Row>

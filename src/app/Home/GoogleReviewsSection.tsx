@@ -45,7 +45,6 @@ export const GoogleReviewsSection: FC<TProps> = ({ data }) => {
   const itemsLength = items.length;
 
   const avgRating = useMemo(() => {
-    // Prefer API-provided average if exists and parseable
     const apiAvg = data?.average ? parseFloat(String(data.average)) : NaN;
     if (!Number.isNaN(apiAvg)) return Math.round(apiAvg * 10) / 10;
 

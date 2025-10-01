@@ -1,44 +1,18 @@
 export interface OffPlanListResponse {
-  data: OffPlanItem[];
-  total_count: number;
+  data: OffPlanAPIItem[];
   page: number;
   per_page: number;
+  total: number;
 }
 
-export type OffPlanItem = {
+export interface OffPlanAPIItem {
   id: number;
-  slug?: string;
-  currency?: string;
-  startingPrice?: string;
-  segment?: string;
-  handoverAt?: string | null;
-  developer?: { id: number; name?: string; key?: string; image_url?: string | null } | null;
-  propertyType?: { id: number; key?: string; name?: string } | null;
-  paymentPlan?: { key?: string; percent?: number }[];
-  translations?: { title?: string }[];
-  media?: { galleryPaths?: string[] } | null;
-};
-
-export interface PaymentPlanPart {
-  key: 'dp' | 'installments' | 'handover' | string;
-  percent: number;
-}
-
-export interface OffPlanTranslation {
   title: string;
-  excerpt: string;
-  paymentPlan?: unknown[][];
-}
-
-export interface DeveloperInfo {
-  id: number;
-  name: string;
-  key: string;
-  logoUrl: string;
-}
-
-export interface PropertyTypeInfo {
-  id: number;
-  key: string;
-  name: string;
+  slug: string;
+  address: string | null;
+  handover_at: string | null; // ISO
+  segment?: string | null;
+  media?: { gallery?: string[] } | null;
+  developer?: { id: number; name?: string; image_url?: string | null } | null;
+  translation?: { subtitle?: string } | null;
 }

@@ -1,50 +1,35 @@
+
 export interface LandProjectMedia {
-    id: number;
-    gallery: string[];
+  gallery: string[];
 }
 
-export interface PropertyType {
-    id: number;
-    name: string
+export interface LandProjectAgent {
+  phone?: string | null;
+  whatsapp?: string | null;
 }
 
-export interface LandProjectArea {
-    id: number;
-    type: string;
-    name: string;
-    lat: string;
-    long: string;
-}
-
-export interface LandProjectTranslation {
-    id: number;
-    title: string;
-    subtitle: string;
-}
-
-export interface LandProperty {
-    id: number;
-    slug: string;
-    address: string;
-    whatsappNumber: string;
-    phoneNumber: string;
-    sq_ft: string;
-    price: string;
-    utility_count: number;
-    property_category: string;
-    property_state: string;
-    currency: string;
-    property_type: PropertyType;
-    media: LandProjectMedia;
-    bedroom_count: number;
-    bathroom_count: number;
-    areas: LandProjectArea[];
-    translation: LandProjectTranslation;
+export interface LandProjectItem {
+  id: number;
+  slug: string;
+  segment?: string | null;
+  price_from?: number | null;
+  price_to?: number | null;
+  property_type_list?: string[]; 
+  address?: string | null;
+  bedroom_count_min?: number | null;
+  bedroom_count_max?: number | null;
+  bathroom_count_min?: number | null;
+  bathroom_count_max?: number | null;
+  sq_ft_from?: number | null;
+  sq_ft_to?: number | null;
+  agent?: LandProjectAgent | null;
+  title?: string | null;
+  media?: LandProjectMedia | null;
 }
 
 export interface LandProjectResponse {
-    data: LandProperty[];
-    page: number;
-    per_page: number;
-    total: number;
+  data: LandProjectItem[];
+  page: number;
+  per_page: number;
+  total: number;
 }

@@ -4,17 +4,41 @@ export type BlogCategory = {
   slug: string;
 };
 
+
+export interface BlogTranslation {
+  id: number;
+  lang: string;
+  title: string;
+  subtitle: string;
+  content_1: string | null;
+  content_2: string | null;
+}
+
+
 export interface Blog {
   id: number;
   slug: string;
   title: string;
   summary: string | null;
-  content: string; // HTML
+  content_1: string;
+  content_2: string;
   seoTitle: string | null;
+  created_at: string | null;
   seoDescription: string | null;
-  mainImage: string | null; // şəkil URL-i və ya null
-  gallery: string[];        // şəkil URL-lərinin siyahısı
-  publishedAt: string;      // ISO datetime string
+  main_image: string | null; 
+  content_image: string | null;
+  gallery: string[];       
+  publishedAt: string;   
   authorName: string | null;
   category: BlogCategory | null;
+   translation: BlogTranslation;
 }
+
+
+export interface LastBlogResponse {
+  data: Blog[];
+  page: number;
+  per_page: number;
+  total: number;
+}
+

@@ -1,4 +1,4 @@
-// src/components/MainHeader.tsx
+
 "use client";
 
 import "@/i18n";
@@ -8,21 +8,21 @@ import Image from "next/image";
 import Link from "next/link";
 import { CloseOutlined, DownOutlined, MenuOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Drawer, Space } from "antd";
-import type { MenuProps } from "antd";
+// import type { MenuProps } from "antd";
 import "./index.scss";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 type NavChild = { key: string; label: React.ReactNode; href: string };
 type NavItem = { key: string; label: React.ReactNode; href?: string; children?: NavChild[] };
 
-const LANGS = [
-  { key: "en", label: "EN", flag: "/uk.png" },
-  { key: "ar", label: "AR", flag: "/ar.png" },
-  { key: "ru", label: "RU", flag: "/ru.png" },
-  { key: "de", label: "DE", flag: "/de.png" },
-  { key: "es", label: "ES", flag: "/es.png" },
-  { key: "fr", label: "FR", flag: "/fr.png" },
-] as const;
+// const LANGS = [
+//   { key: "en", label: "EN", flag: "/uk.png" },
+//   { key: "ar", label: "AR", flag: "/ar.png" },
+//   { key: "ru", label: "RU", flag: "/ru.png" },
+//   { key: "de", label: "DE", flag: "/de.png" },
+//   { key: "es", label: "ES", flag: "/es.png" },
+//   { key: "fr", label: "FR", flag: "/fr.png" },
+// ] as const;
 
 const renderDesktopNav = (items: NavItem[]) => (
   <ul className="main-nav">
@@ -51,12 +51,11 @@ const renderDesktopNav = (items: NavItem[]) => (
 
 export default function MainHeader() {
   const { t, i18n } = useTranslation();
-  const router = useRouter();
+  // const router = useRouter();
 
   const [open, setOpen] = useState(false);
 
   const currentLang = (i18n.resolvedLanguage || i18n.language || "en").split("-")[0];
-  const currentLangObj = LANGS.find((l) => l.key === currentLang) || LANGS[0];
 
   useEffect(() => {
     if (typeof document !== "undefined") {
@@ -64,29 +63,7 @@ export default function MainHeader() {
       document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
     }
   }, [currentLang]);
-
-  const languageMenuItems: MenuProps["items"] = LANGS.map((l) => ({
-    key: l.key,
-    label: (
-      <span className="lang-item" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
-        <Image src={l.flag} alt={`${l.label} flag`} width={20} height={14} />
-        {l.label}
-      </span>
-    ),
-  }));
-
-  const onLanguageClick: MenuProps['onClick'] = (info) => {
-    const lang = String(info.key);
-    i18n.changeLanguage(lang);
-
-    if (typeof document !== "undefined") {
-      document.cookie = `NEXT_LOCALE=${lang}; path=/; max-age=31536000`;
-    }
-
-    setOpen(false);
-
-    router.refresh();
-  };
+ 
 
   const navItems = useMemo<NavItem[]>(
     () => [
@@ -190,7 +167,7 @@ export default function MainHeader() {
           </span>
         </div>
 
-        <div className="right">
+        {/* <div className="right">
           <Dropdown menu={{ items: [{ key: "aed", label: "AED" }, { key: "usd", label: "USD" }, { key: "eur", label: "EUR" }] }}>
             <a className="dropdown-link">
               AED <Image src="/arrowup.png" className="lang-icon" alt="Arrow" width={20} height={14} />
@@ -210,7 +187,7 @@ export default function MainHeader() {
               <Image className="lang-icon" src="/arrowup.png" alt="Arrow" width={10} height={10} />
             </a>
           </Dropdown>
-        </div>
+        </div> */}
       </div>
 
       <div className="container nav-container">

@@ -8,7 +8,11 @@
 
   .image-wrapper {
     position: relative;
-    height: 250px;
+    height: 267px;
+    img{
+        width: 100%;
+        height: 100%;
+    }
 
     &::after {
       content: "";
@@ -41,15 +45,12 @@
       .slick-dots {
         bottom: 8px;
         z-index: 4;
-
         li {
           margin: 0 2px;
-
           button:before {
             font-size: 8px;
             opacity: 0.6;
           }
-
           &.slick-active button:before {
             opacity: 1;
           }
@@ -72,8 +73,7 @@
       place-items: center;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-      @media(max-width: 767px) {
+      @media(max-width: 767px){
         display: none;
       }
 
@@ -82,13 +82,8 @@
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
       }
 
-      &.left {
-        left: 10px;
-      }
-
-      &.right {
-        right: 10px;
-      }
+      &.left { left: 10px; }
+      &.right { right: 10px; }
 
       .arrow-chev {
         font-size: 18px;
@@ -157,35 +152,37 @@
           right: -13px;
           color: #ffffff;
         }
-
-        &:last-child::after {
-          display: none;
-        }
+        &:last-child::after { display: none; }
       }
     }
   }
 
   .info {
-    padding: 16px;
+    padding: 10px 20px;
     position: relative;
-
+    display: flex;
+    align-items: center;
     .tag {
-      display: inline-block;
-      background-color: #7e22ce;
-      color: white;
-      font-size: 12px;
-      font-weight: 600;
-      height: 24px;
-      padding: 5px;
-      border-radius: 4px;
-      margin-bottom: 6px;
+      display: inline-block !important;
+      background-color: #7e22ce !important;
+      color: white !important; 
+      font-size: 12px !important;
+      font-weight: 600 !important;
+      padding: 2px 8px  !important;
+      height: 24px !important;
+      border-radius: 4px !important;
+      p{
+        margin-top: 2px;
+      }
     }
 
     .title {
-      font-size: 18px;
-      font-weight: 700;
-      margin: 4px 0;
-      color: #1e1e1e;
+
+      font-size: 20px;
+      line-height: 26px;
+      font-weight: 800;
+      color: #432C63;
+      margin-bottom: 4px;
     }
 
     .location {
@@ -194,18 +191,11 @@
       font-weight: 500;
       display: flex;
       align-items: center;
-      width: 270px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-
       .anticon {
         margin-right: 6px;
         color: #565454;
-        flex-shrink: 0;
       }
     }
-
 
     .price {
       font-weight: 700;
@@ -214,23 +204,12 @@
       margin-top: 8px;
     }
 
-    .mag-logo {
-      position: absolute;
-      right: 16px;
-      bottom: 43px;
-      width: 70px;
-      height: 70px;
-      margin-top:-30px;
-      img{
-        width: 100%;
-        height: 100%;
-      }
-    }
+   
   }
 
   &:hover {
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
     transform: translateY(-2px);
   }
-
+  
 }
