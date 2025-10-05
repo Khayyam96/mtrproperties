@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Slider from "react-slick";
 import { Typography, Tag } from "antd";
 import {
   EnvironmentOutlined,
@@ -9,131 +10,198 @@ import {
   PhoneOutlined,
   WhatsAppOutlined,
 } from "@ant-design/icons";
-import Slider from "react-slick";
-import { useRef } from "react";
+import { useRef, KeyboardEvent } from "react";
+import { useRouter } from "next/navigation";
+import type { LandProperty } from "@/models/LandProperties.model";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+// import nophoto from "@/public/nophoto.svg"
 import "./index.scss";
-import { LandPropertyArea, LandPropertyMedia, LandPropertyTranslation } from "@/models/LandProperties.model";
 
 const { Title } = Typography;
 
-export type TProCard = {
-  id: number;
-  slug: string;
-  utility_count: number,
-  property_state: string,
-  address: string;
-  whatsappNumber: string;
-  property_category: string,
-  phoneNumber: string;
-  sq_ft: string;
-  price: string;
-  currency: string;
-  media: LandPropertyMedia;
-  areas: LandPropertyArea[];
-  translation: LandPropertyTranslation;
+const IMAGE_BASE = "https://api.dubaiyachts.com/uploads/properties/";
 
-};
+// 1) Kompakt rəqəm formatlayıcı (opsional dəyərlər üçün təhlükəsiz)
+function formatCompact(n?: number | null) {
+  if (n === null || n === undefined) return "—";
+  try {
+    return Intl.NumberFormat("en", { notation: "compact", maximumFractionDigits: 1 }).format(n);
+  } catch {
+    const val = Number(n);
+    if (Number.isNaN(val)) return "—";
+    if (val >= 1_000_000) return `${(val / 1_000_000).toFixed(1)}M`;
+    if (val >= 1_000) return `${(val / 1_000).toFixed(0)}k`;
+    return String(val);
+  }
+}
 
-export const LandPropertyCard: React.FC<TProCard> = ({
-  address,
-  property_state,
-  property_category,
-  utility_count,
-  sq_ft,
-  price,
-  currency,
-  media,
-  translation,
-}) => {
+function normalizePhone(p?: string | null) {
+  if (!p) return "";
+  return p.replace(/[^\d+]/g, "");
+}
+
+type CardProps = { land: LandProperty };
+
+export const LandPropertyCard: React.FC<CardProps> = ({ land }) => {
+  const router = useRouter();
   const sliderRef = useRef<Slider>(null);
 
-  const goPrev = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    sliderRef.current?.slickPrev();
+  const settings = {
+    dots: false,
+    arrows: false,
+    infinite: true,
+    speed: 400,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  } as const;
+
+  // Şəkil siyahısını hazırla
+  const rawImgs = land?.media?.gallery?.length ? land.media.gallery : ["/no-photo.png"];
+  const imgs = rawImgs.map((img) =>
+    img.startsWith("http") || img.startsWith("/") ? img : `${IMAGE_BASE}${img}`
+  );
+
+  const leftTag = land?.property_type_list?.[0] ?? "Land";
+  const rightTag = land?.segment ?? "—";
+
+  // Zəng linki
+  const callHref = land?.agent?.phone ? `tel:${normalizePhone(land.agent.phone)}` : undefined;
+
+  // WhatsApp linki
+  const waNumber = normalizePhone(land?.agent?.whatsapp);
+  const waText = encodeURIComponent(`Hello, I'm interested in land: ${land?.slug ?? ""}`);
+  const waHref = waNumber ? `https://wa.me/${waNumber.replace(/^\+/, "")}?text=${waText}` : undefined;
+
+  const goCard = () => {
+    if (land?.slug) router.push(`/popylarinner/${land.slug}`);
   };
 
-  const goNext = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    sliderRef.current?.slickNext();
+  const onRootClick = () => {
+    // Daxili düymələr stopPropagation etdiyindən yalnız kart boş yerinə klikdə işləyəcək
+    goCard();
   };
 
-  const formatPrice = (price: string | number) => {
-    const num = typeof price === "string" ? parseInt(price) : price;
-    if (num >= 1_000_000) {
-      return `${num / 1_000_000}M`;
-    } else if (num >= 100_000) {
-      return `${num / 1_000}k`;
-    } else {
-      return num.toLocaleString();
+  const onRootKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      goCard();
     }
   };
 
-  const settings = { dots: false, arrows: false, infinite: true, speed: 400, slidesToShow: 1, slidesToScroll: 1 };
-
   return (
-    <div className="pro-card">
+    <div
+      className="pro-card"
+      onClick={onRootClick}
+      onKeyDown={onRootKeyDown}
+      role="button"
+      tabIndex={0}
+      style={{ cursor: "pointer" }}
+      aria-label={`Open ${land?.slug ?? "land"}`}
+    >
       <div className="tags">
-        <div className="left-tag">{property_category}</div>
-        <div className="right-tag">{property_state}</div>
+        <div className="left-tag">{leftTag}</div>
+        <div className="right-tag">{rightTag}</div>
       </div>
 
       <div className="pro-card__img">
         <Slider {...settings} ref={sliderRef}>
-          {media?.gallery?.map((img, idx) => (
-            <div key={idx} className="carousel-slide">
+          {imgs.map((src, idx) => (
+            <div key={`${land?.id ?? "land"}-${idx}`} className="carousel-slide">
               <Image
-                src={`https://api.dubaiyachts.com/uploads/properties/${img}`}
-                alt={`${translation.title}-${idx}`}
+                src={src}
+                alt={`${land?.slug ?? "land"}-${idx}`}
                 fill
                 className="pro-card__img--image"
                 sizes="(max-width: 768px) 100vw, 400px"
                 priority={idx === 0}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  goCard();
+                }}
               />
             </div>
           ))}
         </Slider>
 
-
-        <button className="carousel-btn left" onClick={goPrev}>
+        <button
+          className="carousel-btn left"
+          onClick={(e) => {
+            e.stopPropagation();
+            sliderRef.current?.slickPrev();
+          }}
+          aria-label="Previous image"
+          type="button"
+        >
           <ArrowLeftOutlined />
         </button>
-        <button className="carousel-btn right" onClick={goNext}>
+        <button
+          className="carousel-btn right"
+          onClick={(e) => {
+            e.stopPropagation();
+            sliderRef.current?.slickNext();
+          }}
+          aria-label="Next image"
+          type="button"
+        >
           <ArrowRightOutlined />
         </button>
       </div>
 
       <div className="pro-card__body">
         <div className="pro-card__price">
-          <Title level={3} style={{margin: "0px"}}>{currency} {formatPrice(price)}</Title>
-          <Tag className="type">{currency} {sq_ft}</Tag>
+          <Title level={3} style={{ margin: 0 }}>
+            AED {formatCompact(land?.price_from)}
+          </Title>
+          <Tag className="type">{formatCompact(land?.sq_ft_from)} sq ft</Tag>
         </div>
 
         <div className="pro-card__location">
           <EnvironmentOutlined />
-          <span>{address}</span>
+          <span>{land?.address || "—"}</span>
         </div>
 
         <div className="pro-card__meta">
-          <span><Image src="/ic1.png" width={13} height={13} alt="" /> {utility_count} Utilities</span>
-          <span><Image src="/ic2.png" width={13} height={13} alt="" /> {sq_ft} sq ft</span>
+          <span>
+            <Image src="/ic2.png" width={13} height={13} alt="" /> {formatCompact(land?.sq_ft_from)} sq ft
+          </span>
         </div>
 
         <div className="pro-card__actions">
-          <button
+          <a
             className="call"
+            href={callHref || "#"}
             onClick={(e) => {
-              e.stopPropagation();
-              alert("Call functionality is not implemented yet.");
+              if (!callHref) {
+                e.preventDefault();
+                e.stopPropagation();
+                alert("Phone number is not available.");
+              } else {
+                e.stopPropagation();
+              }
             }}
           >
             <PhoneOutlined /> Call Us
-          </button>
+          </a>
 
-          <button className="whatsapp" >
+          <a
+            className="whatsapp"
+            href={waHref || "#"}
+            target={waHref ? "_blank" : undefined}
+            rel={waHref ? "noopener noreferrer" : undefined}
+            onClick={(e) => {
+              if (!waHref) {
+                e.preventDefault();
+                e.stopPropagation();
+                alert("WhatsApp number is not available.");
+              } else {
+                e.stopPropagation();
+              }
+            }}
+          >
             <WhatsAppOutlined /> Whatsapp
-          </button>
+          </a>
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 // components/Lib/ProCard/index.tsx
 "use client";
 
-import Image from "next/image";
+import Image, { type StaticImageData } from "next/image";
 import { Typography, Tag } from "antd";
 import {
   EnvironmentOutlined,
@@ -11,10 +11,11 @@ import {
   WhatsAppOutlined,
 } from "@ant-design/icons";
 import Slider from "react-slick";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import nophoto from "../../../../public/nophoto.svg";
 import "./index.scss";
 import { LandProjectItem } from "@/models/LatesProject.model";
 
@@ -64,9 +65,43 @@ function sanitizePhone(phone?: string | null) {
   return phone.replace(/[^\d]/g, "");
 }
 
+/** Hər slayd üçün təhlükəsiz şəkil:
+ * - srcCandidate varsa və işləkdirsə onu göstərir
+ * - qırılarsa avtomatik nophoto-ya keçir
+ */
+function SlideImg({
+  srcCandidate,
+  alt,
+  priority,
+}: {
+  srcCandidate?: string;
+  alt: string;
+  priority: boolean;
+}) {
+  const [src, setSrc] = useState<string | StaticImageData>(
+    (srcCandidate && buildImgUrl(srcCandidate)) || nophoto
+  );
+
+  useEffect(() => {
+    setSrc((srcCandidate && buildImgUrl(srcCandidate)) || nophoto);
+  }, [srcCandidate]);
+
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      fill
+      className="pro-card__img--image"
+      sizes="(max-width: 768px) 100vw, 400px"
+      priority={priority}
+      onError={() => setSrc(nophoto)}
+    />
+  );
+}
+
 export const ProCard: React.FC<LandProjectItem> = (props) => {
   const {
-    slug,                // IMPORTANT: slug istifadə edirik
+    slug,
     title,
     address,
     property_type_list,
@@ -118,6 +153,11 @@ export const ProCard: React.FC<LandProjectItem> = (props) => {
     }
   };
 
+  // Şəkil siyahısını hazırla
+  const images = (media?.gallery ?? []).filter(Boolean) as string[];
+  const hasImages = images.length > 0;
+  const hasMultiple = images.length > 1;
+
   return (
     <div
       className="pro-card"
@@ -128,32 +168,47 @@ export const ProCard: React.FC<LandProjectItem> = (props) => {
       style={{ cursor: slug ? "pointer" : "default" }}
     >
       <div className="pro-card__img">
-        <Slider {...settings} ref={sliderRef}>
-          {(media?.gallery ?? []).map((img, idx) => (
-            <div key={idx} className="carousel-slide">
-              <Image
-                src={buildImgUrl(img)}
-                alt={title || "Property image"}
-                fill
-                className="pro-card__img--image"
-                sizes="(max-width: 768px) 100vw, 400px"
-                priority={idx === 0}
-              />
-            </div>
-          ))}
-        </Slider>
+        {hasImages ? (
+          <>
+            <Slider {...settings} ref={sliderRef}>
+              {images.map((img, idx) => (
+                <div key={idx} className="carousel-slide">
+                  <SlideImg
+                    srcCandidate={img}
+                    alt={title || "Property image"}
+                    priority={idx === 0}
+                  />
+                </div>
+              ))}
+            </Slider>
+
+            {hasMultiple && (
+              <>
+                <button className="carousel-btn left" onClick={goPrev} aria-label="Previous">
+                  <ArrowLeftOutlined />
+                </button>
+                <button className="carousel-btn right" onClick={goNext} aria-label="Next">
+                  <ArrowRightOutlined />
+                </button>
+              </>
+            )}
+          </>
+        ) : (
+          // Şəkil YOXDURSA → karusel YOX, tək nophoto
+          <Image
+            src={nophoto}
+            alt={title || "No image"}
+            fill
+            className="pro-card__img--image"
+            sizes="(max-width: 768px) 100vw, 400px"
+            priority
+          />
+        )}
 
         <div className="pro-card__labels">
           {segment && <Tag className="plan">{segment}</Tag>}
           {property_type_list?.[0] && <Tag className="ready">{property_type_list[0]}</Tag>}
         </div>
-
-        <button className="carousel-btn left" onClick={goPrev} aria-label="Previous">
-          <ArrowLeftOutlined />
-        </button>
-        <button className="carousel-btn right" onClick={goNext} aria-label="Next">
-          <ArrowRightOutlined />
-        </button>
       </div>
 
       <div className="pro-card__body">

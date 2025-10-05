@@ -82,7 +82,6 @@ type UnitTypeItem = NonNullable<UnitItem["types"]>[number];
 type Props = { data: PropertyDetail };
 type PaymentPlanItem = { label: string; value: string; note?: string; desc?: string };
 
-// ---- Type guards (unknown ilə işləmək üçün) ----
 type WithMedia = { media?: { gallery?: unknown } | null };
 function pickGallery(d: unknown): string[] {
   const media = (d as WithMedia | null | undefined)?.media;
@@ -146,7 +145,7 @@ function pickPaymentPlans(d: unknown): PaymentPlanItem[] {
 const PropertyInner: FC<Props> = ({ data }) => {
   useEffect(() => { }, [data]);
 
-  // ==== media.gallery + project.image_url + unit types images ====
+  console.log(data, "property-detail-data");
   const images = useMemo(() => {
     const gallery = pickGallery(data);
 
@@ -336,7 +335,6 @@ const PropertyInner: FC<Props> = ({ data }) => {
             </div>
           </Col>
 
-          {/* AGENT CARD */}
           <Col xs={24} lg={6}>
             <div className="agent-cards">
               <div className="agent-header">

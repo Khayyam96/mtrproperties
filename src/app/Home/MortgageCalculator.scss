@@ -1,0 +1,154 @@
+.mortgage-calculator {
+  padding: 28px 0 40px;
+  background: #f7f8fa;
+
+  .mc-title { text-align: center; margin-bottom: 4px !important; font-weight: 700; color: #111827; }
+  .mc-desc { display: block; text-align: center; color: #8b8f97; margin-bottom: 16px; }
+
+  .currency-selector {
+    margin: 8px auto 28px; display: flex; align-items: center; justify-content: center; gap: 12px;
+    .currency-label { font-weight: 600; color: #7e22ce; }
+    .currency-select { width: 108px;
+      .ant-select-selector { border-radius: 8px !important; border: 1px solid #e9e9ee !important; padding: 4px 10px !important; box-shadow: none !important; }
+      .dropdown-arrow { font-size: 10px; color: #6b7280; }
+    }
+  }
+
+  .main-content { align-items: stretch; }
+
+  .residency-section {
+    margin-bottom: 30px;
+    .section-title { display: block; font-weight: 600; color: #8b8f97; margin-bottom: 12px; }
+    .residency-options { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+      .residency-btn {
+        height: 44px; border-radius: 10px; font-weight: 600; background: #ffffff; border: 1.5px solid #e9e9ee; color: #4b5563; transition: all .2s ease;
+        &.active, &:hover { border-color: #7e22ce; box-shadow: 0 0 0 4px rgba(126,34,206,.08); color: #7e22ce; background: #ffffff; }
+      }
+    }
+  }
+
+  .chart-section {
+    .chart-card { position: relative; background: #ffffff; border: 1px solid #e9e9ee; border-radius: 16px; padding: 8px 8px 2px; box-shadow: 0 6px 18px rgba(16,24,40,.08); }
+
+    .chart-labels {
+      .chart-label { position: absolute; background: #ffffff; border-radius: 10px; padding: 8px 10px; border: 1px solid #e9e9ee; box-shadow: 0 6px 16px rgba(0,0,0,.06);
+        .lbl { font-size: 12px; color: #8b8f97; line-height: 1; }
+        .val { font-weight: 700; color: #111827; margin-top: 4px; font-size: 13px; }
+      }
+      .dp { top: 16px; right: 22px; }
+      .ma { bottom: 22px; left: 22px; }
+      .ia { bottom: 22px; right: 22px; }
+    }
+
+    .total-repayment { text-align: center; margin-top: 16px;
+      .amount { font-weight: 800; font-size: 24px; letter-spacing: .2px; color: #111827; }
+      .caption { font-size: 13px; color: #8b8f97; }
+    }
+  }
+
+  /* Inputs */
+  .inputs-section {
+    .input-group {
+      background: #ffffff; border: 1px solid #e9e9ee; border-radius: 16px; padding: 16px 16px 10px; box-shadow: 0 6px 18px rgba(16,24,40,.08);
+
+      .input-label { font-weight: 600; color: #111827; margin-bottom: 10px; display: block; }
+
+      .property-input { position: relative;
+        .price-input { width: 100%; height: 44px; border-radius: 10px !important; .ant-input-number-input { text-align: left; } }
+        .currency-suffix { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); color: #8b8f97; font-weight: 600; }
+      }
+
+      .rate-input { display: grid; grid-template-columns: 40px 1fr 40px; gap: 8px; align-items: center;
+        .rate-btn { height: 44px; border-radius: 10px; border: 1px solid #e9e9ee; font-size: 18px; font-weight: 700; color: #111827; &.plus { color: #7e22ce; border-color: #7e22ce; } }
+        .rate-display { display:flex; justify-content:center; align-items:center; height:44px; background:#f9fafb; border:1px solid #e9e9ee; border-radius:10px;
+          .num { font-size:18px; font-weight:800; color:#111827; } .pct { margin-left:4px; color:#8b8f97; }
+        }
+      }
+
+      .help { display:block; margin-top:8px; color:#8b8f97; font-size:12px; line-height:1.4; }
+    }
+
+    .sliders { margin-top: 16px;
+      .slider-group {
+        background:#ffffff; border:1px solid #e9e9ee; border-radius:16px; padding:16px; box-shadow:0 6px 18px rgba(16,24,40,.08);
+        & + .slider-group { margin-top: 16px; }
+
+        .slider-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;
+          .label { font-weight:600; color:#111827; } .value { font-weight:700; color:#111827; }
+        }
+
+        .custom-slider {
+          .ant-slider-rail { background:#ececf3; }
+          .ant-slider-track { background:#7e22ce; }
+          .ant-slider-handle { border-color:#7e22ce; }
+        }
+
+        .help { margin-top:8px; color:#8b8f97; font-size:12px; }
+      }
+    }
+  }
+
+  /* Right panel */
+  .interest-rates-section {
+    .section-title { display:block; font-weight:600; color:#8b8f97; margin-bottom:12px; }
+    .rate-list { display:grid; grid-template-columns: repeat(3,1fr); gap:12px; margin-bottom:12px;
+      .rate-card { background:#ffffff; border:1.5px solid #e9e9ee; border-radius:12px; padding:10px 8px; text-align:center; cursor:pointer; transition:all .2s ease;
+        .rate-val { font-size:18px; font-weight:800; color:#111827; }
+        .rate-period { font-size:12px; color:#8b8f97; margin-top:4px; }
+        &.active, &:hover { border-color:#7e22ce; box-shadow:0 0 0 4px rgba(126,34,206,.08); }
+      }
+    }
+  }
+
+  .sidebar-card {
+    border-radius: 16px; border:1px solid #e9e9ee; box-shadow:0 6px 18px rgba(16,24,40,.08);
+
+    .monthly-payment {
+      background:#faf7ff; border:1px dashed rgba(126,34,206,.35); padding:14px 14px 10px; border-radius:12px; margin-bottom:16px;
+      .mp-label { color:#6b7280; }
+      .mp-amount { font-size:28px; font-weight:800; color:#111827; margin-top:6px; }
+    }
+
+    .form-input, .ant-input-group-wrapper { height:44px;
+      .ant-input, .ant-input-group-addon, .ant-select-selector { height:44px; }
+      .ant-select-selector { display:flex; align-items:center; }
+    }
+
+    .consultation-btn { height:44px; border-radius:10px; background:#7e22ce; border-color:#7e22ce; box-shadow:0 8px 18px rgba(126,34,206,.22); }
+  }
+
+  /* Summary */
+  .summary-card {
+    margin-top:24px; border-radius:16px; border:1px solid #e9e9ee; box-shadow:0 6px 18px rgba(16,24,40,.08);
+
+    .summary-item {
+      .summary-label { color:#8b8f97; }
+      .summary-value { margin-top:6px; font-weight:800; font-size:18px; color:#111827; }
+    }
+
+    .disclaimer { display:block; margin-top:8px; color:#8b8f97; font-size:12px; }
+
+    .action-divider { margin:16px 0; }
+
+    .action-section {
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      .action-title { font-weight:700; color:#111827; }
+      .action-buttons {
+        .ant-btn { height:40px; border-radius:10px; padding:0 14px; font-weight:600; }
+        .download-btn { background:#7e22ce; border-color:#7e22ce; }
+        .whatsapp-btn { background:#e8f5ed; color:#1e7e34; border-color:#cde8d6; }
+        .email-btn { background:#eef4ff; color:#1d4ed8; border-color:#dbe5ff; }
+      }
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 991px) {
+    .interest-rates-section .rate-list { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  @media (max-width: 575px) {
+    .residency-section .residency-options { grid-template-columns: 1fr; }
+    .interest-rates-section .rate-list { grid-template-columns: 1fr; }
+    .action-section { flex-direction: column; align-items: flex-start; }
+  }
+}

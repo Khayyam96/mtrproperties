@@ -14,14 +14,21 @@ const features = [
   { icon: "/icc4.png", title: "10,000+ Brokers", desc: "Join our thriving community of successful agents" },
 ];
 
-export const CommissionSection: FC = () => {
+type TProps = {
+   title?: string;
+  subtitle?: string;
+};
+
+export const CommissionSection: FC<TProps> = ({ title, subtitle }) => {
   return (
     <div className="commission-section">
       <Container>
-        <Title level={2} className="commission-title">Maximize Your Commission</Title>
+        <Title level={2} className="commission-title">{title ?? ""}</Title>
+         {subtitle ? 
         <Text className="commission-desc">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry&apos;s
+          {subtitle}
         </Text>
+        : null}
 
         <Row gutter={[40, 40]} className="commission-main-row">
           <Col xs={24} lg={16}>

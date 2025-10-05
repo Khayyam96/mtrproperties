@@ -1,4 +1,4 @@
-// app/layout.tsx
+
 import type { Metadata } from "next";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -43,7 +43,6 @@ export default function RootLayout({
   return (
     <html lang="en" className={lato.className}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {/* Dilə görə RTL/LTR və mövzu idarəsi client tərəfdə */}
         <ClientAntdProvider>
           <Layout>
             <Header

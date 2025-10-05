@@ -752,7 +752,7 @@ $text-muted: #6f6f6f;
     }
   }
 
-  .description{
+  .description {
     display: block !important;
     font-size: 16px !important;
     color: #232323 !important;
@@ -808,17 +808,211 @@ $text-muted: #6f6f6f;
   }
 
   .project-slider {
-  .slick-list {
-    margin: 0 -10px; 
+    .slick-list {
+      margin: 0 -10px;
+    }
+
+    .slick-slide {
+      padding: 0 10px;
+    }
   }
-  .slick-slide {
-    padding: 0 10px;
+
+  .project-card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
 }
 
-.project-card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
+.property-card {
+  display: block;
+
+  &__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+    background: #f2f2f2;
+    transition: transform 220ms ease, box-shadow 220ms ease;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 34px rgba(0, 0, 0, 0.18);
+
+      .property-card__img {
+        transform: scale(1.04);
+      }
+    }
+  }
+
+  &__img {
+    object-fit: cover;
+    transition: transform 300ms ease;
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 15px;
+    background: linear-gradient(180deg,
+        rgba(0, 0, 0, 0) 48%,
+        rgba(0, 0, 0, 0.35) 72%,
+        rgba(0, 0, 0, 0.6) 100%);
+  }
+
+  &__badge {
+    padding: 4px 5px;
+    background-color: #581C87;
+    color: #FFFFFF;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    display: inline;
+    border-radius: 2px;
+    margin-bottom: 7px;
+    width: 60px;
+  }
+
+  &__title {
+    color: #FFFFFF;
+    font-size: 20px;
+    line-height: 26px;
+    font-weight: 800;
+  }
 }
+
+@media (max-width: 992px) {
+  .luxury-properties {
+    padding: 40px 0 32px;
+
+    &__title {
+      font-size: 24px !important;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .luxury-properties__segmented {
+    .ant-segmented .ant-segmented-item {
+      min-width: 98px;
+      height: 38px;
+      padding: 0 14px;
+    }
+  }
+}
+
+
+.luxury-properties {
+  padding: 56px 0 40px;
+
+  &__header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+
+  &__title {
+    margin-bottom: 8px !important;
+    font-weight: 800;
+    letter-spacing: 0.2px;
+  }
+
+  &__subtitle {
+    display: block;
+    color: rgba(0, 0, 0, 0.55);
+  }
+
+  &__segmented {
+    margin-top: 20px;
+
+    .ant-segmented {
+      border-radius: 999px;
+      padding: 6px;
+      background: red;
+      border: 0;
+      gap: 6px;
+
+      .ant-segmented-item {
+        min-width: 120px;
+        height: 42px;
+        border-radius: 999px;
+        background: red !important;
+        border: 1px solid red !important;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        transition: all 0.2s ease;
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .ant-segmented-item-label {
+          font-weight: 600;
+          color: #4b4b57;
+        }
+
+        &:hover {
+          background: #f7f7fb;
+          border-color: #e2e2ee;
+        }
+
+        &:active {
+          transform: translateY(1px);
+        }
+
+        &.ant-segmented-item-selected:active {
+          transform: none;
+        }
+
+        &:focus-visible {
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(126, 34, 206, 0.18);
+        }
+      }
+
+      .ant-segmented-item-selected {
+        background: #7e22ce;
+        border-color: #7e22ce;
+        box-shadow: 0 6px 16px rgba(126, 34, 206, 0.25);
+
+        .ant-segmented-item-label {
+          color: #ffffff;
+          font-weight: 700;
+        }
+      }
+
+      .ant-segmented-thumb {
+        display: none;
+      }
+    }
+  }
+
+  &__loading {
+    text-align: center;
+    padding: 50px 0;
+  }
+
+  &__cta {
+    display: flex;
+    justify-content: center;
+    margin-top: 28px;
+  }
+
+  &__btn {
+    border-radius: 999px !important;
+    padding: 0 28px;
+    height: 46px;
+    font-weight: 700;
+    background: linear-gradient(90deg, #7e22ce 0%, #581c87 100%);
+    border: none;
+
+    &:hover,
+    &:focus {
+      filter: brightness(1.03);
+      background: linear-gradient(90deg, #7e22ce 0%, #581c87 100%);
+    }
+  }
 }

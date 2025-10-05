@@ -1,3 +1,4 @@
+// src/app/Home/ProjectDubai/index.tsx
 "use client";
 
 import React, { FC, useMemo, useRef } from "react";
@@ -7,10 +8,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { AppstoreOutlined } from "@ant-design/icons";
 import { Container } from "@/components/Lib/ProContainer/Container";
-import { ProjectCard } from "../../components/Lib/ProOffCard/ProjectCard";
+import { ProjectCard } from "@/components/Lib/ProOffCard/ProjectCard";
 import "./index.scss";
 
-// *** ŞƏRTDİR: slick CSS-lər yüklənməlidir ***
+// Slick CSS-lər
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -34,7 +35,11 @@ export interface OffPlanAPIItem {
   translation?: { subtitle?: string } | null;
 }
 
-type TProps = { data: OffPlanAPIItem[] };
+type TProps = {
+  data: OffPlanAPIItem[];
+  title?: string;
+  subtitle?: string;
+};
 
 const { Title, Text } = Typography;
 
@@ -61,7 +66,7 @@ type CardItem = {
   developerLogo?: string;
 };
 
-const ProjectDubai: FC<TProps> = ({ data }) => {
+const ProjectDubai: FC<TProps> = ({ data, title, subtitle }) => {
   const sliderRef = useRef<Slider | null>(null);
   const router = useRouter();
 
@@ -77,11 +82,11 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
         slug: p.slug,
         name: p.title,
         location: p.address ?? "",
-        price: "", 
+        price: "",
         imageUrl,
         segment: p.segment ?? undefined,
         handoverAt: p.handover_at ?? null,
-        paymentPlanLabel: undefined, 
+        paymentPlanLabel: undefined,
         developerLogo,
       };
     });
@@ -104,10 +109,8 @@ const ProjectDubai: FC<TProps> = ({ data }) => {
     <section className="project-dubai-section">
       <Container>
         <div className="header text-center">
-          <Title level={2}>New Off Plan Projects In Dubai</Title>
-          <Text className="description">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-          </Text>
+          <Title level={2}>{title ?? "New Off Plan Projects In Dubai"}</Title>
+          {subtitle ? <Text className="description">{subtitle}</Text> : null}
         </div>
 
         <div className="slider-container">

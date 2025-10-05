@@ -7,6 +7,8 @@ import { MostTrendingResponse, MostTrendingItem } from "@/models/MostTrending.mo
 
 type TProps = {
   data: MostTrendingResponse;
+  title?: string;
+  subtitle?: string;
 };
 
 const MEDIA_BASE =
@@ -16,7 +18,6 @@ const MEDIA_BASE =
 function buildImgUrl(file?: string | null) {
   if (!file) return "";
   if (/^https?:\/\//i.test(file)) return file;
-  // API artıq yalnız fayl adını qaytarır → bazaya qoşuruq
   return `${MEDIA_BASE}/${file}`;
 }
 
@@ -27,21 +28,21 @@ function formatPrice(value: string | number) {
 }
 
 function getSubtitle(item: MostTrendingItem) {
-  // Köhnə "translations[0].subtitle" əvəzinə area.name göstəririk
   return item?.area?.name ?? "";
 }
 
-export const TrendingProjectsSection: FC<TProps> = ({ data }) => {
+export const TrendingProjectsSection: FC<TProps> = ({ data, title, subtitle }) => {
   const items = useMemo(() => data?.data ?? [], [data]);
 
   return (
     <section className="trending-projects-section">
       <div className="trending-projects-header">
-        <h2>Most Trending Projects in Dubai</h2>
-        <p>
-          scelerisque eleifend donec pretium. Felis eget nunc lobortis mattis
-          aliquam faucibus purus. Posuere urna nec tincidunt praesent
-        </p>
+        <h2>{title ?? "Most Trending Projects in Dubai"}</h2>
+        {subtitle ? (
+          <p>{subtitle}</p>
+        ) : (
+          <p />
+        )}
       </div>
 
       <Row gutter={[24, 0]} className="trending-projects-row">
@@ -56,20 +57,16 @@ export const TrendingProjectsSection: FC<TProps> = ({ data }) => {
                 <div className="overlay" />
 
                 <div className="badges">
-                  {/* Köhnə property_state yoxdur → project_type göstəririk */}
                   {project.project_type ? (
                     <div className="badge">{project.project_type}</div>
                   ) : null}
 
-                  {/* Köhnə "price" əvəzinə "price_from" */}
                   <div className="price">From AED {formatPrice(project.price_from)}</div>
                 </div>
 
                 <div className="project-info">
-                  {/* Köhnə translations[0].title əvəzinə name */}
                   <div className="title">{project.name}</div>
 
-                  {/* Köhnə subtitle əvəzinə area.name */}
                   {getSubtitle(project) ? (
                     <div className="location">{getSubtitle(project)}</div>
                   ) : (

@@ -9,27 +9,30 @@ import { MostPopularResponse } from "@/models/MostPopular.model";
 const { Title, Paragraph } = Typography;
 
 type TProps = {
-    data: MostPopularResponse;
+  data: MostPopularResponse;
+  title?: string;
+  subtitle?: string;
 };
 
-export const MostPopularPlacesSection: FC<TProps> = ({ data }) => {
+export const MostPopularPlacesSection: FC<TProps> = ({ data, title, subtitle }) => {
   console.log(data, "most popularaedasdadasdad")
 
   return (
     <section className="popular-places-section">
       <Container>
         <Title level={2} className="popular-title">
-          Most Popular Places in Dubai
+          {title ?? ""}
         </Title>
+        {subtitle ?
         <Paragraph className="popular-desc">
-          scelerisque eleifend donec pretium. Felis eget nunc lobortis mattis aliquam faucibus
-          purus. Posuere urna nec tincidunt praesent
+          {subtitle}
         </Paragraph>
+        : null}
 
         <Row gutter={[20, 20]} justify="center" align="stretch">
           {data.data.map((item) => (
             <Col key={item.id} xs={24} sm={12} md={12} lg={8} xl={8} style={{ display: "flex" }} >
-              <PlaceCard {...item}/>
+              <PlaceCard {...item} />
             </Col>
           ))}
         </Row>

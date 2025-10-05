@@ -3,6 +3,7 @@
 import { Row, Col, Typography, Button } from "antd";
 import { ArrowRightOutlined } from "@ant-design/icons";
 import { Container } from "@/components/Lib/ProContainer/Container";
+import { FC } from "react";
 
 
 const { Title, Paragraph } = Typography;
@@ -28,17 +29,23 @@ const cards = [
   },
 ];
 
-export const AboutSection = () => {
+
+type TProps = {
+  title?: string;
+  subtitle?: string;
+};
+
+export const AboutSection: FC<TProps> = ({ title, subtitle }) => {
   return (
     <section className="about-section">
       <Container>
         <div className="about-header">
-        <Title level={2}>About MTR Properties</Title>
+        <Title level={2}>{title ?? ""}</Title>
+        {subtitle ?
         <Paragraph className="about-text">
-          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-          industry&apos;s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
+          {subtitle}
         </Paragraph>
+         : null}
 
       </div>
 

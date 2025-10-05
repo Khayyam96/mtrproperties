@@ -1,4 +1,4 @@
-// app/Home/ProductList/index.tsx (və ya sənin fayl yolun)
+// app/Home/ProductList/index.tsx
 "use client";
 
 import { Row, Col, Button, Typography } from "antd";
@@ -13,21 +13,19 @@ const { Title, Text } = Typography;
 
 type TProps = {
   data: LandProjectResponse;
+  title?: string;
+  subtitle?: string;
 };
 
-export const ProductSection: FC<TProps> = ({ data }) => {
+export const ProductSection: FC<TProps> = ({ data, title, subtitle }) => {
   const router = useRouter();
 
   return (
     <section className="product__list">
       <Container>
         <div className="header text-center">
-          <Title className="title" level={2}>
-            Latest Projects in the UAE
-          </Title>
-          <Text className="text">
-            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-          </Text>
+          <Title  className="title" level={2}>{title ?? "Latest Projects in the UAE"}</Title>
+          {subtitle ? <Text className="text">{subtitle}</Text> : null}
         </div>
 
         <Row gutter={[24, 32]}>

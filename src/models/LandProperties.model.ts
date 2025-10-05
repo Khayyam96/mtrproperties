@@ -1,42 +1,27 @@
 export interface LandPropertyMedia {
-    id: number;
-    gallery: string[];
+  gallery: string[];
 }
 
-export interface LandPropertyArea {
-    id: number;
-    type: string;
-    name: string;
-    lat: string;
-    long: string;
-}
-
-export interface LandPropertyTranslation {
-    id: number;
-    title: string;
-    subtitle: string;
+export interface LandAgent {
+  phone: string;
+  whatsapp: string;
 }
 
 export interface LandProperty {
-    id: number;
-    slug: string;
-    address: string;
-    whatsappNumber: string;
-    phoneNumber: string;
-    sq_ft: string;
-    price: string;
-    utility_count: number;
-    property_category: string;
-    property_state: string;
-    currency: string;
-    media: LandPropertyMedia;
-    areas: LandPropertyArea[];
-    translation: LandPropertyTranslation;
+  id: number;
+  slug: string;
+  segment: string;
+  price_from: number;
+  sq_ft_from: number;
+  property_type_list: string[]; 
+  address: string;
+  agent: LandAgent;
+  media: LandPropertyMedia;
 }
 
 export interface LandPropertiesResponse {
-    data: LandProperty[];
-    page: number;
-    per_page: number;
-    total: number;
+  data: LandProperty[];
+  page: number;
+  per_page: number;
+  total: number;
 }

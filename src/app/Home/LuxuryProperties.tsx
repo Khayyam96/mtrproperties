@@ -1,138 +1,167 @@
 "use client";
 
-import { FC, useState, useEffect } from "react";
-import { Row, Col, Typography, Button, Segmented, Spin } from "antd";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
+import { Row, Col, Typography, Button, Segmented, Spin, Empty } from "antd";
 import { AppstoreOutlined } from "@ant-design/icons";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Container } from "@/components/Lib/ProContainer/Container";
-import { LuxuryTabResponse } from "@/models/LuxuryTab.model";
+import type { LuxuryTabResponse } from "@/models/LuxuryTab.model";
+import type { LuxuryListResponse, LuxuryItem } from "@/models/LuxuryCard.mode";
 import { fetchAPI } from "@/utils";
+import "./index.scss";
 
 const { Title, Text } = Typography;
 
-type TProperty = {
-    id: number;
-    slug: string;
-    address: string;
-    price: string;
-    currency: string;
-    bedroom_count: number;
-    bathroom_count: number;
-    sq_ft: string;
-    media: {
-        id: number;
-        gallery: string[];
-    };
-    property_type: {
-        id: number;
-        name: string;
-    };
-    translation: {
-        id: number;
-        title: string;
-        subtitle: string;
-    };
-};
-
 type TProps = {
-    tab: LuxuryTabResponse;
+  tab: LuxuryTabResponse;
+  initial?: LuxuryListResponse;
+  title?: string;
+  subtitle?: string;
 };
 
-export const LuxuryProperties: FC<TProps> = ({ tab }) => {
-    const categories = tab.data.map(item => ({ id: item.id, name: item.name }));
-    const [selectedCategory, setSelectedCategory] = useState(categories[0] || { id: 0, name: "" });
-    const [properties, setProperties] = useState<TProperty[]>([]);
-    const [loading, setLoading] = useState(false);
+const IMAGE_BASE = "https://api.dubaiyachts.com/uploads/properties/";
 
-    const fetchProperties = async (property_type_id: number) => {
-        setLoading(true);
-        try {
-            const res = await fetchAPI<{ data: TProperty[] }>(`/client/latest-projects?property_type_id=${property_type_id}`);
-            setProperties(res.data);
-        } catch (error) {
-            console.error("Error fetching properties:", error);
-            setProperties([]);
-        } finally {
-            setLoading(false);
-        }
-    };
+const LuxuryProperties: FC<TProps> = ({ tab, initial, title, subtitle }) => {
+  const router = useRouter();
 
-    useEffect(() => {
-        if (selectedCategory.id) {
-            fetchProperties(selectedCategory.id);
-        }
-    }, [selectedCategory]);
+  const categories = useMemo(
+    () => (tab?.data ?? []).map((i) => ({ id: i.id, name: i.name })),
+    [tab]
+  );
 
-    console.log(properties, "propertiespropertiesproperties")
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number>(
+    categories[0]?.id ?? 0
+  );
+  const [properties, setProperties] = useState<LuxuryItem[]>(initial?.data ?? []);
+  const [loading, setLoading] = useState(false);
 
-    return (
-        <section className="luxury-properties">
-            <Container>
-                <div className="luxury-properties__header">
-                    <div>
-                        <Title level={2}>Luxury properties in Dubai</Title>
-                        <Text>
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        </Text>
+  // Ensure selected category is initialized when categories arrive/refresh
+  useEffect(() => {
+    if (!selectedCategoryId && categories.length) {
+      setSelectedCategoryId(categories[0].id);
+    }
+  }, [categories, selectedCategoryId]);
+
+  const fetchProperties = useCallback(async (property_type_id: number) => {
+    setLoading(true);
+    try {
+      const res = await fetchAPI<LuxuryListResponse>(
+        `/client/properties/luxury?property_type_id=${property_type_id}`
+      );
+      setProperties(res.data ?? []);
+    } catch (err) {
+      console.error("Error fetching luxury properties:", err);
+      setProperties([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!selectedCategoryId) return;
+
+    const firstId = categories[0]?.id ?? 0;
+    const hasInitialForThisType =
+      Boolean(initial?.data?.length) && selectedCategoryId === firstId;
+
+    // If we already have initial data for the first tab and properties are filled, skip fetch.
+    if (hasInitialForThisType && properties.length) return;
+
+    void fetchProperties(selectedCategoryId);
+  }, [
+    selectedCategoryId,
+    categories,
+    initial,
+    properties.length,
+    fetchProperties,
+  ]);
+
+  return (
+    <section className="luxury-properties">
+      <Container>
+        <div className="luxury-properties__header">
+          {title ? (
+            <Title level={2} className="luxury-properties__title">
+              {title}
+            </Title>
+          ) : null}
+
+          {subtitle ? (
+            <Text className="luxury-properties__subtitle">{subtitle}</Text>
+          ) : null}
+
+          <Segmented
+            size="large"
+            options={categories.map((c) => ({ label: c.name, value: c.id }))}
+            value={selectedCategoryId}
+            onChange={(val) => {
+              const id = typeof val === "string" ? Number(val) : (val as number);
+              setSelectedCategoryId(id);
+            }}
+            className="luxury-properties__segmented"
+          />
+        </div>
+
+        {loading ? (
+          <div className="luxury-properties__loading">
+            <Spin size="large" />
+          </div>
+        ) : properties.length === 0 ? (
+          <Empty description="No properties found" style={{ padding: 40 }} />
+        ) : (
+          <Row gutter={[24, 24]} justify="start">
+            {properties.map((p) => {
+              const coverFile = p.property?.media?.gallery?.[0];
+              const cover = coverFile ? `${IMAGE_BASE}${coverFile}` : "/luxury.png";
+
+              const title = p.property?.title ?? "Property Full Name";
+              const seg = (p.property?.segment ?? "LUXURY").toUpperCase();
+              const slug = p.property?.slug ?? "";
+
+              return (
+                <Col key={p.id} xs={24} sm={12} md={8} lg={6}>
+                  <Link
+                    href={`/properties/${encodeURIComponent(slug)}`}
+                    className="property-card"
+                  >
+                    <div className="property-card__media">
+                      <Image
+                        src={cover}
+                        alt={title}
+                        fill
+                        className="property-card__img"
+                        sizes="(max-width: 576px) 100vw, (max-width: 992px) 50vw, 25vw"
+                      />
+                      <div className="property-card__overlay">
+                        <div className="property-card__badge">{seg}</div>
+                        <h4 className="property-card__title">{title}</h4>
+                      </div>
                     </div>
-                    <Segmented
-                        options={categories.map((cat) => ({ label: cat.name, value: cat.id }))}
-                        value={selectedCategory.id}
-                        onChange={(val) => {
-                            const cat = categories.find(c => c.id === val);
-                            if (cat) setSelectedCategory(cat);
-                        }}
-                        className="luxury-properties__segmented"
-                    />
-                </div>
+                  </Link>
+                </Col>
+              );
+            })}
+          </Row>
+        )}
 
-                {loading ? (
-                    <div style={{ textAlign: "center", padding: 50 }}>
-                        <Spin size="large" />
-                    </div>
-                ) : (
-                    <Row gutter={[24, 24]} justify="center">
-                        {properties.map((property) => (
-                            <Col key={property.id} xs={24} sm={12} md={8} lg={6}>
-                                <div className="property-card">
-                                    <div className="property-card__image-wrapper">
-                                        <Image
-                                            src={
-                                                property.media.gallery[0]
-                                                    ? `https://api.dubaiyachts.com/uploads/properties/${property.media.gallery[0]}`
-                                                    : "/luxury.png"
-                                            }
-                                            alt={property.translation.title}
-                                            fill
-                                            className="property-card__image"
-                                        />
-
-                                        <div className="property-card__overlay">
-                                            <div className="types">
-                                                <div className="type">{property.property_type.name}</div>
-                                            </div>
-                                            <h4>{property.translation.title}</h4>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Col>
-                        ))}
-                    </Row>
-                )}
-
-                <div className="view-more-wrapper">
-                    <Button
-                        type="primary"
-                        size="large"
-                        icon={<AppstoreOutlined />}
-                        onClick={() => alert("Load more…")}
-                    >
-                        View More
-                    </Button>
-                </div>
-            </Container>
-        </section>
-    );
+        <div className="luxury-properties__cta">
+          <Button
+            type="primary"
+            size="large"
+            icon={<AppstoreOutlined />}
+            className="luxury-properties__btn"
+            onClick={() => {
+              router.push(`/properties/luxury?type=${selectedCategoryId}`);
+            }}
+          >
+            View More
+          </Button>
+        </div>
+      </Container>
+    </section>
+  );
 };
 
 export default LuxuryProperties;
