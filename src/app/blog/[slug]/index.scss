@@ -1,3 +1,50 @@
+/* ------- Blog Inner base (səndə varsa eyni qalsın) ------- */
+.blog-inner__section { margin: 24px 0; }
+.blog-inner__cover-img,
+.blog-inner__inline-image-img { width: 100%; border-radius: 12px; }
+
+/* ------- Key Take Aways styles ------- */
+.key-takeaways {
+  background: #eef5ff;            /* açıq mavi fon */
+  border-left: 4px solid #2b6ee6;  /* vurğu xətti */
+  border-radius: 10px;
+  padding: 16px 18px;
+}
+
+.key-takeaways__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.key-takeaways__icon { font-size: 18px; color: #2b6ee6; }
+
+.key-takeaways__title {
+  font-weight: 700;
+  font-size: 16px;
+  color: #0f2f6b;
+}
+
+.key-takeaways__list {
+  margin: 0;
+  padding-left: 20px; 
+  list-style: disc;
+}
+
+.key-takeaways__item {
+  color: #0f2f6b;
+  line-height: 1.6;
+  margin: 6px 0;
+}
+
+@media (max-width: 576px) {
+  .key-takeaways { padding: 14px; }
+}
+
+
+
+
 .blog-inner {
   background: #fff;
 

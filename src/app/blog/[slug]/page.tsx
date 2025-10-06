@@ -4,11 +4,15 @@ import { fetchAPI } from "@/utils";
 import BlogInnerAntd from "./BlogInnerAntd";
 import "./index.scss";
 import type { BlogInnerResponse } from "@/models/BlogInner.model";
+import type { LandProjectResponse } from "@/models/LatesProject.model";
+import type { FaqResponse } from "@/models/Faq.model";
+import { BlogsSection } from "../BlogsSection";
+import type { BlogListResponse } from "../page";
+import { SubscribeSection } from "@/components/Lib/Subscribe/SubscribeSection";
 
 export default async function BlogInnerPage({
   params,
 }: {
-  // In some Next versions the generated types make `params` a Promise
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
@@ -26,9 +30,21 @@ export default async function BlogInnerPage({
 
   if (!bloginner) return notFound();
 
+  const [latestProjects, faqData, bloglist] = await Promise.all([
+    fetchAPI<LandProjectResponse>("/client/properties/latest-project"),
+    fetchAPI<FaqResponse>("/client/faq"),
+    fetchAPI<BlogListResponse>("/client/blogs"),
+  ]);
+
   return (
     <div className="blog-inner-page">
-      <BlogInnerAntd data={bloginner} />
+      <BlogInnerAntd
+        data={bloginner}
+        latestProjects={latestProjects}
+        faqData={faqData}
+      />
+      <BlogsSection data={bloglist} />
+      <SubscribeSection />
     </div>
   );
 }

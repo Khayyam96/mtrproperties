@@ -1,0 +1,542 @@
+
+.wraphero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+
+  .bgWrap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .bg {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .content {
+    position: relative;
+    z-index: 2;
+    height: 100%;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    padding: 0 16px;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .title {
+    color: #fff !important;
+    margin: 0 0 6px;
+    font-weight: 800 !important;
+  }
+
+  .subtitle {
+    color: #e8e8ee;
+    margin: 0 auto;
+    max-width: 900px;
+    line-height: 1.5;
+    font-size: 14px;
+  }
+
+  @media (min-width: 768px) {
+    .subtitle { font-size: 15px; }
+  }
+}
+
+.wrapspecial {
+  background: #fff;
+  padding: 56px 0;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .h1 {
+    margin: 0 0 8px;
+    font-weight: 800 !important;
+  }
+
+  .sub {
+    max-width: 920px;
+    margin: 0 auto;
+    color: #5d5d6b;
+  }
+
+  /* Table */
+  .table .ant-table {
+    border-radius: 8px;
+  }
+
+  .th {
+    font-weight: 700;
+  }
+
+  /* Side card */
+  .sideCard {
+    border-radius: 10px;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.08);
+  }
+
+  .sideCard .ant-card-body {
+    padding: 16px 18px 20px;
+  }
+
+  .sideHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+  }
+
+  .sideTitle {
+    margin: 0;
+    font-weight: 800 !important;
+  }
+
+  .sideBody {
+    margin: 0;
+    color: #2e2f36;
+  }
+
+  /* CTA button */
+  .btnLink { display: inline-block; }
+
+  .ctaBtn {
+    border: none;
+    background: #6b2ae6;
+    box-shadow: 0 10px 24px rgba(107, 42, 230, 0.25);
+
+    &:hover,
+    &:focus {
+      background: #5c20d3 !important;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 575.98px) {
+    .sideHead {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+}
+
+.wrapresidents {
+  background: #f6f7fb;
+  padding: 48px 0 40px;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .h1 {
+    margin: 0 0 8px;
+    font-weight: 800 !important;
+  }
+
+  .sub {
+    max-width: 980px;
+    margin: 0 auto 8px;
+    color: #5d5d6b;
+  }
+
+  .block { margin-top: 18px; }
+
+  .leftTitle {
+    margin: 0 0 6px;
+    font-weight: 800 !important;
+  }
+
+  .leftDesc {
+    margin: 0;
+    color: #2f2f36;
+  }
+
+  .infoCard {
+    border-radius: 12px !important;
+    border: 2px solid #d7c6ff !important;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.06);
+
+    .ant-card-body {
+      padding: 16px 18px 18px;
+    }
+  }
+
+  .cardHeading {
+    display: inline-block;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .list {
+    margin: 0;
+    padding-left: 18px;
+    color: #2d2e36;
+
+    li + li { margin-top: 4px; }
+  }
+
+  .note {
+    margin: 16px 0 0;
+    text-align: left;
+    color: #5d5d6b;
+  }
+
+  @media (max-width: 575.98px) {
+    .note { text-align: left; }
+  }
+}
+
+.wrapsalary {
+  background: #f6f7fb;
+  padding: 16px 0 32px;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .panel {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    padding: 16px;
+  }
+
+  .imageCard {
+    position: relative;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #e9e9ee;
+  }
+
+  .image {
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .content { padding: 8px 6px 6px 6px; }
+
+  .title {
+    margin: 0 0 6px;
+    font-weight: 800 !important;
+  }
+
+  .desc { margin: 0 0 8px; color: #2e2f36; }
+
+  .list {
+    margin: 0 0 12px;
+    padding-left: 18px;
+    color: #2e2f36;
+
+    li + li { margin-top: 4px; }
+  }
+
+  .btnLink { display: inline-block; }
+
+  .btn {
+    border: none;
+    background: #6b2ae6;
+    box-shadow: 0 10px 22px rgba(107, 42, 230, 0.25);
+
+    &:hover,
+    &:focus {
+      background: #5c20d3 !important;
+    }
+  }
+
+  @media (max-width: 575.98px) {
+    .panel { padding: 12px; }
+    .content { padding-top: 12px; }
+  }
+}
+
+.wrapoffers {
+  background: #ffffff;
+  padding: 48px 0 40px;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 16px;
+  }
+
+  .h1 {
+    margin: 0 0 8px;
+    font-weight: 800 !important;
+  }
+
+  .sub {
+    max-width: 920px;
+    margin: 0 auto;
+    color: #5d5d6b;
+  }
+
+  .table .ant-table { border-radius: 8px; }
+  .th { font-weight: 700; }
+
+  .footnote {
+    margin: 10px auto 0;
+    max-width: 980px;
+    text-align: center;
+    color: #7a7a86;
+    font-size: 12px;
+  }
+}
+
+.wrapcarousel {
+  background: #f6f7fb;
+  padding: 28px 0 36px;
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 14px;
+  }
+
+  .h2 {
+    margin: 0 0 6px;
+    font-weight: 800 !important;
+  }
+
+  .sub {
+    max-width: 980px;
+    margin: 0 auto;
+    color: #5d5d6b;
+  }
+
+  .sliderWrap .slick-list { margin: 0 -12px; }
+  .slide { padding: 0 12px; }
+
+  .logoCard {
+    position: relative;
+    height: 120px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .logoImg {
+    object-fit: contain;
+    object-position: center;
+    padding: 12px;
+  }
+
+  .nav {
+    margin-top: 16px;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+  }
+
+  .navBtn {
+    border: none;
+    background: #6b2ae6;
+    color: #fff;
+    box-shadow: 0 10px 22px rgba(107, 42, 230, 0.25);
+
+    &:hover,
+    &:focus {
+      background: #5c20d3 !important;
+      color: #fff !important;
+    }
+  }
+}
+
+.calculatorinner-page{
+  .mortgage-calculator{
+    .all-content{
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      position: relative;
+      top:-70px;
+      z-index: 999;
+    }
+    .mc-title{
+      display: none;
+    }
+    .mc-desc{
+      display: none;
+    }
+  }
+}
+
+
+
+
+.wrapdocuments {
+  position: relative;
+  padding: 64px 0 56px;
+
+  .container {
+    width: 100%;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 28px;
+
+    .h1 {
+      margin: 0 0 8px;
+      font-weight: 800;
+      font-size: 32px;
+      line-height: 1.2;
+      color: #111827; 
+    }
+
+    .sub {
+      margin: 0;
+      color: #6b7280;
+      font-size: 16px;
+    }
+  }
+
+  .card {
+    border-radius: 14px;
+    box-shadow: 0 8px 28px rgba(16, 24, 40, 0.08);
+    background: #ffffff;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 32px rgba(16, 24, 40, 0.12);
+    }
+
+    .ant-card-body {
+      padding: 22px 20px;
+    }
+
+    .cardInner {
+      display: grid;
+      grid-template-columns: 64px 1fr;
+      column-gap: 16px;
+      align-items: start;
+    }
+
+    .iconWrap {
+      width: 64px;
+      height: 64px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(126, 34, 206, 0.08); 
+      border: 1px solid rgba(126, 34, 206, 0.18);
+    }
+
+    .icon {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+    }
+
+    .meta {
+      .cardTitle {
+        margin: 0 0 6px;
+        font-weight: 700;
+        color: #1f2937; 
+      }
+      .cardText {
+        margin: 0;
+        color: #6b7280; 
+        font-size: 14px;
+        line-height: 1.6;
+      }
+    }
+  }
+
+  .cta {
+    text-align: center;
+    margin-top: 36px;
+
+    .ctaText {
+      margin-bottom: 14px;
+      color: #111827;
+      font-size: 18px;
+    }
+
+    .ctaBtn {
+      height: 44px;
+      padding: 0 22px;
+      border-radius: 10px;
+      font-weight: 600;
+      background: #7e22ce;
+      border-color: #7e22ce;
+
+      &:hover,
+      &:focus {
+        background: #6b1eb3;
+        border-color: #6b1eb3;
+      }
+    }
+  }
+
+  @media (max-width: 991px) {
+    padding: 56px 0 48px;
+
+    .header .h1 {
+      font-size: 28px;
+    }
+  }
+
+  @media (max-width: 575px) {
+    .header .h1 {
+      font-size: 24px;
+    }
+    .card .ant-card-body {
+      padding: 18px;
+    }
+    .cta .ctaText {
+      font-size: 16px;
+    }
+  }
+}
+
+.wrapdocuments .ant-typography {
+  margin-bottom: 0;
+}
