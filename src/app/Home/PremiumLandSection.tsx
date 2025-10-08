@@ -1,8 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { Row, Col, Button } from "antd";
-import { AppstoreOutlined } from "@ant-design/icons";
+import { Row, Col } from "antd";
 import { LandPropertiesResponse } from "@/models/LandProperties.model";
 import { LandPropertyCard } from "@/components/Lib/LandPropertyCard/LandPropertyCard";
 
@@ -28,11 +27,11 @@ export const PremiumLandSection: FC<TProps> = ({ data , title, subtitle}) => {
         </Row>
       </div>
 
-      <div className="view-more-wrapper">
+      {/* <div className="view-more-wrapper">
         <Button type="primary" size="large" icon={<AppstoreOutlined />}>
           View More
         </Button>
-      </div>
+      </div> */}
     </div>
   );
 };

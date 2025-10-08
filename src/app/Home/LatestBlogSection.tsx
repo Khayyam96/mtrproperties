@@ -7,6 +7,8 @@ import Link from "next/link";
 import Slider, { Settings } from "react-slick";
 import type SliderType from "react-slick";
 import { Container } from "@/components/Lib/ProContainer/Container";
+import arrowRight from '../../../public/arrow-right-purple.svg'
+import arrowLeft from '../../../public/arrow-left-purple.svg'
 import { RightOutlined } from "@ant-design/icons";
 import "./index.scss";
 import {
@@ -104,7 +106,7 @@ export const LatestBlogSection: FC<TProps> = ({ data }) => {
           <div className="left">
             <Title level={3}>Latest Blog</Title>
             <Link className="see-all" href="/blog">
-              See all <RightOutlined />
+              See all <Image width={20} height={20} src={arrowRight} alt="arrow"/>
             </Link>
           </div>
 
@@ -115,7 +117,7 @@ export const LatestBlogSection: FC<TProps> = ({ data }) => {
               aria-label="Previous"
               onClick={() => sliderRef.current?.slickPrev()}
             >
-              <Image src="/previcon.png" alt="Previous" width={18} height={18} />
+              <Image src={arrowLeft} alt="Previous" width={30} height={30} />
             </button>
 
             <button
@@ -124,7 +126,7 @@ export const LatestBlogSection: FC<TProps> = ({ data }) => {
               aria-label="Next"
               onClick={() => sliderRef.current?.slickNext()}
             >
-              <Image src="/nexticon.png" alt="Next" width={18} height={18} />
+              <Image src={arrowRight} alt="Next" width={30} height={30} />
             </button>
           </div>
         </div>

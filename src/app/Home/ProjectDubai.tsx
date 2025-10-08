@@ -5,11 +5,12 @@ import React, { FC, useMemo, useRef } from "react";
 import { Typography, Button } from "antd";
 import Slider, { Settings } from "react-slick";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
-import { AppstoreOutlined } from "@ant-design/icons";
+// import { useRouter } from "next/navigation";
+// import { AppstoreOutlined } from "@ant-design/icons";
 import { Container } from "@/components/Lib/ProContainer/Container";
 import { ProjectCard } from "@/components/Lib/ProOffCard/ProjectCard";
 import "./index.scss";
+
 
 // Slick CSS-lər
 import "slick-carousel/slick/slick.css";
@@ -68,7 +69,7 @@ type CardItem = {
 
 const ProjectDubai: FC<TProps> = ({ data, title, subtitle }) => {
   const sliderRef = useRef<Slider | null>(null);
-  const router = useRouter();
+  // const router = useRouter();
 
   const items = useMemo<CardItem[]>(() => {
     return (data ?? []).map((p) => {
@@ -100,8 +101,17 @@ const ProjectDubai: FC<TProps> = ({ data, title, subtitle }) => {
     slidesToScroll: 1,
     arrows: false,
     responsive: [
-      { breakpoint: 992, settings: { slidesToShow: 2 } },
-      { breakpoint: 576, settings: { slidesToShow: 1 } },
+      { breakpoint: 992,
+        settings:
+          { 
+        slidesToShow: 2.2, 
+        slidesToScroll: 1,
+        centerMode: false
+      } },
+      { breakpoint: 576, settings: {  
+        slidesToShow: 1.15, 
+        slidesToScroll: 1,
+        centerMode: false} },
     ],
   };
 
@@ -117,7 +127,7 @@ const ProjectDubai: FC<TProps> = ({ data, title, subtitle }) => {
           <Button
             className="slider-arrow left-btn"
             shape="circle"
-            icon={<Image src="/previcon.png" alt="prev" width={16} height={16} />}
+            icon={<Image src="/previcon.png" alt="prev" width={30} height={30} />}
             onClick={() => sliderRef.current?.slickPrev()}
           />
 
@@ -130,12 +140,12 @@ const ProjectDubai: FC<TProps> = ({ data, title, subtitle }) => {
           <Button
             className="slider-arrow right-btn"
             shape="circle"
-            icon={<Image src="/nexticon.png" alt="next" width={16} height={16} />}
+            icon={<Image src="/nexticon.png" alt="next" width={30} height={30} />}
             onClick={() => sliderRef.current?.slickNext()}
           />
         </div>
 
-        <div className="view-more-wrapper text-center" style={{ marginTop: 30 }}>
+        {/* <div className="view-more-wrapper text-center" style={{ marginTop: 30 }}>
           <Button
             type="primary"
             icon={<AppstoreOutlined />}
@@ -144,7 +154,7 @@ const ProjectDubai: FC<TProps> = ({ data, title, subtitle }) => {
           >
             View More
           </Button>
-        </div>
+        </div> */}
       </Container>
     </section>
   );

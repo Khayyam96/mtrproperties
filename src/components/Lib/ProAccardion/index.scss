@@ -1,22 +1,29 @@
 .faq-accordion {
   background: none !important;
   border: none !important;
-
+  .ant-collapse-arrow{
+    transform: rotate(90deg);
+  }
+  .ant-collapse-item-active .ant-collapse-arrow {
+    transform: rotate(180deg);
+  }
+  .ant-collapse-item-active .ant-collapse-arrow svg {
+    color: white !important;
+    fill: white !important;
+  }
   .ant-collapse-item {
+    border-radius: 5px !important;
     background: #faf8ff !important;
-    border-radius: 10px !important;
     margin-bottom: 18px !important;
     border: none !important;
     box-shadow: 0 2px 8px #a489d729;
 
     &.ant-collapse-item-active {
-      background: #623393 !important;
-      color:#fff;
-
       .ant-collapse-header {
         padding: 15px;
         font-size: 20px !important;
         line-height: 26px !important;
+        border-radius: 5px !important;
         font-weight: 500 !important;
         color: #fff !important;
         background: #623393 !important;

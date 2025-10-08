@@ -31,7 +31,7 @@ export const MostPopularPlacesSection: FC<TProps> = ({ data, title, subtitle }) 
 
         <Row gutter={[20, 20]} justify="center" align="stretch">
           {data.data.map((item) => (
-            <Col key={item.id} xs={24} sm={12} md={12} lg={8} xl={8} style={{ display: "flex" }} >
+            <Col key={item.id} xs={12} sm={12} md={12} lg={8} xl={8} style={{ display: "flex" }} >
               <PlaceCard {...item} />
             </Col>
           ))}

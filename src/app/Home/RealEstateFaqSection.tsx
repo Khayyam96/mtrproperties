@@ -13,7 +13,6 @@ type TPropsFaq = {
 };
 
 const RealEstateFaqSection: FC<TPropsFaq> = ({ data }) => {
-  console.log(data, "FAQ DATA");
 
   const items = useMemo(
     () =>
@@ -32,7 +31,7 @@ const RealEstateFaqSection: FC<TPropsFaq> = ({ data }) => {
 
   return (
     <section className="realestate-faq-section">
-      <Container>
+      <Container className="no-padding" >
         <div className="faq-wrapper">
           <Title level={4} className="faq-title">
             Frequently Asked Questions

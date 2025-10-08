@@ -1,6 +1,6 @@
 "use client";
 
-import { Row, Col, Typography, Space } from "antd";
+import { Row, Col, Typography, Space, Collapse, Grid } from "antd";
 import {
   FacebookFilled,
   InstagramOutlined,
@@ -13,43 +13,79 @@ import Image from "next/image";
 import "./index.scss";
 import Link from "next/link";
 import { Container } from "@/components/Lib/ProContainer/Container";
+const { useBreakpoint } = Grid;
+const { Panel } = Collapse;
 
 const { Title, Text } = Typography;
 
 export const MainFooter = () => {
+  const screens = useBreakpoint();
+  const footerSections = [
+    {
+      key: "explore",
+      title: "Explore Properties",
+      items: ["Buy", "Rent", "Off Plan", "Developers", "Areas", "Communities"],
+    },
+    {
+      key: "services",
+      title: "Our Services",
+      items: ["Sell", "Holiday Homes", "Property Management", "Mortgage Services"],
+    },
+    {
+      key: "guides",
+      title: "Guides",
+      items: ["For Buyer", "For Investors", "For Landlord", "For Seller", "For Tenant"],
+    },
+    {
+      key: "company",
+      title: "Company",
+      items: [
+        <Link href="/about" key="about">About Us</Link>,
+        <Link href="/contact" key="contact">Contact Us</Link>,
+        "Blogs/News",
+      ],
+    },
+  ];
   return (
     <div className="main-footer">
       <Container>
         <Row gutter={[32, 32]} className="footer-top">
           <Col xs={24} md={9}>
-            <Image
-              src="/whitelogo.png"
-              alt="MTR Logo"
-              className="footer-logo"
-              width={160}
-              height={48}
-              priority
-            />
-            <div className="footer-address">
-              <Title level={5}>Address</Title>
-              <Text>Fifty One Tower - 1404 office - Business Bay - Dubai</Text>
+            <div className="footer-logo-box">
+
+              <Image
+                src="/whitelogo.png"
+                alt="MTR Logo"
+                className="footer-logo"
+                width={160}
+                height={48}
+                priority
+              />
             </div>
 
-            <div className="footer-contact">
-              <Title level={5}>Contact Us</Title>
-              <div className="contact-item-all">
-                <div className="contact-item">
-                <PhoneOutlined />
-                <Text>04 331 7007</Text>
+            <div className="footer-content">
+
+              <div className="footer-address">
+                <Title level={5}>Address</Title>
+                <Text>Fifty One Tower - 1404 office - Business Bay - Dubai</Text>
               </div>
-              <div className="contact-item">
-                <MailOutlined />
-                <Text>contact@mtr.ae</Text>
-              </div>
-              <div className="contact-item">
-                <WhatsAppOutlined />
-                <Text>+971 56 933 2607</Text>
-              </div>
+
+              <div className="footer-contact">
+                <Title level={5}>Contact Us</Title>
+                <div className="contact-item-all">
+                  <div className="contact-item">
+                    <PhoneOutlined />
+                    <Text>04 331 7007</Text>
+                  </div>
+                  <div className="contact-item">
+                    <MailOutlined />
+                    <Text>contact@mtr.ae</Text>
+                  </div>
+                  <div className="contact-item">
+                    <WhatsAppOutlined />
+                    <Text>+971 56 933 2607</Text>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -63,51 +99,45 @@ export const MainFooter = () => {
             </div>
           </Col>
 
-          <Col xs={12} md={3}>
-            <Title level={5}>Explore Properties</Title>
-            <ul>
-              <li>Buy</li>
-              <li>Rent</li>
-              <li>Off Plan</li>
-              <li>Developers</li>
-              <li>Areas</li>
-              <li>Communities</li>
-            </ul>
-          </Col>
 
-          <Col xs={12} md={3}>
-            <Title level={5}>Our Services</Title>
-            <ul>
-              <li>Sell</li>
-              <li>Holiday Homes</li>
-              <li>Property Management</li>
-              <li>Mortgage Services</li>
-            </ul>
-          </Col>
+          {screens.xs ? (
+            <Col xs={24}>
+              <Collapse
+                accordion
+                ghost
+                expandIconPosition="end"
+                className="footer-collapse"
+              >
+                {footerSections.map((section) => (
+                  <Panel
+                    header={<strong>{section.title}</strong>}
+                    key={section.key}
+                    className="footer-panel"
+                  >
+                    <ul>
+                      {section.items.map((item, idx) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                    </ul>
+                  </Panel>
+                ))}
+              </Collapse>
+            </Col>
+          ) : (
+            <>
+              {footerSections.map((section) => (
+                <Col xs={12} md={3} key={section.key}>
+                  <Title level={5}>{section.title}</Title>
+                  <ul>
+                    {section.items.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
+                  </ul>
+                </Col>
+              ))}
+            </>
+          )}
 
-          <Col xs={12} md={4}>
-            <Title level={5}>Guides</Title>
-            <ul>
-              <li>For Buyer</li>
-              <li>For Investors</li>
-              <li>For Landlord</li>
-              <li>For Seller</li>
-              <li>For Tenant</li>
-            </ul>
-          </Col>
-
-          <Col xs={12} md={4}>
-            <Title level={5}>Company</Title>
-            <ul>
-              <li>
-                <Link href="/about">About Us</Link>
-              </li>
-              <li>
-                <Link href="/contact">Contact Us</Link>
-              </li>
-              <li>Blogs/News</li>
-            </ul>
-          </Col>
         </Row>
 
         <Row justify="space-between" className="footer-bottom">
@@ -115,7 +145,9 @@ export const MainFooter = () => {
             <Text>© 2022 Copyright by MTR Properties</Text>
           </Col>
           <Col>
-            <Text className="footer-links">Privacy Policies</Text>
+            <Link href="/privacy" className="footer-links">
+              Privacy Policies
+            </Link>
             <span className="divider">|</span>
             <Text className="footer-links">Terms & Conditions</Text>
             <span className="divider">|</span>

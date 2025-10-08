@@ -1,10 +1,16 @@
 "use client";
 
 import { FC, KeyboardEvent, useMemo, useState, useEffect, useCallback } from "react";
-import { EnvironmentOutlined } from "@ant-design/icons";
 import Image from "next/image";
 import Link from "next/link";
+
+
+// Image
+import locationIcon from "../../../../public/location-marker.png";
+
 import "./index.scss";
+
+
 
 export type ProjectCardProps = {
   slug: string;
@@ -135,7 +141,7 @@ export const ProjectCard: FC<ProjectCardProps> = ({
 
             {location && (
               <div className="location" title={location}>
-                <EnvironmentOutlined /> {location}
+                <Image src={locationIcon} alt="next" width={20} height={20} /> <span>{location}</span> 
               </div>
             )}
 
@@ -147,10 +153,10 @@ export const ProjectCard: FC<ProjectCardProps> = ({
               <Image
                 src={developerLogo}
                 alt={`${name} developer logo`}
-                width={50}
-                height={50}
+                width={70}
+                height={70}
                 className="dev-logo"
-                style={{ objectFit: "contain" }}
+                style={{ objectFit: "cover" }}
               />
             </div>
           )}

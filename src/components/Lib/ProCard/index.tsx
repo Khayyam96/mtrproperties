@@ -5,8 +5,6 @@ import Image, { type StaticImageData } from "next/image";
 import { Typography, Tag } from "antd";
 import {
   EnvironmentOutlined,
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
   PhoneOutlined,
   WhatsAppOutlined,
 } from "@ant-design/icons";
@@ -16,6 +14,7 @@ import { useRouter } from "next/navigation";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import nophoto from "../../../../public/nophoto.svg";
+import arrow from "../../../../public/arrow-left.svg";
 import "./index.scss";
 import { LandProjectItem } from "@/models/LatesProject.model";
 
@@ -184,11 +183,11 @@ export const ProCard: React.FC<LandProjectItem> = (props) => {
 
             {hasMultiple && (
               <>
-                <button className="carousel-btn left" onClick={goPrev} aria-label="Previous">
-                  <ArrowLeftOutlined />
+                <button className="carousel-btn left top" onClick={goPrev} aria-label="Previous">
+                  <Image src={arrow} alt="Left arrow" width={20} height={20} />
                 </button>
-                <button className="carousel-btn right" onClick={goNext} aria-label="Next">
-                  <ArrowRightOutlined />
+                <button className="carousel-btn right top" onClick={goNext} aria-label="Next">
+                  <Image src={arrow} alt="Left arrow" width={20} height={20} />
                 </button>
               </>
             )}

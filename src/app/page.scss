@@ -168,7 +168,7 @@
 
       h4 {
         margin-bottom: 24px;
-        font-size: 32px;
+        font-size: 24px;
         font-weight: 400;
         line-height: 32px;
         margin-bottom: 20px;
@@ -342,13 +342,14 @@
     .card-text {
       font-size: 16px;
       margin-bottom: 40px;
-      line-height: 24px;
+      line-height: 22px;
       color: #000000;
       font-weight: 600;
     }
 
     .about-btn {
-      background-color: #5e2ced;
+      background-color: #7E22CE;
+      color: white;
       border: none;
       height: 40px;
       display: flex;
@@ -367,6 +368,96 @@
   padding-top: 30px;
   padding-bottom: 30px;
   background-color: #fff;
+
+
+  .trends-accordion {
+    border: none !important;
+    background: transparent !important;
+
+    .ant-collapse-item {
+      background: #fff;
+      border-radius: 12px !important;
+      margin-bottom: 12px;
+      border: none !important;
+      box-shadow:  0 10px 20px #0000000d;
+      overflow: hidden;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .ant-collapse-header {
+      padding: 18px 20px !important;
+      font-size: 20px !important;
+      font-weight: 600 !important;
+      background: #fff !important;
+      color: #1a1a1a !important;
+
+      .ant-collapse-arrow {
+        font-size: 14px;
+        color: #666;
+        transform: rotate(90deg); 
+        transition: transform 0.3s ease, color 0.3s ease;
+      }
+    }
+
+    .ant-collapse-content {
+      background: #fff;
+      border-top: 1px solid #f0f0f0;
+    }
+
+    .ant-collapse-content-box {
+      padding: 16px 20px;
+    }
+
+    
+    .ant-collapse-item-active {
+      .ant-collapse-header {
+        background: #f8f9fa !important;
+
+        .ant-collapse-arrow {
+          transform: rotate(180deg); 
+        }
+      }
+    }
+
+    .list-items {
+      display: flex;
+      flex-direction: column;
+
+      .list-item {
+        padding: 10px 0;
+        color: #666;
+        border-bottom: 1px solid #f0f0f0;
+        font-size: 14px;
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+    }
+
+    .view-more {
+      margin-top: 12px;
+      text-align: center;
+
+      a {
+        color: #1890ff;
+        font-weight: 500;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: #40a9ff;
+        }
+      }
+    }
+  }
+
 
   h3 {
     text-align: center !important;
@@ -469,7 +560,7 @@
 
 
 .get-discount-section {
-  margin: 0 20px;
+  margin: 20px;
   ;
   background: linear-gradient(90deg, #330F4F 0%, #4D1878 50%, #581C87 100%);
   border-radius: 12px;
@@ -489,17 +580,17 @@
     line-height: 20px !important;
     color: #FAF5FF !important;
     font-weight: 600 !important;
+    
   }
 
 
   .button-group {
-    margin-top: 20px;
     display: flex;
     justify-content: flex-end;
 
     @media(max-width:767px) {
       flex-direction: column;
-
+       margin-top: 20px;
       .ant-space-item {
         width: 100%;
       }
@@ -516,6 +607,10 @@
       height: 55px;
       border-radius: 6px;
       transition: all 0.3s ease;
+      span{
+        font-size: 20px !important;
+        font-weight: 800 !important;
+      }
 
       &:hover {
         background: #fff;
@@ -538,12 +633,16 @@
       align-items: center;
       border: none;
       color: #fff;
-      font-weight: 600;
+      font-weight: 800;
       height: 55px;
       font-size: 20px;
       line-height: 26px;
       border-radius: 6px;
       transition: all 0.3s ease;
+      span{
+        font-size: 20px !important;
+        font-weight: 800 !important;
+      }
 
       .anticon-whats-app {
         svg {
@@ -596,6 +695,7 @@
   .trending-projects-row {
     margin-left: 0 !important;
     margin-right: 0 !important;
+    
 
     .ant-col {
       padding-left: 0 !important;
@@ -637,15 +737,17 @@
       .badge {
         position: absolute;
         top: 50px;
-        left: 30%;
+        left: 50%;
         background: #EE4545;
+        transform: translateX(-50%); 
         color: #FAF5FF;
         font-size: 16px;
         font-weight: 600;
         border-radius: 5px;
         padding: 5px 10px;
-        line-height: 24px;
+        line-height: 22px;
         z-index: 2;
+        
       }
 
       .project-info {
@@ -654,8 +756,6 @@
         bottom: 0;
         z-index: 2;
         width: 100%;
-        min-width: 270px;
-        max-width: 90%;
         padding-bottom: 50px;
         background: none;
 
@@ -664,9 +764,10 @@
         align-items: center;
 
         .price {
-          font-size: 22px;
+          font-size: 32px;
           color: #fff;
           font-weight: 600;
+          line-height: 40px;
           margin-bottom: 12px;
         }
 
@@ -745,6 +846,7 @@
 
 .premium-land-section {
   background: #F9F9F9;
+  padding-top: 20px;
   padding-bottom: 40px;
 
   @media(max-width:767px) {
@@ -797,6 +899,9 @@
 .commission-section {
   background: #fafbfc;
   padding: 50px 0;
+  @media (max-width: 767px) {
+    padding: 20px 0;
+  }
 
   .commission-title {
     text-align: center;
@@ -888,6 +993,9 @@
     color: #FAFAFA;
     box-shadow: none;
     transition: background 0.2s;
+    @media (max-width: 767px) {
+      width: 100%;
+    }
 
     &:hover {
       background: #5f1aa2 !important;
@@ -1114,6 +1222,7 @@
   /* ---- Slider container tweaks ---- */
   .reviews-slider {
     .slick-list { 
+      padding: 10px 0;
       margin: 0 -10px; 
     }
     .slick-slide { 
@@ -1139,8 +1248,6 @@
 
     @media (max-width: 767px) {
       margin: 0;
-      box-shadow: none;
-      border: 1px solid #c5c4c629;
     }
 
     &:hover {
@@ -1207,6 +1314,10 @@
 .realestate-faq-section {
   padding: 50px 0;
   background-color: #fff;
+
+  .ant-collapse-item{
+    border-radius: 5px !important;
+  }
   @media(max-width:767px){
       padding: 25px;
     }

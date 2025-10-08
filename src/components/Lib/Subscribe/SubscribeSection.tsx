@@ -98,8 +98,8 @@ export const SubscribeSection = () => {
             </Form.Item>
           </Col>
 
-          <Col xs={24} md={3}>
-            <Form.Item label=" " colon={false}>
+          <Col xs={24} md={4}>
+            <Form.Item colon={false}>
               <Button
                 type="primary"
                 htmlType="submit"

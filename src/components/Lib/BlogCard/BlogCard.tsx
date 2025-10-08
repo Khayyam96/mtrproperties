@@ -33,6 +33,9 @@ export default function BlogCard({ item }: Props) {
   return (
     <Card
       className={styles.card}
+       style={{ 
+        borderRadius: '6px',
+      }}
       bodyStyle={{ padding: 15 }}
       hoverable
       cover={
@@ -54,12 +57,32 @@ export default function BlogCard({ item }: Props) {
       </div>
 
       <Link href={item.href || `/blog/${item.slug}`} className={styles.titleLink}>
-        <h4 className={styles.title}>{item.title}</h4>
+        <h4   style={{
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            maxWidth: "200px",
+          }} className={styles.title}>{item.title}</h4>
       </Link>
 
-      <Paragraph className={styles.excerpt} ellipsis={{ rows: 2 }}>
+{item.excerpt && <Paragraph  
+      style={{
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            maxWidth: "250px",
+            minHeight: "44px", 
+            fontSize: "16px",
+            fontWeight: 400,
+            lineHeight: "0px",
+            color: "black",
+            paddingTop: "10px",
+            marginBottom: "0px",
+          }}
+           className={styles.excerpt} ellipsis={{ rows: 2 }}>
         {item.excerpt}
-      </Paragraph>
+      </Paragraph>}
+      
 
       <Link href={`/blog/${item.slug}`} className={styles.readMore}>
         Read more

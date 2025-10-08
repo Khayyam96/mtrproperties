@@ -13,27 +13,43 @@ import {
   Image as AntImage,
   Collapse,
   Anchor,
-  Affix,
   Card,
   Avatar,
+  List,
 } from "antd";
-import { CaretDownOutlined, UserOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import {  UserOutlined, CheckCircleOutlined } from "@ant-design/icons";
 import type { AnchorLinkItemProps } from "antd/es/anchor/Anchor";
 import type { BlogInnerResponse } from "@/models/BlogInner.model";
 import { withBase } from "@/models/BlogInner.model";
 
-// ✅ Import et — Latest Projects üçün
 import ProductSection from "@/app/Home/ProductList";
 import type { LandProjectResponse } from "@/models/LatesProject.model";
 import { FaqResponse } from "@/models/Faq.model";
 import RealEstateFaqSection from "@/app/Home/RealEstateFaqSection";
+import "./index.scss"
+
+const ICONS = {
+  arrowRight: "/arrowRightIcon.svg",
+  arrowLeft: "/arrowLeftIcon.svg",
+  calendar: "/calendarIcon.svg",
+  time: "/timeIcon.svg",
+  arrowBottom: "/arrow-bottom.svg",
+} as const;
 
 const { Title, Text, Paragraph } = Typography;
+
+type RecentBlogItem = {
+  title: string;
+  slug: string;
+  excerpt?: string;
+};
 
 type Props = {
   data: BlogInnerResponse;
   latestProjects?: LandProjectResponse;
-  faqData?: FaqResponse
+  faqData?: FaqResponse;
+  /** Recent blogs for the sidebar (shown under Table Of Contents) */
+  recentBlogs?: RecentBlogItem[];
 };
 
 function fmtDate(iso: string) {
@@ -76,7 +92,7 @@ const KeyTakeaways: React.FC<{ items: string[] }> = ({ items }) => {
   );
 };
 
-export default function BlogInnerAntd({ data, latestProjects, faqData }: Props) {
+export default function BlogInnerAntd({ data, latestProjects, faqData, recentBlogs }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const { translation, category, created_at } = data;
 
@@ -114,18 +130,18 @@ export default function BlogInnerAntd({ data, latestProjects, faqData }: Props) 
     );
   }, [translation]);
 
-  const handleNativeShare = async () => {
-    try {
-      if (navigator.share) await navigator.share({ url: shareUrl, title: translation?.title });
-      else await navigator.clipboard.writeText(shareUrl);
-    } catch { }
-  };
+  // const handleNativeShare = async () => {
+  //   try {
+  //     if (navigator.share) await navigator.share({ url: shareUrl, title: translation?.title });
+  //     else await navigator.clipboard.writeText(shareUrl);
+  //   } catch {}
+  // };
 
   const handleInstagramShare = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
       window.open("https://www.instagram.com/", "_blank", "noopener,noreferrer");
-    } catch { }
+    } catch {}
   };
 
   return (
@@ -133,18 +149,36 @@ export default function BlogInnerAntd({ data, latestProjects, faqData }: Props) 
       <div className="blog-inner__container">
         <div className="blog-inner__back">
           <Link href="/blog">
-            <Text type="secondary">← Back to Blog</Text>
+            <Text type="secondary">
+              <Image src={ICONS.arrowLeft} alt="Back" width={14} height={14} />
+              {" "}Back to Blog
+            </Text>
           </Link>
+          <div className="break-bread">
+            <Text type="secondary">|</Text>
+            <Text type="secondary">
+              Blog {" "}
+              <Image src={ICONS.arrowRight} alt="/" width={14} height={14} />
+            </Text>
+            <Text type="secondary">{translation?.title}</Text>
+          </div>
         </div>
 
-        <Row gutter={[24, 24]} align="top">
+        <Row gutter={[24, 24]} align="top" style={{ marginTop: 20 }}>
+          {/* LEFT */}
           <Col xs={24} lg={16}>
             <Space direction="vertical" size={8} className="blog-inner__left-stack">
               <Space size={8} align="center" wrap className="blog-inner__meta">
-                {category?.name && <Tag color="purple">{category.name}</Tag>}
-                <Text type="secondary">{fmtDate(created_at)}</Text>
+                {category?.name && <Tag color="#FDFAFF">{category.name}</Tag>}
+                <Text type="secondary">
+                  <Image src={ICONS.calendar} alt="Date" width={16} height={16} style={{ marginRight: 6 }} />
+                  {fmtDate(created_at)}
+                </Text>
                 <Divider type="vertical" />
-                <Text type="secondary">{readMin} min read</Text>
+                <Text type="secondary">
+                  <Image src={ICONS.time} alt="Reading time" width={16} height={16} style={{ marginRight: 6 }} />
+                  {readMin} min read
+                </Text>
               </Space>
 
               <Title level={2} className="blog-inner__title">
@@ -194,9 +228,6 @@ export default function BlogInnerAntd({ data, latestProjects, faqData }: Props) 
                   >
                     <Image src="/instagram.svg" alt="Instagram" width={18} height={18} />
                   </button>
-                  <button onClick={handleNativeShare} className="blog-inner__icon-button" title="Share">
-                    <Image src="/share.svg" alt="Share" width={18} height={18} />
-                  </button>
                 </Space>
               </Space>
             </Space>
@@ -219,15 +250,16 @@ export default function BlogInnerAntd({ data, latestProjects, faqData }: Props) 
                 />
               </div>
             )}
-
-            <div className="blog-inner__inline-image">
-              <AntImage
-                className="blog-inner__inline-image-img"
-                src={withBase(data.content_image)}
-                alt={translation?.title || "Inline"}
-                preview={false}
-              />
-            </div>
+            {data.content_image && (
+              <div className="blog-inner__inline-image">
+                <AntImage
+                  className="blog-inner__inline-image-img"
+                  src={withBase(data.content_image)}
+                  alt={translation?.title || "Inline"}
+                  preview={false}
+                />
+              </div>
+            )}
 
             {translation?.content_2 && (
               <div className="blog-inner__section">
@@ -253,26 +285,18 @@ export default function BlogInnerAntd({ data, latestProjects, faqData }: Props) 
               </div>
             )}
 
-
             {faqData && (
               <div className="blog-inner__section">
                 <RealEstateFaqSection data={faqData} />
               </div>
             )}
 
-
             {latestProjects && (
               <div className="blog-inner__section">
-                <ProductSection
-                  data={latestProjects}
-                // title və subtitle istəsən burada ötürə bilərsən
-                // title="Latest Projects in the UAE"
-                // subtitle=""
-                />
+                <ProductSection data={latestProjects} />
               </div>
             )}
 
-            {/* Agent */}
             {data.agent && (
               <Card className="sidebar-block">
                 <Space align="center" size={16}>
@@ -282,14 +306,14 @@ export default function BlogInnerAntd({ data, latestProjects, faqData }: Props) 
                     icon={<UserOutlined />}
                   />
                   <div>
-                    <div className="font-medium">{data.agent.name}</div>
+                    <div className="font-medium">
+                      <p>{data.agent.name}</p>
+                    </div>
                     <Text type="secondary">{data.agent.position?.name || "Agent"}</Text>
                   </div>
                 </Space>
-                <Divider />
                 {data.agent.bio && (
                   <>
-                    <Divider />
                     <Paragraph ellipsis={{ rows: 3 }}>{data.agent.bio}</Paragraph>
                   </>
                 )}
@@ -298,13 +322,22 @@ export default function BlogInnerAntd({ data, latestProjects, faqData }: Props) 
           </Col>
 
           <Col xs={24} lg={8}>
-            <Affix offsetTop={30} target={() => (typeof window !== "undefined" ? window : null)}>
-              <div className="blog-sidebar">
+            <div className="blog-sidebar">
+              {/* Table Of Contents */}
+              {tocItems.length > 0 && (
                 <Collapse
                   className="sidebar-block sidebar-toc"
                   defaultActiveKey={["toc"]}
                   expandIconPosition="end"
-                  expandIcon={({ isActive }) => <CaretDownOutlined rotate={isActive ? 180 : 0} />}
+                  expandIcon={({ isActive }) => (
+                    <Image
+                      src={ICONS.arrowBottom}
+                      alt="Toggle"
+                      width={12}
+                      height={12}
+                      style={{ transform: isActive ? "rotate(180deg)" : "rotate(0deg)" }}
+                    />
+                  )}
                   items={[
                     {
                       key: "toc",
@@ -313,10 +346,50 @@ export default function BlogInnerAntd({ data, latestProjects, faqData }: Props) 
                     },
                   ]}
                 />
+              )}
 
-                <div className="sidebar-spacer" />
-              </div>
-            </Affix>
+              {recentBlogs && recentBlogs.length > 0 && (
+                <Collapse
+                  className="sidebar-block sidebar-recent"
+                  defaultActiveKey={["recent"]}
+                  expandIconPosition="end"
+                  expandIcon={({ isActive }) => (
+                    <Image
+                      src={ICONS.arrowBottom}
+                      alt="Toggle"
+                      width={12}
+                      height={12}
+                      style={{ transform: isActive ? "rotate(180deg)" : "rotate(0deg)" }}
+                    />
+                  )}
+                  items={[
+                    {
+                      key: "recent",
+                      label: <span className="block-title">Recent Blogs</span>,
+                      children: (
+                        <List
+                          className="recent-list"
+                          itemLayout="vertical"
+                          dataSource={recentBlogs}
+                          renderItem={(it) => (
+                            <List.Item>
+                              <Link className="recent-link" href={`/blog/${it.slug}`}>
+                                {it.title}
+                              </Link>
+                              {it.excerpt && (
+                                <Paragraph style={{ marginBottom: 0 }}>{it.excerpt}</Paragraph>
+                              )}
+                            </List.Item>
+                          )}
+                        />
+                      ),
+                    },
+                  ]}
+                />
+              )}
+
+              <div className="sidebar-spacer" />
+            </div>
           </Col>
         </Row>
       </div>

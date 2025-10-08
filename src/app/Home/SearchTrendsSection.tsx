@@ -1,12 +1,14 @@
 "use client";
 
-import { Row, Col, Typography } from "antd";
+import { Row, Col, Typography, Collapse, Grid } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import FilterTabs from "../../components/Lib/Tabs/FilterTabs";
 import { Container } from "@/components/Lib/ProContainer/Container";
+import "./index.scss"; // ⚠️ SCSS import edin
 
 const { Title, Text } = Typography;
+const { useBreakpoint } = Grid;
 
 const tabData = {
   sale: {
@@ -73,13 +75,24 @@ const tabData = {
 
 export const SearchTrendsSection = () => {
   const [activeKey, setActiveKey] = useState("sale");
+  const screens = useBreakpoint();
+  const isMobile = !screens.md; // md: 768px
+  
   const data = tabData[activeKey as "sale" | "rent"];
+
+  
+  const accordionItems = [
+    { title: "Popular Searches", items: data.PopularSearches },
+    { title: "Popular Areas", items: data.PopularAreas },
+    { title: "Trending Searches", items: data.TrendingSearches },
+    { title: "Trending Areas", items: data.TrendingAreas },
+  ];
 
   return (
     <section className="search-trends-section">
       <Container>
         <div className="text-center header">
-          <Title level={3}>Propular and Trending Searches in UAE</Title>
+          <Title level={3}>Popular and Trending Searches in UAE</Title>
           <div className="filter-tabs">
             <FilterTabs
               activeKey={activeKey}
@@ -92,48 +105,85 @@ export const SearchTrendsSection = () => {
           </div>
         </div>
 
-        <Row gutter={[24, 24]} className="list-columns">
-          <Col xs={24} md={6}>
-            <div className="list-block">
-              <Title level={5}>Popular Searches</Title>
-              {data.PopularSearches.map((item, i) => (
-                <Text key={i} className="list-item">{item}</Text>
-              ))}
-            </div>
-          </Col>
-
-          <Col xs={24} md={6}>
-            <div className="list-block">
-              <Title level={5}>Popular Areas</Title>
-              {data.PopularAreas.map((item, i) => (
-                <Text key={i} className="list-item">{item}</Text>
-              ))}
-            </div>
-          </Col>
-
-          <Col xs={24} md={6}>
-            <div className="list-block">
-              <Title level={5}>Trending Searches</Title>
-              {data.TrendingSearches.map((item, i) => (
-                <Text key={i} className="list-item">{item}</Text>
-              ))}
-            </div>
-          </Col>
-
-          <Col xs={24} md={6}>
-            <div className="list-block trending-right">
-              <Title level={5}>Trending Areas</Title>
-              {data.TrendingAreas.map((item, i) => (
-                <Text key={i} className="list-item">{item}</Text>
-              ))}
-              <div className="view-more">
-                <a href="#">
-                  View More <DownOutlined />
-                </a>
+        {isMobile ? (
+          //  Mobile - Accordion
+          <Collapse 
+            accordion 
+            className="trends-accordion"
+            expandIconPosition="end"
+          >
+            {accordionItems.map((section, idx) => (
+              <Collapse.Panel header={section.title} key={idx}>
+                <div className="list-items">
+                  {section.items.map((item, i) => (
+                    <Text key={i} className="list-item">
+                      {item}
+                    </Text>
+                  ))}
+                </div>
+                {idx === accordionItems.length - 1 && (
+                  <div className="view-more">
+                    <a href="#">
+                      View More <DownOutlined />
+                    </a>
+                  </div>
+                )}
+              </Collapse.Panel>
+            ))}
+          </Collapse>
+        ) : (
+          //  Desktop 
+          <Row gutter={[24, 24]} className="list-columns">
+            <Col xs={24} md={6}>
+              <div className="list-block">
+                <Title level={5}>Popular Searches</Title>
+                {data.PopularSearches.map((item, i) => (
+                  <Text key={i} className="list-item">
+                    {item}
+                  </Text>
+                ))}
               </div>
-            </div>
-          </Col>
-        </Row>
+            </Col>
+
+            <Col xs={24} md={6}>
+              <div className="list-block">
+                <Title level={5}>Popular Areas</Title>
+                {data.PopularAreas.map((item, i) => (
+                  <Text key={i} className="list-item">
+                    {item}
+                  </Text>
+                ))}
+              </div>
+            </Col>
+
+            <Col xs={24} md={6}>
+              <div className="list-block">
+                <Title level={5}>Trending Searches</Title>
+                {data.TrendingSearches.map((item, i) => (
+                  <Text key={i} className="list-item">
+                    {item}
+                  </Text>
+                ))}
+              </div>
+            </Col>
+
+            <Col xs={24} md={6}>
+              <div className="list-block trending-right">
+                <Title level={5}>Trending Areas</Title>
+                {data.TrendingAreas.map((item, i) => (
+                  <Text key={i} className="list-item">
+                    {item}
+                  </Text>
+                ))}
+                <div className="view-more">
+                  <a href="#">
+                    View More <DownOutlined />
+                  </a>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        )}
       </Container>
     </section>
   );

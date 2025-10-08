@@ -1,8 +1,7 @@
 "use client";
 
 import { FC, useMemo } from "react";
-import { Row, Col, Button } from "antd";
-import Link from "next/link";
+import { Row, Col } from "antd";
 import { MostTrendingResponse, MostTrendingItem } from "@/models/MostTrending.model";
 
 type TProps = {
@@ -73,11 +72,11 @@ export const TrendingProjectsSection: FC<TProps> = ({ data, title, subtitle }) =
                     <div className="location">&nbsp;</div>
                   )}
 
-                  <Link href={`/planpage/${project.slug}`} prefetch>
+                  {/* <Link href={`/planpage/${project.slug}`} prefetch>
                     <Button className="view-more-btn" size="large">
-                      View More <span className="arrow">→</span>
+                      View More <Image src={arrowRightIcon} alt="arrow right" />
                     </Button>
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             </Col>

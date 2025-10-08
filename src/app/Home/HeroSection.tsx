@@ -3,11 +3,10 @@
 import React, { FC, useEffect, useMemo, useRef, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
-import { Button, Select, Input } from "antd";
-import { EnvironmentOutlined } from "@ant-design/icons";
+import { Button, Select } from "antd";
+import arrowBottom from '../../../public/arrow-bottom.svg';
 import "./index.scss";
 import { HeroBanner } from "@/models/HeroBanner.model";
-import PriceRange from "@/components/Lib/ProPrice/PriceRange";
 
 const { Option } = Select;
 const MEDIA_BASE = "https://api.dubaiyachts.com/uploads/properties/";
@@ -190,49 +189,73 @@ const HeroSection: FC<TProps> = ({ data }) => {
                   Off Plans
                 </Button>
               </div>
-
-              <div className="location-input">
-                <EnvironmentOutlined className="location-icon" />
-                <Input placeholder="Choose Area or City" className="location-field" />
-              </div>
-            </div>
-
-            {/* Desktop */}
-            <div className="search-form desktop-only">
-              <div className="form-labels">
-                <span>Property Category</span>
-                <span>Property type</span>
-                <span>Property Details</span>
-                <span>Price</span>
-                <span></span>
-              </div>
-              <div className="form-row">
-                <Select defaultValue="Residential" className="form-select property-category" suffixIcon={<span>▼</span>}>
+              <div className="top-form-row">
+                <Select defaultValue="Choose Country" className="form-select" suffixIcon={<Image src={arrowBottom} alt="▼" width={12} height={12} />}>
                   <Option value="Residential">Residential</Option>
                   <Option value="Commercial">Commercial</Option>
                 </Select>
 
-                <Select defaultValue="Any" className="form-select property-type" suffixIcon={<span>▼</span>}>
+                <Select defaultValue="Choose City" className="form-select" suffixIcon={<Image src={arrowBottom} alt="▼" width={12} height={12} />}>
                   <Option value="Any">Any</Option>
                   <Option value="Villa">Villa</Option>
                   <Option value="Apartment">Apartment</Option>
                 </Select>
 
-                <Select defaultValue="Bed & Bath" className="form-select property-details" suffixIcon={<span>▼</span>}>
+                <Select defaultValue="Choose Area" className="form-select" suffixIcon={<Image src={arrowBottom} alt="▼" width={12} height={12} />}>
+                  <Option value="Bed & Bath">Bed & Bath</Option>
+                  <Option value="1 Bed">1 Bed</Option>
+                  <Option value="2 Bed">2 Bed</Option>
+                </Select>
+              </div>
+
+              {/* <div className="location-input">
+                <EnvironmentOutlined className="location-icon" />
+                <Input placeholder="Choose Area or City" className="location-field" />
+              </div> */}
+            </div>
+
+            {/* Desktop */}
+            <div className="search-form desktop-only">
+              <div className="form-labels">
+                <span>Projects</span>
+                <span>Property type</span>
+                <span>Properties</span>
+                <span>Bedrooms</span>
+                <span></span>
+              </div>
+              <div className="form-row">
+                <Select defaultValue="Projects" className="form-select property-category" suffixIcon={<Image src={arrowBottom} alt="▼" width={12} height={12} />}>
+                  <Option value="Residential">Residential</Option>
+                  <Option value="Commercial">Commercial</Option>
+                </Select>
+
+                <Select defaultValue="Choose Developer" className="form-select property-type" suffixIcon={<Image src={arrowBottom} alt="▼" width={12} height={12} />}>
+                  <Option value="Any">Any</Option>
+                  <Option value="Villa">Villa</Option>
+                  <Option value="Apartment">Apartment</Option>
+                </Select>
+
+                <Select defaultValue="Choose Property Type" className="form-select property-details" suffixIcon={<Image src={arrowBottom} alt="▼" width={12} height={12} />}>
                   <Option value="Bed & Bath">Bed & Bath</Option>
                   <Option value="1 Bed">1 Bed</Option>
                   <Option value="2 Bed">2 Bed</Option>
                 </Select>
 
-                <PriceRange
+                <Select defaultValue="Choose Bedroom" className="form-select property-details" suffixIcon={<Image src={arrowBottom} alt="▼" width={12} height={12} />}>
+                  <Option value="Bed & Bath">Bed & Bath</Option>
+                  <Option value="1 Bed">1 Bed</Option>
+                  <Option value="2 Bed">2 Bed</Option>
+                </Select>
+
+                {/* <PriceRange
                   min={0}
                   max={10_000_000}
                   step={10_000}
-                  // onChange={([minP, maxP]) => {
-                  //   // buradan query paramlara / form state-ə yaza bilərsən
-                  //   // console.log({ minP, maxP });
-                  // }}
-                />
+                  onChange={([minP, maxP]) => {
+                    // buradan query paramlara / form state-ə yaza bilərsən
+                    // console.log({ minP, maxP });
+                  }}
+                /> */}
 
                 <Button type="primary" className="search-btn">
                   Search Now <span className="search-arrow">→</span>
@@ -247,28 +270,28 @@ const HeroSection: FC<TProps> = ({ data }) => {
                 className="advanced-btn"
                 onClick={() => setShowAdvanced((p) => !p)}
               >
-                Advanced Search {showAdvanced ? "▲" : "▼"}
+                Advanced Search
               </Button>
 
               <div className={`advanced-wrapper ${showAdvanced ? "open" : ""}`}>
-                <Select defaultValue="Residential" className="form-select property-category" suffixIcon={<span>▼</span>}>
+                <Select defaultValue="Residential" className="form-select property-category" suffixIcon={<Image src={arrowBottom} alt="▼" width={12} height={12} />}>
                   <Option value="Residential">Residential</Option>
                   <Option value="Commercial">Commercial</Option>
                 </Select>
 
-                <Select defaultValue="Any" className="form-select property-type" suffixIcon={<span>▼</span>}>
+                <Select defaultValue="Any" className="form-select property-type" suffixIcon={<Image src={arrowBottom} alt="▼" width={12} height={12} />}>
                   <Option value="Any">Any</Option>
                   <Option value="Villa">Villa</Option>
                   <Option value="Apartment">Apartment</Option>
                 </Select>
 
-                <Select defaultValue="Bed & Bath" className="form-select property-details" suffixIcon={<span>▼</span>}>
+                <Select defaultValue="Bed & Bath" className="form-select property-details" suffixIcon={<Image src={arrowBottom} alt="▼" width={12} height={12} />}>
                   <Option value="Bed & Bath">Bed & Bath</Option>
                   <Option value="1 Bed">1 Bed</Option>
                   <Option value="2 Bed">2 Bed</Option>
                 </Select>
 
-                <Select defaultValue="Price (AED)" className="form-select price-range" suffixIcon={<span>▼</span>}>
+                <Select defaultValue="Price (AED)" className="form-select price-range" suffixIcon={<Image src={arrowBottom} alt="▼" width={12} height={12} />}>
                   <Option value="Price (AED)">Price (AED)</Option>
                   <Option value="100k-500k">100k-500k</Option>
                   <Option value="500k-1M">500k-1M</Option>

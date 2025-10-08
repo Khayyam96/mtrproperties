@@ -32,6 +32,11 @@ import { LastBlogResponse } from "@/models/LastBlog.model";
 import { LuxuryListResponse } from "@/models/LuxuryCard.mode";
 import "../app/page.scss";
 import { SectionKey, SectionTitleResponse } from "@/models/SectionTitle.mode";
+import InfoSection from "./Home/InfoSection";
+
+export const metadata = {
+  title: "Home page — MTR Properties",
+};
 
 export default async function Home() {
 
@@ -112,6 +117,7 @@ export default async function Home() {
           title={landSection?.title_EN ?? "Most Trending Projects in DubaI"}
           subtitle={landSection?.subtitle_EN ?? ""}
         />
+        <InfoSection/>
         <StatsSection />
         <CommissionSection
           title={maximizeSection?.title_EN ?? "Maximize Your Commission"}

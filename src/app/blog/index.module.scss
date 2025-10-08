@@ -15,7 +15,11 @@
         color: #6A469C !important;
         font-weight: 800 !important;
         font-size: 32px !important;
-        line-height: 40px !important;
+        line-height: 38px !important;
+        @media (max-width:767px) {
+            font-size: 24px !important;
+            line-height: 30px !important;
+        }
     }
 }
 
@@ -23,7 +27,9 @@
 .blogcards {
     padding: 50px 0;
     background-color: #fff;
-
+    border-radius: 6px !important;
+    
+    
     @media(max-width:767px) {
         padding: 30px 0;
     }
@@ -31,7 +37,7 @@
     .header {
         h2 {
             font-size: 32px;
-            line-height: 40px;
+            line-height: 38px;
             color: #343535;
             font-weight: 800;
             margin-bottom: 15px;
@@ -47,7 +53,7 @@
         .subtitle {
             color: #343535;
             font-size: 16px;
-            line-height: 24px;
+            line-height: 22px;
             font-weight: 600;
             margin-bottom: 50px;
             text-align: center;
@@ -59,6 +65,10 @@
             }
         }
     }
+    .cover{
+        width: 100%;
+        height: 220x;
+    }
 }
 
 
@@ -66,7 +76,7 @@
     position: relative;
     border-radius: 16px;
     overflow: hidden;
-    min-height: 420px;
+    height: 508px;
     box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
 
     @media (min-width: 992px) {
@@ -95,11 +105,11 @@
 
 .overlayCard {
     position: absolute;
-    left: 24px;
-    bottom: 24px;
+    left: 32px;
+    bottom: 22px;
     width: min(680px, calc(100% - 48px));
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 6px;
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
     background: #00000033;
@@ -110,7 +120,7 @@
     display: flex;
     align-items: center;
     gap: 16px;
-    margin-bottom: 6px;
+    margin-bottom: 6px;    
 }
 
 .category {
@@ -118,7 +128,7 @@
     color: #432C63 !important;
     font-weight: 500;
     display: block;
-    font-size: 14px;
+    font-size: 14px !important;
     line-height: 20px;
     border-radius: 5px;
     padding: 2px 10px;
@@ -127,19 +137,29 @@
 .date {
     color: #FFFFFF !important;
     font-weight: 600 !important;
-    font-size: 14px !important;
-    line-height: 20px !important;
+    font-size: 16px !important;
+    line-height: 22px !important;
     display: inline-flex !important;
     align-items: center !important;
     gap: 6px !important;
+    @media (max-width:767px) {
+        font-size: 14px !important;
+        line-height: 20px !important;
+    }
 }
+
+
 
 .title {
     color: #FFFFFF !important;
     font-size: 32px !important;
-    line-height: 40px !important;
+    line-height: 38px !important;
     font-weight: 800 !important;
-    margin-bottom: 15px !important;
+    margin: 14px 0 !important;
+    @media(max-width:767px) {
+        font-size: 24px !important;
+        line-height: 30x !important;
+    }
 }
 
 .excerpt {
@@ -148,24 +168,31 @@
     color: #FFFFFF !important;
     font-weight: 500;
     margin-bottom: 15px !important;
+    @media(max-width:767px) {
+        font-size: 16px !important;
+        line-height: 22px !important;
+        margin-bottom: 17px!important;
+    }
 }
+
 
 .readBtn {
     padding: 9px 16px !important;
     font-size: 16px !important;
-    line-height: 20px !important;
+    line-height: 22px !important;
     color: #FAFAFA !important;
     font-weight: 600 !important;
     background-color: #7E22CE !important;
+    box-shadow: 0 0 0 !important;
+    border:  2px solid #7E22CE !important;
     border-radius: 5px !important;
-    transition: background-color .25s ease, box-shadow .25s ease, transform .25s ease;
+    transition: background-color .25s ease, transform .25s ease;
     display: inline-flex;
     align-items: center;
     gap: 8px;
 
     &:hover {
         background-color: #8a35da !important;
-        box-shadow: 0 8px 18px rgba(126, 34, 206, 0.35);
         transform: translateY(-1px);
     }
 

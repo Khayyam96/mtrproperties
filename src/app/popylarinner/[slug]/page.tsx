@@ -33,6 +33,10 @@ export interface ProjectTimelineItem {
   date: string;
 }
 
+export const metadata = {
+  title: "Property inner — MTR Properties",
+};
+
 export interface PropertyDetail {
   id: number;
   title: string;

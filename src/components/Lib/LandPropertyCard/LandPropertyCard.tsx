@@ -4,9 +4,6 @@ import Image from "next/image";
 import Slider from "react-slick";
 import { Typography, Tag } from "antd";
 import {
-  EnvironmentOutlined,
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
   PhoneOutlined,
   WhatsAppOutlined,
 } from "@ant-design/icons";
@@ -14,16 +11,17 @@ import { useRef, KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
 import type { LandProperty } from "@/models/LandProperties.model";
 
+import locationIcon from "../../../../public/location-marker.png";
+import arrow from "../../../../public/arrow-left.svg";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-// import nophoto from "@/public/nophoto.svg"
 import "./index.scss";
 
 const { Title } = Typography;
 
 const IMAGE_BASE = "https://api.dubaiyachts.com/uploads/properties/";
 
-// 1) Kompakt rəqəm formatlayıcı (opsional dəyərlər üçün təhlükəsiz)
 function formatCompact(n?: number | null) {
   if (n === null || n === undefined) return "—";
   try {
@@ -55,6 +53,7 @@ export const LandPropertyCard: React.FC<CardProps> = ({ land }) => {
     speed: 400,
     slidesToShow: 1,
     slidesToScroll: 1,
+    
   } as const;
 
   // Şəkil siyahısını hazırla
@@ -134,7 +133,7 @@ export const LandPropertyCard: React.FC<CardProps> = ({ land }) => {
           aria-label="Previous image"
           type="button"
         >
-          <ArrowLeftOutlined />
+          <Image src={arrow} alt="Left arrow" width={20} height={20} />
         </button>
         <button
           className="carousel-btn right"
@@ -145,7 +144,7 @@ export const LandPropertyCard: React.FC<CardProps> = ({ land }) => {
           aria-label="Next image"
           type="button"
         >
-          <ArrowRightOutlined />
+          <Image src={arrow} alt="Left arrow" width={20} height={20} />
         </button>
       </div>
 
@@ -158,7 +157,7 @@ export const LandPropertyCard: React.FC<CardProps> = ({ land }) => {
         </div>
 
         <div className="pro-card__location">
-          <EnvironmentOutlined />
+          <Image src={locationIcon} alt="Location" width={13} height={15} />
           <span>{land?.address || "—"}</span>
         </div>
 
